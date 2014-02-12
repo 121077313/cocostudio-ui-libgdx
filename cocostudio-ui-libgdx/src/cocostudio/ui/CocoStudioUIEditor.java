@@ -314,10 +314,10 @@ public class CocoStudioUIEditor {
 		}
 		actor.setName(option.getName());
 
-		if (!option.isIgnoreSize()) {
-			actor.setSize(option.getWidth(), option.getHeight());
-		} else {// 忽略大小,指的是编辑器无法指定大小(?)
+		if (option.isIgnoreSize()) {// 忽略大小,指的是编辑器无法指定大小(?)
 
+		} else {
+			actor.setSize(option.getWidth(), option.getHeight());
 		}
 		actor.setScale(option.getScaleX(), option.getScaleY());
 		actor.setTouchable(option.isTouchAble() == true ? Touchable.enabled
@@ -361,23 +361,32 @@ public class CocoStudioUIEditor {
 		group.setVisible(option.isVisible());
 		group.setPosition(actor.getX(), actor.getY());
 		group.setSize(actor.getWidth(), actor.getHeight());
-
-		if (!(actor instanceof ScrollPane)) {
-			group.addActor(actor);
-		}
-
-		for (CCWidget cWidget : widget.getChildren()) {
-			Actor cGroup = parseWidget(cWidget);
-			if (cGroup == null) {
-				continue;
-			}
-			group.addActor(cGroup);
-		}
-
+		group.addActor(actor);
 		if (actor instanceof ScrollPane) {
+
 			ScrollPane scrollPane = (ScrollPane) actor;
-			scrollPane.setWidget(group);
+
+			Table table = new Table();
+			// table.setVisible(option.isVisible());
+			// table.setPosition(actor.getX(), actor.getY());
+			table.setSize(actor.getWidth(), actor.getHeight());
+			for (CCWidget cWidget : widget.getChildren()) {
+				Actor cGroup = parseWidget(cWidget);
+				if (cGroup == null) {
+					continue;
+				}
+				table.addActor(cGroup);
+			}
+
+			scrollPane.setWidget(table);
 		} else {
+			for (CCWidget cWidget : widget.getChildren()) {
+				Actor cGroup = parseWidget(cWidget);
+				if (cGroup == null) {
+					continue;
+				}
+				group.addActor(cGroup);
+			}
 
 		}
 
