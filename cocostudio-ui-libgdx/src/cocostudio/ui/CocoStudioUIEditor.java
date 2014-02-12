@@ -242,7 +242,12 @@ public class CocoStudioUIEditor {
 			BitmapFont font = null;
 			if (bitmapFonts != null) {
 				font = bitmapFonts.get(option.getFileNameData().getPath());
+			} else {
+
+				font = new BitmapFont(Gdx.files.internal(dirName
+						+ option.getFileNameData().getPath()));
 			}
+
 			if (font == null) {
 				debug(option, "字体:" + option.getFileNameData().getPath()
 						+ "不存在,使用默认字体");
@@ -272,6 +277,11 @@ public class CocoStudioUIEditor {
 		} else if (className.equals("Panel")) {// Table
 			actor = new Table();
 			Table table = (Table) actor;
+			if (option.getBackGroundImageData() != null) {
+				table.setBackground(findDrawable(option, option
+						.getBackGroundImageData().getPath()));
+			}
+
 			table.setClip(option.isClipAble());
 		} else if (className.equals("ListView")) {//
 			debug(option, "not support Widget:" + className);
@@ -286,11 +296,18 @@ public class CocoStudioUIEditor {
 						.getBackGroundImageData().getPath());
 			}
 			actor = new ScrollPane(null, style);
+			ScrollPane scrollPane = (ScrollPane) actor;
 
 		} else if (className.equals("PageView")) {
 			debug(option, "not support Widget:" + className);
 			return null;
-		} else {
+		} else if (className.equals("LabelAtlas")) {// 数字标签
+
+			debug(option, "not support Widget:" + className);
+			return null;
+		}
+
+		else {
 
 			debug(option, "not support Widget:" + className);
 			return null;
@@ -331,7 +348,7 @@ public class CocoStudioUIEditor {
 		actor.setZIndex(option.getZOrder());
 
 		if (actors.containsKey(actor.getName())) {
-			error(option, "重名");
+			// debug(option, "重名");
 		}
 
 		actors.put(actor.getName(), actor);
@@ -341,9 +358,14 @@ public class CocoStudioUIEditor {
 		}
 
 		Table group = new Table();
-		group.addActor(actor);
+		group.setVisible(option.isVisible());
 		group.setPosition(actor.getX(), actor.getY());
 		group.setSize(actor.getWidth(), actor.getHeight());
+
+		if (!(actor instanceof ScrollPane)) {
+			group.addActor(actor);
+		}
+
 		for (CCWidget cWidget : widget.getChildren()) {
 			Actor cGroup = parseWidget(cWidget);
 			if (cGroup == null) {
@@ -351,6 +373,14 @@ public class CocoStudioUIEditor {
 			}
 			group.addActor(cGroup);
 		}
+
+		if (actor instanceof ScrollPane) {
+			ScrollPane scrollPane = (ScrollPane) actor;
+			scrollPane.setWidget(group);
+		} else {
+
+		}
+
 		return group;
 	}
 
