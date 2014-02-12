@@ -1,8 +1,9 @@
 cocostudio-ui-libgdx
 ====================
 
-Let CocoStudio become libgdx the ui editor
+Let CocoStudio become libgdx the UI editor
 
+让CocoStudio变成libgdx的UI编辑器
 
 
 首先,这个想法不是我原创.我所知道的原作者是:https://github.com/bigstupidx/libgdx-cocostudio
