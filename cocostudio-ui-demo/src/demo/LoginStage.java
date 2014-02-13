@@ -34,7 +34,7 @@ public class LoginStage extends CommonStage {
 		initUI2();
 	}
 
-	/** 头像Demo */
+	/** 头像Demo,使用小图片方式 */
 	private void initHead() {
 
 		CocoStudioUIEditor editer = new CocoStudioUIEditor(
@@ -43,7 +43,7 @@ public class LoginStage extends CommonStage {
 		addActor(group);
 	}
 
-	/** 商店Demo */
+	/** 商店Demo,使用小图片方式 */
 	private void initShop() {
 
 		CocoStudioUIEditor editer = new CocoStudioUIEditor(
@@ -77,7 +77,7 @@ public class LoginStage extends CommonStage {
 		}
 	}
 
-	/** ui例子 */
+	/** ui例子,使用小图片方式 */
 	void initUI() {
 		CocoStudioUIEditor editer = new CocoStudioUIEditor(
 				Gdx.files.internal("ui/ui.json"), null, null, null);
