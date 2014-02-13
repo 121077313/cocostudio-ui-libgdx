@@ -472,7 +472,11 @@ public class CocoStudioUIEditor {
 	 * @return
 	 */
 	protected LabelStyle createLabelStyle(CCOption option) {
-		FileHandle fontFile = ttfs.get(option.getFontName());
+
+		FileHandle fontFile = null;
+		if (ttfs != null) {
+			fontFile = ttfs.get(option.getFontName());
+		}
 
 		Color textColor = new Color(option.getTextColorR() / 255,
 				option.getTextColorG() / 255, option.getTextColorB() / 255,
@@ -531,6 +535,10 @@ public class CocoStudioUIEditor {
 			}
 		}
 		return false;
+	}
+
+	public Map<String, Array<Actor>> getActors() {
+		return actors;
 	}
 
 }
