@@ -350,12 +350,12 @@ public class CocoStudioUIEditor {
 
 		actor.setY(option.getY() - option.getAnchorPointY()
 				* option.getHeight());
-
+		actor.setOrigin(option.getAnchorPointX() * option.getWidth(),
+				option.getAnchorPointY() * option.getHeight());
 		// actor.setPosition(option.getX(), option.getY());
 		if (option.getRotation() != 0) {// CocoStudio 是顺时针方向旋转,转换下.
 			// 设置旋转中心为锚点
-			actor.setOrigin(option.getAnchorPointX() * option.getWidth(),
-					option.getAnchorPointY() * option.getHeight());
+			
 
 			actor.setRotation(360 - option.getRotation() % 360);
 			if (actor instanceof Group) {// 必须设置Transform 为true 子控件才会跟着旋转.
