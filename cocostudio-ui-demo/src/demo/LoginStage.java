@@ -1,15 +1,17 @@
 package demo;
 
-import framework.CommonStage;
 import cocostudio.ui.CocoStudioUIEditor;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputEvent.Type;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
+
+import framework.CommonStage;
 
 /**
  * 登录界面界面
@@ -25,12 +27,14 @@ public class LoginStage extends CommonStage {
 
 	@Override
 	public void init() {
-//		initHead();
-//		initShop();
-		
+		// initHead();
+		// initShop();
+
 		initUI();
+		initUI2();
 	}
 
+	/** 头像Demo */
 	private void initHead() {
 
 		CocoStudioUIEditor editer = new CocoStudioUIEditor(
@@ -39,6 +43,7 @@ public class LoginStage extends CommonStage {
 		addActor(group);
 	}
 
+	/** 商店Demo */
 	private void initShop() {
 
 		CocoStudioUIEditor editer = new CocoStudioUIEditor(
@@ -71,9 +76,25 @@ public class LoginStage extends CommonStage {
 
 		}
 	}
+
+	/** ui例子 */
 	void initUI() {
 		CocoStudioUIEditor editer = new CocoStudioUIEditor(
 				Gdx.files.internal("ui/ui.json"), null, null, null);
+		Group group = editer.createGroup();
+		addActor(group);
+	}
+
+	/** ui例子2,使用TextureAtlas方式 */
+	void initUI2() {
+
+		AssetManager manager = new AssetManager();
+		manager.load("ui/gui.txt", TextureAtlas.class);
+		manager.finishLoading();
+		TextureAtlas gui = manager.get("ui/gui.txt", TextureAtlas.class);
+
+		CocoStudioUIEditor editer = new CocoStudioUIEditor(
+				Gdx.files.internal("ui/ui.json"), gui, null, null);
 		Group group = editer.createGroup();
 		addActor(group);
 	}
