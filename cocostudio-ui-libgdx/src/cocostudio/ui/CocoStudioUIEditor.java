@@ -19,6 +19,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox.CheckBoxStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
@@ -128,7 +130,7 @@ public class CocoStudioUIEditor {
 	 * @return
 	 */
 	public Group createGroup() {
-		Actor actor = parseWidget(export.getWidgetTree());
+		Actor actor = parseWidget(null, export.getWidgetTree());
 
 		if (actor instanceof Group) {
 			return (Group) actor;
@@ -219,7 +221,7 @@ public class CocoStudioUIEditor {
 	 * @param node
 	 * @return
 	 */
-	protected Actor parseWidget(CCWidget widget) {
+	protected Actor parseWidget(Group parent, CCWidget widget) {
 
 		CCOption option = widget.getOptions();
 		String className = option.getClassname();
@@ -264,8 +266,8 @@ public class CocoStudioUIEditor {
 			}
 
 			if (font == null) {
-				debug(option, "字体:" + option.getFileNameData().getPath()
-						+ "不存在,使用默认字体");
+				debug(option, "BitmapFont字体:"
+						+ option.getFileNameData().getPath() + " 不存在");
 				font = new BitmapFont();
 			}
 			Color textColor = new Color(option.getColorR() / 255,
@@ -277,15 +279,23 @@ public class CocoStudioUIEditor {
 		} else if (className.equals("TextField")) {// TextField
 
 			LabelStyle labelStyle = createLabelStyle(option);
+
+			if (labelStyle == null) {
+				return null;
+			}
 			TextFieldStyle style = new TextFieldStyle(labelStyle.font,
 					labelStyle.fontColor, null, null, null);
 			actor = new TextField(option.getText(), style);
 			TextField textField = (TextField) actor;
+			textField.setMessageText(option.getPlaceHolder());
 			textField.setPasswordMode(option.isPasswordEnable());
 			textField.setPasswordCharacter(option.getPasswordStyleText());
 		} else if (className.equals("Label")) {// Label
 
 			LabelStyle labelStyle = createLabelStyle(option);
+			if (labelStyle == null) {
+				return null;
+			}
 			actor = new Label(option.getText(), labelStyle);
 			Label label = (Label) actor;
 			label.setAlignment(option.getvAlignment(), option.gethAlignment());
@@ -344,10 +354,28 @@ public class CocoStudioUIEditor {
 
 			debug(option, "not support Widget:" + className);
 			return null;
-		}
+		} else if (className.equals("CheckBox")) {// CheckBox
 
-		else {
+			CheckBoxStyle style = new CheckBoxStyle(null, null,
+					new BitmapFont(), Color.BLACK);
+			if (option.getFrontCrossData() != null) {// 选中图片
+				style.checkboxOn = findDrawable(option, option
+						.getFrontCrossData().getPath());
+			}
 
+			if (option.getFrontCrossDisabledData() != null) {// 没选中图片
+
+				style.checkboxOff = findDrawable(option, option
+						.getFrontCrossDisabledData().getPath());
+			}
+
+			actor = new CheckBox("", style);
+			CheckBox checkBox = (CheckBox) actor;
+
+			// checkBox.addActor(new Image(style.checkboxOff));
+			// debug(option, "not support Widget:" + className);
+			// return null;
+		} else {
 			debug(option, "not support Widget:" + className);
 			return null;
 		}
@@ -359,14 +387,21 @@ public class CocoStudioUIEditor {
 			actor.setSize(option.getWidth(), option.getHeight());
 		}
 
-		actor.setX(option.getX() - option.getAnchorPointX() * option.getWidth());
-
-		actor.setY(option.getY() - option.getAnchorPointY()
-				* option.getHeight());
-
 		// 设置锚点
 		actor.setOrigin(option.getAnchorPointX() * option.getWidth(),
 				option.getAnchorPointY() * option.getHeight());
+
+		if (parent == null) {
+			actor.setPosition(option.getX() - actor.getOriginX(), option.getY()
+					- actor.getOriginY());
+		} else {
+			// 锚点要算上父控件的锚点,也就是原点
+			actor.setX(parent.getOriginX()
+					+ (option.getX() - actor.getOriginX()));
+
+			actor.setY(parent.getOriginY()
+					+ (option.getY() - actor.getOriginY()));
+		}
 
 		// CocoStudio的编辑器ScaleX,ScaleY 会有负数情况
 		actor.setScale(Math.abs(option.getScaleX()),
@@ -390,13 +425,7 @@ public class CocoStudioUIEditor {
 		// 渲染级别
 		actor.setZIndex(option.getZOrder());
 
-		if (actors.containsKey(actor.getName())) {
-			// debug(option, "重名");
-
-		}
-
 		Array<Actor> arrayActors = actors.get(actor.getName());
-
 		if (arrayActors == null) {
 			arrayActors = new Array<Actor>();
 		}
@@ -423,7 +452,7 @@ public class CocoStudioUIEditor {
 				// table.setClip(option.isClipAble());
 
 				for (CCWidget cWidget : widget.getChildren()) {
-					Actor cGroup = parseWidget(cWidget);
+					Actor cGroup = parseWidget(table, cWidget);
 					if (cGroup == null) {
 						continue;
 					}
@@ -436,7 +465,7 @@ public class CocoStudioUIEditor {
 				scrollPane.setWidget(table);
 			} else {
 				for (CCWidget cWidget : widget.getChildren()) {
-					Actor cGroup = parseWidget(cWidget);
+					Actor cGroup = parseWidget(group, cWidget);
 					if (cGroup == null) {
 						continue;
 					}
@@ -454,7 +483,7 @@ public class CocoStudioUIEditor {
 		table.setPosition(actor.getX(), actor.getY());
 		table.addActor(actor);
 		for (CCWidget cWidget : widget.getChildren()) {
-			Actor cGroup = parseWidget(cWidget);
+			Actor cGroup = parseWidget(table, cWidget);
 			if (cGroup == null) {
 				continue;
 			}
@@ -483,7 +512,7 @@ public class CocoStudioUIEditor {
 				option.getOpacity() / 255);
 
 		if (fontFile == null) {
-			debug(option, "字体:" + option.getFontName() + "不存在,使用默认字体");
+			debug(option, "ttf字体:" + option.getFontName() + " 不存在");
 
 			return new LabelStyle(new BitmapFont(), textColor);
 		} else {

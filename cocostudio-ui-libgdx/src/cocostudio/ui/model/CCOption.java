@@ -102,11 +102,27 @@ public class CCOption {
 	CCWidgetData backGroundImageData;
 	boolean backGroundScale9Enable;
 
-	/**滚动控件,是否开启弹簧*/
+	/** 滚动控件,是否开启弹簧 */
 	boolean bounceEnable;
-	
-	/**滚动方向 1 上下,2左右 3,都可以*/
+
+	/** 滚动方向 1 上下,2左右 3,都可以 */
 	int direction;
+
+	/** checkbox选中标识 */
+	boolean selectedState;
+
+	CCWidgetData frontCrossData;
+
+	CCWidgetData frontCrossDisabledData;
+
+	CCWidgetData backGroundBoxSelectedData;
+
+	CCWidgetData backGroundBoxDisabledData;
+
+	CCWidgetData backGroundBoxData;
+
+	
+	
 	
 	public String get__type() {
 		return __type;
@@ -786,6 +802,54 @@ public class CCOption {
 
 	public void setDirection(int direction) {
 		this.direction = direction;
+	}
+
+	public boolean isSelectedState() {
+		return selectedState;
+	}
+
+	public void setSelectedState(boolean selectedState) {
+		this.selectedState = selectedState;
+	}
+
+	public CCWidgetData getFrontCrossData() {
+		return frontCrossData;
+	}
+
+	public void setFrontCrossData(CCWidgetData frontCrossData) {
+		this.frontCrossData = frontCrossData;
+	}
+
+	public CCWidgetData getFrontCrossDisabledData() {
+		return frontCrossDisabledData;
+	}
+
+	public void setFrontCrossDisabledData(CCWidgetData frontCrossDisabledData) {
+		this.frontCrossDisabledData = frontCrossDisabledData;
+	}
+
+	public CCWidgetData getBackGroundBoxSelectedData() {
+		return backGroundBoxSelectedData;
+	}
+
+	public void setBackGroundBoxSelectedData(CCWidgetData backGroundBoxSelectedData) {
+		this.backGroundBoxSelectedData = backGroundBoxSelectedData;
+	}
+
+	public CCWidgetData getBackGroundBoxDisabledData() {
+		return backGroundBoxDisabledData;
+	}
+
+	public void setBackGroundBoxDisabledData(CCWidgetData backGroundBoxDisabledData) {
+		this.backGroundBoxDisabledData = backGroundBoxDisabledData;
+	}
+
+	public CCWidgetData getBackGroundBoxData() {
+		return backGroundBoxData;
+	}
+
+	public void setBackGroundBoxData(CCWidgetData backGroundBoxData) {
+		this.backGroundBoxData = backGroundBoxData;
 	}
 
 }
