@@ -25,10 +25,21 @@ public class LoginStage extends CommonStage {
 
 	@Override
 	public void init() {
-		// CocoStudioUIEditor editer = new CocoStudioUIEditor(
-		// Gdx.files.internal("head/DemoHead_UI.json"), null, null, null);
-		// Group group = editer.createGroup();
-		// addActor(group);
+//		initHead();
+//		initShop();
+		
+		initUI();
+	}
+
+	private void initHead() {
+
+		CocoStudioUIEditor editer = new CocoStudioUIEditor(
+				Gdx.files.internal("head/DemoHead_UI.json"), null, null, null);
+		Group group = editer.createGroup();
+		addActor(group);
+	}
+
+	private void initShop() {
 
 		CocoStudioUIEditor editer = new CocoStudioUIEditor(
 				Gdx.files.internal("shop/DemoShop.json"), null);
@@ -59,5 +70,11 @@ public class LoginStage extends CommonStage {
 			});
 
 		}
+	}
+	void initUI() {
+		CocoStudioUIEditor editer = new CocoStudioUIEditor(
+				Gdx.files.internal("ui/ui.json"), null, null, null);
+		Group group = editer.createGroup();
+		addActor(group);
 	}
 }
