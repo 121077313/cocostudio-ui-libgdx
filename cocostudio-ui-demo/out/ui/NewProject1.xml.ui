@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<UIProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <filePath>E:\test\NewProject1\NewProject1.xml.ui</filePath>
+  <Version>1.2.0.1</Version>
+  <Name>NewProject1</Name>
+  <ProjectDir>E:\test\NewProject1</ProjectDir>
+  <JsonFileName>NewProject1.json</JsonFileName>
+  <Resources>E:\test\NewProject1\Resources</Resources>
+  <JsonFolder>E:\test\NewProject1\Json</JsonFolder>
+  <JsonList>
+    <string>ui.json</string>
+  </JsonList>
+  <imageFileList>
+    <string>NewProject10.plist</string>
+  </imageFileList>
+  <JsonSuffix>.json</JsonSuffix>
+  <CurrentUIJson>ui.json</CurrentUIJson>
+  <CanvasSize>
+    <Width>800</Width>
+    <Height>480</Height>
+  </CanvasSize>
+</UIProject>
