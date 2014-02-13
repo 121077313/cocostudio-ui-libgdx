@@ -30,8 +30,10 @@ public class LoginStage extends CommonStage {
 		// initHead();
 		// initShop();
 
-		initUI();
-		initUI2();
+		// initUI();
+		 initUI2();
+
+//		initDemo();
 	}
 
 	/** 头像Demo,使用小图片方式 */
@@ -88,14 +90,20 @@ public class LoginStage extends CommonStage {
 	/** ui例子2,使用TextureAtlas方式 */
 	void initUI2() {
 
-		AssetManager manager = new AssetManager();
-		manager.load("ui/gui.txt", TextureAtlas.class);
-		manager.finishLoading();
-		TextureAtlas gui = manager.get("ui/gui.txt", TextureAtlas.class);
-
+		TextureAtlas gui = new TextureAtlas(Gdx.files.internal("ui/gui.txt"));
 		CocoStudioUIEditor editer = new CocoStudioUIEditor(
-				Gdx.files.internal("ui/ui.json"), gui, null, null);
+				Gdx.files.internal("ui/ui.ExportJson"), gui, null, null);
 		Group group = editer.createGroup();
 		addActor(group);
+	}
+
+	void initDemo() {
+
+		TextureAtlas gui = new TextureAtlas(Gdx.files.internal("demo/gui.txt"));
+		CocoStudioUIEditor editer = new CocoStudioUIEditor(
+				Gdx.files.internal("demo/login.ExportJson"), gui, null, null);
+		Group group = editer.createGroup();
+		addActor(group);
+
 	}
 }

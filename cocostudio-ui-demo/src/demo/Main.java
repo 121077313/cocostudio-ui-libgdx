@@ -10,6 +10,10 @@ public class Main {
 		cfg.useGL20 = true;
 		cfg.width = 480;
 		cfg.height = 320;
+		
+//		cfg.width = 960;
+//		cfg.height = 640;
+		
 		cfg.resizable = true;
 		new LwjglApplication(new MyGame(), cfg);
 	}
