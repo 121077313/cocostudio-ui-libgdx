@@ -277,9 +277,14 @@ public class CocoStudioUIEditor {
 		} else if (className.equals("Panel")) {// Table
 			actor = new Table();
 			Table table = (Table) actor;
-			if (option.getBackGroundImageData() != null) {
-				table.setBackground(findDrawable(option, option
+			if (option.getBackGroundImageData() != null) {// Panel的图片并不是拉伸平铺的!!
+				// table.setBackground(findDrawable(option, option
+				// .getBackGroundImageData().getPath()));
+				Image bg = new Image(findTextureRegion(option, option
 						.getBackGroundImageData().getPath()));
+				bg.setPosition((option.getWidth() - bg.getWidth()) / 2,
+						(option.getHeight() - bg.getHeight()) / 2);
+				table.addActor(bg);
 			}
 
 			table.setClip(option.isClipAble());
@@ -295,9 +300,28 @@ public class CocoStudioUIEditor {
 				style.background = findDrawable(option, option
 						.getBackGroundImageData().getPath());
 			}
+
 			actor = new ScrollPane(null, style);
+
 			ScrollPane scrollPane = (ScrollPane) actor;
 
+			switch (option.getDirection()) {
+			case 1:
+				scrollPane.setForceScroll(false, true);
+				// scrollPane.setScrollingDisabled(true,true);
+				break;
+			case 2:
+				// scrollPane.setForceScroll(true, false);
+				scrollPane.setScrollingDisabled(false, false);
+				break;
+
+			case 3:
+				scrollPane.setScrollingDisabled(false, false);
+				// scrollPane.setForceScroll(true, true);
+				break;
+			}
+
+			// scrollPane.setFlickScroll(option.isBounceEnable());
 		} else if (className.equals("PageView")) {
 			debug(option, "not support Widget:" + className);
 			return null;
@@ -319,15 +343,15 @@ public class CocoStudioUIEditor {
 		} else {
 			actor.setSize(option.getWidth(), option.getHeight());
 		}
-		actor.setScale(option.getScaleX(), option.getScaleY());
-		actor.setTouchable(option.isTouchAble() == true ? Touchable.enabled
-				: Touchable.disabled);
+		actor.setScale(Math.abs(option.getScaleX()),
+				Math.abs(option.getScaleY()));
 
 		actor.setX(option.getX() - option.getAnchorPointX() * option.getWidth());
 
 		actor.setY(option.getY() - option.getAnchorPointY()
 				* option.getHeight());
 
+		// actor.setPosition(option.getX(), option.getY());
 		if (option.getRotation() != 0) {// CocoStudio 是顺时针方向旋转,转换下.
 			// 设置旋转中心为锚点
 			actor.setOrigin(option.getAnchorPointX() * option.getWidth(),
@@ -353,44 +377,66 @@ public class CocoStudioUIEditor {
 
 		actors.put(actor.getName(), actor);
 
+		actor.setTouchable(option.isTouchAble() ? Touchable.enabled
+				: Touchable.disabled);
+
 		if (widget.getChildren().size() == 0) {
+
 			return actor;
 		}
 
-		Table group = new Table();
-		group.setVisible(option.isVisible());
-		group.setPosition(actor.getX(), actor.getY());
-		group.setSize(actor.getWidth(), actor.getHeight());
-		group.addActor(actor);
-		if (actor instanceof ScrollPane) {
+		if (actor instanceof Group) {// Group 虽然自己不接收事件,但是子控件得接收
+			actor.setTouchable(option.isTouchAble() ? Touchable.enabled
+					: Touchable.childrenOnly);
 
-			ScrollPane scrollPane = (ScrollPane) actor;
+			Group group = (Group) actor;
 
-			Table table = new Table();
-			// table.setVisible(option.isVisible());
-			// table.setPosition(actor.getX(), actor.getY());
-			table.setSize(actor.getWidth(), actor.getHeight());
-			for (CCWidget cWidget : widget.getChildren()) {
-				Actor cGroup = parseWidget(cWidget);
-				if (cGroup == null) {
-					continue;
+			if (actor instanceof ScrollPane) {
+				ScrollPane scrollPane = (ScrollPane) actor;
+				Table table = new Table();
+				// table.setClip(option.isClipAble());
+
+				for (CCWidget cWidget : widget.getChildren()) {
+					Actor cGroup = parseWidget(cWidget);
+					if (cGroup == null) {
+						continue;
+					}
+					table.addActor(cGroup);
+
+					table.setSize(
+							Math.max(table.getWidth(), cGroup.getRight()),
+							Math.max(table.getHeight(), cGroup.getTop()));
 				}
-				table.addActor(cGroup);
+				scrollPane.setWidget(table);
+			} else {
+				for (CCWidget cWidget : widget.getChildren()) {
+					Actor cGroup = parseWidget(cWidget);
+					if (cGroup == null) {
+						continue;
+					}
+					group.addActor(cGroup);
+				}
 			}
 
-			scrollPane.setWidget(table);
-		} else {
-			for (CCWidget cWidget : widget.getChildren()) {
-				Actor cGroup = parseWidget(cWidget);
-				if (cGroup == null) {
-					continue;
-				}
-				group.addActor(cGroup);
-			}
-
+			return actor;
 		}
 
-		return group;
+		Table table = new Table();
+		table.setVisible(option.isVisible());
+		table.setClip(option.isClipAble());
+		table.setSize(actor.getWidth(), actor.getHeight());
+		table.setPosition(actor.getX(), actor.getY());
+		table.addActor(actor);
+		for (CCWidget cWidget : widget.getChildren()) {
+			Actor cGroup = parseWidget(cWidget);
+			if (cGroup == null) {
+				continue;
+			}
+			table.addActor(cGroup);
+		}
+
+		return table;
+
 	}
 
 	/**

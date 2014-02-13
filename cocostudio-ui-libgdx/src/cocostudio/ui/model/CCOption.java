@@ -102,6 +102,12 @@ public class CCOption {
 	CCWidgetData backGroundImageData;
 	boolean backGroundScale9Enable;
 
+	/**滚动控件,是否开启弹簧*/
+	boolean bounceEnable;
+	
+	/**滚动方向 1 上下,2左右 3,都可以*/
+	int direction;
+	
 	public String get__type() {
 		return __type;
 	}
@@ -764,6 +770,22 @@ public class CCOption {
 
 	public void setY(float y) {
 		this.y = y;
+	}
+
+	public boolean isBounceEnable() {
+		return bounceEnable;
+	}
+
+	public void setBounceEnable(boolean bounceEnable) {
+		this.bounceEnable = bounceEnable;
+	}
+
+	public int getDirection() {
+		return direction;
+	}
+
+	public void setDirection(int direction) {
+		this.direction = direction;
 	}
 
 }
