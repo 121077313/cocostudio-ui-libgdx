@@ -27,13 +27,11 @@ public class DemoStage extends CommonStage {
 		init();
 	}
 
-	int i = 1;
-	ClickListener listener;
+	boolean listener = false;
+	int i = 6;
 
 	@Override
 	public void init() {
-
-		System.out.println("按任意键切换场景,out文件夹内有UI工程文件.");
 
 		switch (i) {
 		case 1:
@@ -46,29 +44,32 @@ public class DemoStage extends CommonStage {
 			initUI();
 			break;
 		case 4:
-			initUI2();
-			break;
-		case 5:
 			initDemo();
 			break;
+		case 5:
+			initUI2();
+			break;
+		case 6:
+			initLogin();
+			break;
 
+		case 7:
+			initMap();
+			break;
+
+		case 8:
+			initSampleChangeEquip();
+			break;
 		default:
 			i = 1;
 			init();
 			break;
 		}
-		// initHead();
-		// initShop();
 
-		// initUI();
-		// initUI2();
-
-		// initDemo();
-
-		if (listener != null) {
+		if (listener) {
 			return;
 		}
-		listener = new ClickListener() {
+		listener = addListener(new ClickListener() {
 			@Override
 			public boolean keyDown(InputEvent event, int keycode) {
 				getActors().clear();
@@ -76,8 +77,9 @@ public class DemoStage extends CommonStage {
 				init();
 				return super.keyDown(event, keycode);
 			}
-		};
-		addListener(listener);
+		});
+
+		System.out.println("按任意键可切换场景,out文件夹内有UI的工程文件.");
 	}
 
 	/** 头像Demo,使用小图片方式 */
@@ -150,4 +152,33 @@ public class DemoStage extends CommonStage {
 		addActor(group);
 
 	}
+
+	void initLogin() {
+
+		CocoStudioUIEditor editer = new CocoStudioUIEditor(
+				Gdx.files.internal("DemoLogin/DemoLogin.json"), null, null,
+				null);
+		Group group = editer.createGroup();
+		addActor(group);
+
+	}
+
+	void initMap() {
+
+		CocoStudioUIEditor editer = new CocoStudioUIEditor(
+				Gdx.files.internal("DemoMap/DemoMap.json"), null, null, null);
+		Group group = editer.createGroup();
+		addActor(group);
+
+	}
+
+	void initSampleChangeEquip() {
+		CocoStudioUIEditor editer = new CocoStudioUIEditor(
+				Gdx.files
+						.internal("SampleChangeEquip/SampleChangeEquip_1.json"),
+				null, null, null);
+		Group group = editer.createGroup();
+		addActor(group);
+	}
+
 }
