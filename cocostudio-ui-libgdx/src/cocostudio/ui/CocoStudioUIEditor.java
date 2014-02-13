@@ -1,5 +1,6 @@
 package cocostudio.ui;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -244,8 +245,7 @@ public class CocoStudioUIEditor {
 					.getPath());
 			actor = new ImageButton(style);
 
-			if (option.getText() != null && !option.getText().equals("")
-					&& ttfs != null) {
+			if (option.getText() != null) {
 				Button button = (Button) actor;
 				LabelStyle labelStyle = createLabelStyle(option);
 				if (labelStyle != null) {
@@ -256,20 +256,8 @@ public class CocoStudioUIEditor {
 				}
 			}
 		} else if (className.equals("LabelBMFont")) {
-			BitmapFont font = null;
-			if (bitmapFonts != null) {
-				font = bitmapFonts.get(option.getFileNameData().getPath());
-			} else {
 
-				font = new BitmapFont(Gdx.files.internal(dirName
-						+ option.getFileNameData().getPath()));
-			}
-
-			if (font == null) {
-				debug(option, "BitmapFont字体:"
-						+ option.getFileNameData().getPath() + " 不存在");
-				font = new BitmapFont();
-			}
+			BitmapFont font = getBitmapFont(option);
 			Color textColor = new Color(option.getColorR() / 255,
 					option.getColorG() / 255, option.getColorB() / 255,
 					option.getOpacity() / 255);
@@ -303,8 +291,6 @@ public class CocoStudioUIEditor {
 			actor = new Table();
 			Table table = (Table) actor;
 			if (option.getBackGroundImageData() != null) {// Panel的图片并不是拉伸平铺的!!
-				// table.setBackground(findDrawable(option, option
-				// .getBackGroundImageData().getPath()));
 				Image bg = new Image(findTextureRegion(option, option
 						.getBackGroundImageData().getPath()));
 				bg.setPosition((option.getWidth() - bg.getWidth()) / 2,
@@ -317,7 +303,7 @@ public class CocoStudioUIEditor {
 			debug(option, "not support Widget:" + className);
 			return null;
 		} else if (className.equals("ScrollView")) {// ScrollPane
-
+			// 裁剪选项,是否回弹选项 不良好支持
 			ScrollPaneStyle style = new ScrollPaneStyle();
 
 			if (option.getBackGroundImageData() != null) {
@@ -333,16 +319,13 @@ public class CocoStudioUIEditor {
 			switch (option.getDirection()) {
 			case 1:
 				scrollPane.setForceScroll(false, true);
-				// scrollPane.setScrollingDisabled(true,true);
 				break;
 			case 2:
-				// scrollPane.setForceScroll(true, false);
 				scrollPane.setScrollingDisabled(false, false);
 				break;
 
 			case 3:
 				scrollPane.setScrollingDisabled(false, false);
-				// scrollPane.setForceScroll(true, true);
 				break;
 			}
 
@@ -372,9 +355,6 @@ public class CocoStudioUIEditor {
 			actor = new CheckBox("", style);
 			CheckBox checkBox = (CheckBox) actor;
 
-			// checkBox.addActor(new Image(style.checkboxOff));
-			// debug(option, "not support Widget:" + className);
-			// return null;
 		} else {
 			debug(option, "not support Widget:" + className);
 			return null;
@@ -423,7 +403,7 @@ public class CocoStudioUIEditor {
 				option.getColorB(), option.getOpacity() / 255);
 
 		// 渲染级别
-		actor.setZIndex(option.getZOrder());
+		// actor.setZIndex(option.getZOrder());
 
 		Array<Actor> arrayActors = actors.get(actor.getName());
 		if (arrayActors == null) {
@@ -432,36 +412,37 @@ public class CocoStudioUIEditor {
 		arrayActors.add(actor);
 		actors.put(actor.getName(), arrayActors);
 
-		actor.setTouchable(option.isTouchAble() ? Touchable.enabled
-				: Touchable.disabled);
+//		actor.setTouchable(option.isTouchAble() ? Touchable.enabled
+//				: Touchable.disabled);
 
 		if (widget.getChildren().size() == 0) {
-
 			return actor;
 		}
 
-		if (actor instanceof Group) {// Group 虽然自己不接收事件,但是子控件得接收
-			actor.setTouchable(option.isTouchAble() ? Touchable.enabled
-					: Touchable.childrenOnly);
+		if (actor instanceof Group) {
+			// Group 虽然自己不接收事件,但是子控件得接收
+//			actor.setTouchable(option.isTouchAble() ? Touchable.enabled
+//					: Touchable.childrenOnly);
 
 			Group group = (Group) actor;
 
 			if (actor instanceof ScrollPane) {
 				ScrollPane scrollPane = (ScrollPane) actor;
 				Table table = new Table();
-				// table.setClip(option.isClipAble());
-
 				for (CCWidget cWidget : widget.getChildren()) {
 					Actor cGroup = parseWidget(table, cWidget);
 					if (cGroup == null) {
 						continue;
 					}
-					table.addActor(cGroup);
 
 					table.setSize(
 							Math.max(table.getWidth(), cGroup.getRight()),
 							Math.max(table.getHeight(), cGroup.getTop()));
+					table.addActor(cGroup);
 				}
+				sort(widget, table);
+				//
+
 				scrollPane.setWidget(table);
 			} else {
 				for (CCWidget cWidget : widget.getChildren()) {
@@ -471,8 +452,9 @@ public class CocoStudioUIEditor {
 					}
 					group.addActor(cGroup);
 				}
+				sort(widget, group);
 			}
-
+		
 			return actor;
 		}
 
@@ -489,9 +471,52 @@ public class CocoStudioUIEditor {
 			}
 			table.addActor(cGroup);
 		}
-
+		sort(widget, table);
 		return table;
 
+	}
+
+	/** 子控件排序 */
+	void sort(final CCWidget widget, Group group) {
+		group.getChildren().sort(new Comparator<Actor>() {
+			@Override
+			public int compare(Actor arg0, Actor arg1) {
+				return getZOrder(widget, arg0.getName())
+						- getZOrder(widget, arg1.getName());
+			}
+		});
+
+	}
+
+	int getZOrder(CCWidget widget, String name) {
+		if (name == null) {
+			return 0;
+		}
+		for (CCWidget child : widget.getChildren()) {
+			if (name.equals(child.getOptions().getName())) {
+				return child.getOptions().getZOrder();
+			}
+		}
+
+		return 0;
+	}
+
+	/** 获取BitmapFont */
+	private BitmapFont getBitmapFont(CCOption option) {
+		BitmapFont font = null;
+		if (bitmapFonts != null) {
+			font = bitmapFonts.get(option.getFileNameData().getPath());
+		} else {
+			font = new BitmapFont(Gdx.files.internal(dirName
+					+ option.getFileNameData().getPath()));
+		}
+
+		if (font == null) {
+			debug(option, "BitmapFont字体:" + option.getFileNameData().getPath()
+					+ " 不存在");
+			font = new BitmapFont();
+		}
+		return font;
 	}
 
 	/**
