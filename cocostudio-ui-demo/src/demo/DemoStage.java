@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 
@@ -169,6 +170,24 @@ public class DemoStage extends CommonStage {
 				Gdx.files.internal("DemoMap/DemoMap.json"), null, null, null);
 		Group group = editer.createGroup();
 		addActor(group);
+
+		Actor box = editer.findActor("box_Panel");
+		box.setTouchable(Touchable.disabled);
+		box.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				System.out.println(1);
+				super.clicked(event, x, y);
+			}
+		});
+		Actor dragPanel = editer.findActor("DragPanel");
+		dragPanel.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				System.out.println(2);
+				super.clicked(event, x, y);
+			}
+		});
 
 	}
 
