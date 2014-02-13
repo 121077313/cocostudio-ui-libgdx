@@ -68,6 +68,7 @@ public class CocoStudioUIEditor {
 	 * 
 	 * @param jsonFile
 	 * @param textureAtlas
+	 *            资源文件,传入 null表示使用小文件方式加载图片
 	 */
 	public CocoStudioUIEditor(FileHandle jsonFile, TextureAtlas textureAtlas) {
 		this(jsonFile, textureAtlas, null, null);
@@ -78,9 +79,12 @@ public class CocoStudioUIEditor {
 	 * @param jsonFile
 	 *            ui编辑成生成的json文件
 	 * @param textureAtlas
-	 *            资源文件
+	 *            资源文件,传入 null表示使用小文件方式加载图片
+	 * 
 	 * @param ttfs
 	 *            字体文件集合
+	 * @param bitmapFonts
+	 *            自定义字体文件集合
 	 */
 	public CocoStudioUIEditor(FileHandle jsonFile, TextureAtlas textureAtlas,
 			Map<String, FileHandle> ttfs, Map<String, BitmapFont> bitmapFonts) {
