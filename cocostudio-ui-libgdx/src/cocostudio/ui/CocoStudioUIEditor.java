@@ -343,19 +343,22 @@ public class CocoStudioUIEditor {
 		} else {
 			actor.setSize(option.getWidth(), option.getHeight());
 		}
-		actor.setScale(Math.abs(option.getScaleX()),
-				Math.abs(option.getScaleY()));
 
 		actor.setX(option.getX() - option.getAnchorPointX() * option.getWidth());
 
 		actor.setY(option.getY() - option.getAnchorPointY()
 				* option.getHeight());
+
 		actor.setOrigin(option.getAnchorPointX() * option.getWidth(),
 				option.getAnchorPointY() * option.getHeight());
-		// actor.setPosition(option.getX(), option.getY());
+		
+		// CocoStudio的编辑器ScaleX,ScaleY 会有负数情况
+		
+		actor.setScale(Math.abs(option.getScaleX()),
+				Math.abs(option.getScaleY()));
+
 		if (option.getRotation() != 0) {// CocoStudio 是顺时针方向旋转,转换下.
 			// 设置旋转中心为锚点
-			
 
 			actor.setRotation(360 - option.getRotation() % 360);
 			if (actor instanceof Group) {// 必须设置Transform 为true 子控件才会跟着旋转.
