@@ -28,7 +28,7 @@ public class DemoStage extends CommonStage {
 	}
 
 	boolean listener = false;
-	int i = 6;
+	int i = 7;
 
 	@Override
 	public void init() {
