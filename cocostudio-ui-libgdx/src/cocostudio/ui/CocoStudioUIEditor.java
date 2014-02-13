@@ -31,6 +31,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 
 /**
@@ -51,7 +52,7 @@ public class CocoStudioUIEditor {
 	protected TextureAtlas textureAtlas;
 
 	/** 控件集合 */
-	protected Map<String, Actor> actors;
+	protected Map<String, Array<Actor>> actors;
 
 	/** 字体集合 */
 	protected Map<String, FileHandle> ttfs;
@@ -86,7 +87,7 @@ public class CocoStudioUIEditor {
 		this.textureAtlas = textureAtlas;
 		this.ttfs = ttfs;
 		this.bitmapFonts = bitmapFonts;
-		actors = new HashMap<String, Actor>();
+		actors = new HashMap<String, Array<Actor>>();
 		dirName = jsonFile.parent().toString() + "\\";
 
 		String json = jsonFile.readString("utf-8");
@@ -104,6 +105,16 @@ public class CocoStudioUIEditor {
 	 * @return
 	 */
 	public Actor findActor(String name) {
+		Array<Actor> array = actors.get(name);
+		if (array == null || array.size == 0) {
+			return null;
+		}
+		return array.get(0);
+	}
+
+	/** 查找所有同名的控件 */
+	public Array<Actor> findActors(String name) {
+
 		return actors.get(name);
 	}
 
@@ -349,16 +360,15 @@ public class CocoStudioUIEditor {
 		actor.setY(option.getY() - option.getAnchorPointY()
 				* option.getHeight());
 
+		// 设置锚点
 		actor.setOrigin(option.getAnchorPointX() * option.getWidth(),
 				option.getAnchorPointY() * option.getHeight());
-		
+
 		// CocoStudio的编辑器ScaleX,ScaleY 会有负数情况
-		
 		actor.setScale(Math.abs(option.getScaleX()),
 				Math.abs(option.getScaleY()));
 
 		if (option.getRotation() != 0) {// CocoStudio 是顺时针方向旋转,转换下.
-			// 设置旋转中心为锚点
 
 			actor.setRotation(360 - option.getRotation() % 360);
 			if (actor instanceof Group) {// 必须设置Transform 为true 子控件才会跟着旋转.
@@ -367,18 +377,27 @@ public class CocoStudioUIEditor {
 			}
 		}
 
+		// 设置可见
 		actor.setVisible(option.isVisible());
 
 		actor.setColor(option.getColorR(), option.getColorG(),
 				option.getColorB(), option.getOpacity() / 255);
 
+		// 渲染级别
 		actor.setZIndex(option.getZOrder());
 
 		if (actors.containsKey(actor.getName())) {
 			// debug(option, "重名");
+
 		}
 
-		actors.put(actor.getName(), actor);
+		Array<Actor> arrayActors = actors.get(actor.getName());
+
+		if (arrayActors == null) {
+			arrayActors = new Array<Actor>();
+		}
+		arrayActors.add(actor);
+		actors.put(actor.getName(), arrayActors);
 
 		actor.setTouchable(option.isTouchAble() ? Touchable.enabled
 				: Touchable.disabled);
