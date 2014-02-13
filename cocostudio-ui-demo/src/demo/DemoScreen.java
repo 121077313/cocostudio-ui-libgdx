@@ -12,12 +12,12 @@ import com.badlogic.gdx.InputMultiplexer;
  * @author i see
  * 
  */
-public class LoginScreen extends CommonScreen {
+public class DemoScreen extends CommonScreen {
 
 	@Override
 	public void show() {
 
-		stage = new LoginStage();
+		stage = new DemoStage();
 
 		InputMultiplexer inputMultiplexer = new InputMultiplexer();
 		inputMultiplexer.addProcessor(stage);

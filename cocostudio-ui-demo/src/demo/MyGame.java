@@ -12,7 +12,7 @@ public class MyGame extends Game {
 	public void create() {
 		Gdx.app.setLogLevel(Application.LOG_DEBUG);
 
-		this.setScreen(new LoginScreen());
+		this.setScreen(new DemoScreen());
 	}
 
 }

@@ -1,5 +1,7 @@
 package demo;
 
+import org.lwjgl.input.Keyboard;
+
 import cocostudio.ui.CocoStudioUIEditor;
 
 import com.badlogic.gdx.Gdx;
@@ -19,21 +21,63 @@ import framework.CommonStage;
  * @author i see
  * 
  */
-public class LoginStage extends CommonStage {
+public class DemoStage extends CommonStage {
 
-	public LoginStage() {
+	public DemoStage() {
 		init();
 	}
 
+	int i = 1;
+	ClickListener listener;
+
 	@Override
 	public void init() {
+
+		System.out.println("按任意键切换场景,out文件夹内有UI工程文件.");
+
+		switch (i) {
+		case 1:
+			initHead();
+			break;
+		case 2:
+			initShop();
+			break;
+		case 3:
+			initUI();
+			break;
+		case 4:
+			initUI2();
+			break;
+		case 5:
+			initDemo();
+			break;
+
+		default:
+			i = 1;
+			init();
+			break;
+		}
 		// initHead();
 		// initShop();
 
 		// initUI();
-		 initUI2();
+		// initUI2();
 
-//		initDemo();
+		// initDemo();
+
+		if (listener != null) {
+			return;
+		}
+		listener = new ClickListener() {
+			@Override
+			public boolean keyDown(InputEvent event, int keycode) {
+				getActors().clear();
+				i++;
+				init();
+				return super.keyDown(event, keycode);
+			}
+		};
+		addListener(listener);
 	}
 
 	/** 头像Demo,使用小图片方式 */
