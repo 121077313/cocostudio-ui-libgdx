@@ -12,6 +12,11 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox.CheckBoxStyle;
 
+/**
+ * @tip libgdx的CheckBox只有选中和未选中两个状态的图片显示
+ * @author i see
+ * 
+ */
 public class CCCheckBox extends GroupParser {
 
 	@Override

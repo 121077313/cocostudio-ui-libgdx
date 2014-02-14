@@ -35,7 +35,10 @@ public class CCOption {
 	int sizeType;
 	int tag;
 	boolean touchAble;
+
+	@Deprecated
 	boolean useMergedTexture;
+
 	boolean visible;
 	float width;
 	float x;
@@ -121,9 +124,6 @@ public class CCOption {
 
 	CCWidgetData backGroundBoxData;
 
-	
-	
-	
 	public String get__type() {
 		return __type;
 	}
@@ -332,6 +332,7 @@ public class CCOption {
 		this.touchAble = touchAble;
 	}
 
+	@Deprecated
 	public boolean isUseMergedTexture() {
 		return useMergedTexture;
 	}
@@ -832,7 +833,8 @@ public class CCOption {
 		return backGroundBoxSelectedData;
 	}
 
-	public void setBackGroundBoxSelectedData(CCWidgetData backGroundBoxSelectedData) {
+	public void setBackGroundBoxSelectedData(
+			CCWidgetData backGroundBoxSelectedData) {
 		this.backGroundBoxSelectedData = backGroundBoxSelectedData;
 	}
 
@@ -840,7 +842,8 @@ public class CCOption {
 		return backGroundBoxDisabledData;
 	}
 
-	public void setBackGroundBoxDisabledData(CCWidgetData backGroundBoxDisabledData) {
+	public void setBackGroundBoxDisabledData(
+			CCWidgetData backGroundBoxDisabledData) {
 		this.backGroundBoxDisabledData = backGroundBoxDisabledData;
 	}
 

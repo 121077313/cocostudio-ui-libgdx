@@ -12,6 +12,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane.ScrollPaneStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
+/**
+ * @tip 滚动方向,回弹滚动支持不是很好
+ * @author i see
+ * 
+ */
 public class CCScrollView extends GroupParser {
 
 	@Override

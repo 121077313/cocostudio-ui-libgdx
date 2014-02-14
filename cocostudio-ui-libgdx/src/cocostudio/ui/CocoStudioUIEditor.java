@@ -161,13 +161,19 @@ public class CocoStudioUIEditor {
 
 	}
 
+	/**
+	 * 获取材质
+	 * 
+	 * @param option
+	 * @param name
+	 * @return
+	 */
 	public TextureRegion findTextureRegion(CCOption option, String name) {
 		if (name == null || name.equals("")) {
 			return null;
 		}
 		TextureRegion tr = null;
-		if (!option.isUseMergedTexture()) {// 不使用合并纹理
-
+		if (textureAtlas == null) {// 不使用合并纹理
 			tr = new TextureRegion(new Texture(Gdx.files.internal(dirName
 					+ name)));
 		} else {
@@ -203,7 +209,7 @@ public class CocoStudioUIEditor {
 
 		if (option.isFlipX() || option.isFlipY()) {
 
-			if (!option.isUseMergedTexture()) {
+			if (textureAtlas == null) {
 				tr.flip(option.isFlipX(), option.isFlipY());
 			} else {
 				tr = new TextureRegion(tr);

@@ -11,6 +11,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 
+/**
+ * @tip 还未支持单色背景属性,背景图片在Cocostudio里面并不是铺满,而是居中
+ * @author i see
+ * 
+ */
 public class CCPanel extends GroupParser {
 
 	@Override
@@ -32,8 +37,8 @@ public class CCPanel extends GroupParser {
 				bg.setPosition((option.getWidth() - bg.getWidth()) / 2,
 						(option.getHeight() - bg.getHeight()) / 2);
 				table.addActor(bg);
-			}else {
-				
+			} else {
+
 			}
 		}
 
