@@ -61,7 +61,7 @@ public class CocoStudioUIEditor {
 	/** json文件所在目录 */
 	private String dirName;
 
-	/** 当前画布的所有纹理 */
+	/** 所有纹理 */
 	protected TextureAtlas textureAtlas;
 
 	/** 控件集合 */
@@ -99,7 +99,8 @@ public class CocoStudioUIEditor {
 	 * @param jsonFile
 	 *            ui编辑成生成的json文件
 	 * @param textureAtlas
-	 *            资源文件,传入 null表示使用小文件方式加载图片
+	 *            资源文件,传入 null表示使用小文件方式加载图片.这里其实可以传入多个纹理.但是不是很好的处理方式,
+	 *            所以打包图片就打包进一张里面去吧
 	 * 
 	 * @param ttfs
 	 *            字体文件集合
