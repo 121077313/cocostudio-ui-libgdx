@@ -14,6 +14,7 @@ import cocostudio.ui.parser.group.CCScrollView;
 import cocostudio.ui.parser.widget.CCImageView;
 import cocostudio.ui.parser.widget.CCLabel;
 import cocostudio.ui.parser.widget.CCLabelBMFont;
+import cocostudio.ui.parser.widget.CCLoadingBar;
 import cocostudio.ui.parser.widget.CCTextField;
 
 import com.badlogic.gdx.Gdx;
@@ -107,8 +108,11 @@ public class CocoStudioUIEditor {
 			Map<String, FileHandle> ttfs, Map<String, BitmapFont> bitmapFonts) {
 		this.textureAtlas = textureAtlas;
 		this.ttfs = ttfs;
-		this.bitmapFonts = bitmapFonts;
+		this.bitmapFonts = bitmapFonts;		
 		parsers = new HashMap<String, BaseWidgetParser>();
+		
+		
+		
 		addParser(new CCButton());
 		addParser(new CCCheckBox());
 		addParser(new CCImageView());
@@ -117,7 +121,7 @@ public class CocoStudioUIEditor {
 		addParser(new CCPanel());
 		addParser(new CCScrollView());
 		addParser(new CCTextField());
-
+		addParser(new CCLoadingBar());
 		actors = new HashMap<String, Array<Actor>>();
 		dirName = jsonFile.parent().toString() + "\\";
 
