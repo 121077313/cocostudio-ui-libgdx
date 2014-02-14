@@ -31,7 +31,7 @@ public class DemoStage extends CommonStage {
 	}
 
 	boolean listener = false;
-	int i = 9;
+	int i = 8;
 
 	@Override
 	public void init() {
@@ -125,7 +125,18 @@ public class DemoStage extends CommonStage {
 		CocoStudioUIEditor editor = new CocoStudioUIEditor(
 				Gdx.files.internal("head/DemoHead_UI.json"), null, null, null);
 		Group group = editor.createGroup();
+
 		addActor(group);
+
+		Actor head = editor.findActor("ImageView");
+
+		
+		Actor panel = editor.findActor("Panel");
+		
+//		head.setVisible(true);
+//		head.setPosition(0, 0);
+//		addActor(head);
+//		System.out.println();
 	}
 
 	/** 商店Demo,使用小图片方式 */
@@ -216,6 +227,8 @@ public class DemoStage extends CommonStage {
 				null, null, null);
 		Group group = editor.createGroup();
 		addActor(group);
+		
+		System.out.println();
 
 	}
 

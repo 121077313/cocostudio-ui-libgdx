@@ -25,6 +25,7 @@
 * 修复了TextField的MessageText属性 
 
 2014.2.14
-* 添加了动画模式的解析,增加了对应demo  SampleUIAnimation.但是还不清楚为什么实际动作比编辑器里面看到的动作慢半拍
+* 添加了动画模式的解析,增加了对应demo  SampleUIAnimation,但是还不清楚为什么实际动作比编辑器里面看到的动作慢半拍.
 * 重构了代码
 * 添加了LoadingBar控件,暂时使用Image代替实现...也就是说LoadingBar就是一个图片.仅此而已.
+* CocoStuido的全部Demo移植完毕.一共6个.

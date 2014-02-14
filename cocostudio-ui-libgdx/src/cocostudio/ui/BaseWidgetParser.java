@@ -54,16 +54,10 @@ public abstract class BaseWidgetParser {
 		}
 
 		// CocoStudio的编辑器ScaleX,ScaleY 会有负数情况
-		actor.setScale(Math.abs(option.getScaleX()),
-				Math.abs(option.getScaleY()));
+		actor.setScale(option.getScaleX(), option.getScaleY());
 
 		if (option.getRotation() != 0) {// CocoStudio 是顺时针方向旋转,转换下.
-
 			actor.setRotation(360 - option.getRotation() % 360);
-			if (actor instanceof Group) {// 必须设置Transform 为true 子控件才会跟着旋转.
-				Group g = (Group) actor;
-				g.setTransform(true);
-			}
 		}
 
 		// 设置可见
@@ -114,5 +108,4 @@ public abstract class BaseWidgetParser {
 		}
 		return 0;
 	}
-
 }

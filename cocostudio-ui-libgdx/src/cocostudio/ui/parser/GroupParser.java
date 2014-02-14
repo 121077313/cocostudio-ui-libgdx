@@ -31,6 +31,10 @@ public abstract class GroupParser extends BaseWidgetParser {
 
 		Group group = (Group) actor;
 
+		// 必须设置Transform 为true 子控件才会跟着旋转.
+
+		group.setTransform(true);
+
 		for (CCWidget childrenWidget : widget.getChildren()) {
 			Actor childrenActor = editor.parseWidget(group, childrenWidget);
 			if (childrenActor == null) {

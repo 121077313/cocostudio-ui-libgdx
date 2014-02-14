@@ -1,5 +1,6 @@
 package cocostudio.ui.parser;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -15,21 +16,35 @@ public abstract class WidgetParser extends BaseWidgetParser {
 	public Actor commonParse(CocoStudioUIEditor editor, CCWidget widget,
 			CCOption option, Group parent, Actor actor) {
 		Actor ac = super.commonParse(editor, widget, option, parent, actor);
-		if (ac!=null) {
+		if (ac != null) {
 			return ac;
 		}
 		return widgetChildrenParse(editor, widget, option, parent, actor);
 	}
 
 	/** 解析子控件 */
-	public Group widgetChildrenParse(CocoStudioUIEditor editor, CCWidget widget,
-			CCOption option, Group parent, Actor actor) {
+	public Group widgetChildrenParse(CocoStudioUIEditor editor,
+			CCWidget widget, CCOption option, Group parent, Actor actor) {
 		Table table = new Table();
 		table.setVisible(option.isVisible());
 		table.setClip(option.isClipAble());
+
+		table.setScale(option.getScaleX(), option.getScaleY());
+
+		if (option.getScaleX() != 0 || option.getScaleY() != 0) {
+
+			table.setTransform(true);
+
+		}
+
+		table.setTransform(true);
 		table.setSize(actor.getWidth(), actor.getHeight());
 		table.setPosition(actor.getX(), actor.getY());
-		table.addActor(actor);
+
+		// 锚点就是子控件的锚点
+		table.setOrigin(option.getAnchorPointX() * table.getWidth(),
+				option.getAnchorPointY() * table.getHeight());
+
 		for (CCWidget childrenWidget : widget.getChildren()) {
 			Actor childrenActor = editor.parseWidget(table, childrenWidget);
 			if (childrenActor == null) {
@@ -38,6 +53,11 @@ public abstract class WidgetParser extends BaseWidgetParser {
 			table.addActor(childrenActor);
 		}
 		sort(widget, table);
+
+		// Widget的位置应该与Table重合.相当于Widget的属性被移植到了Table
+		actor.setPosition(0, 0);
+		actor.setScale(1, 1);
+		table.addActorAt(0, actor);
 		return table;
 	}
 
