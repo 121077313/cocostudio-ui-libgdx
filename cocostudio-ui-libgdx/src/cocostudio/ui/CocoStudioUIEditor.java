@@ -51,6 +51,8 @@ import com.badlogic.gdx.utils.Json;
  * 
  * @author i see
  * @email 121077313@qq.com
+ * @wiki https://github.com/121077313/cocostudio-ui-libgdx/wiki
+ * @tip https://github.com/121077313/cocostudio-ui-libgdx/wiki/疑难解答
  */
 public class CocoStudioUIEditor {
 
@@ -108,11 +110,9 @@ public class CocoStudioUIEditor {
 			Map<String, FileHandle> ttfs, Map<String, BitmapFont> bitmapFonts) {
 		this.textureAtlas = textureAtlas;
 		this.ttfs = ttfs;
-		this.bitmapFonts = bitmapFonts;		
+		this.bitmapFonts = bitmapFonts;
 		parsers = new HashMap<String, BaseWidgetParser>();
-		
-		
-		
+
 		addParser(new CCButton());
 		addParser(new CCCheckBox());
 		addParser(new CCImageView());
@@ -188,7 +188,7 @@ public class CocoStudioUIEditor {
 				String[] arr = name.split("\\/");
 				name = name.substring(arr[0].length() + 1, name.length() - 4);
 			} catch (Exception e) {
-				error(option, "纹理名称不符合约定,无法解析.");
+				error(option, "名称不符合约定,无法解析.请查看github项目wiki");
 			}
 
 			// 考虑index下标
