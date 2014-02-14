@@ -31,12 +31,12 @@ public abstract class GroupParser extends BaseWidgetParser {
 
 		Group group = (Group) actor;
 
-		for (CCWidget cWidget : widget.getChildren()) {
-			Actor cGroup = editor.parseWidget(group, cWidget);
-			if (cGroup == null) {
+		for (CCWidget childrenWidget : widget.getChildren()) {
+			Actor childrenActor = editor.parseWidget(group, childrenWidget);
+			if (childrenActor == null) {
 				continue;
 			}
-			group.addActor(cGroup);
+			group.addActor(childrenActor);
 		}
 		sort(widget, group);
 

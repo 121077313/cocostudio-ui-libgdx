@@ -30,12 +30,12 @@ public abstract class WidgetParser extends BaseWidgetParser {
 		table.setSize(actor.getWidth(), actor.getHeight());
 		table.setPosition(actor.getX(), actor.getY());
 		table.addActor(actor);
-		for (CCWidget cWidget : widget.getChildren()) {
-			Actor cGroup = editor.parseWidget(table, cWidget);
-			if (cGroup == null) {
+		for (CCWidget childrenWidget : widget.getChildren()) {
+			Actor childrenActor = editor.parseWidget(table, childrenWidget);
+			if (childrenActor == null) {
 				continue;
 			}
-			table.addActor(cGroup);
+			table.addActor(childrenActor);
 		}
 		sort(widget, table);
 		return table;

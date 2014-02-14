@@ -100,7 +100,8 @@ public abstract class BaseWidgetParser {
 
 	}
 
-	protected int getZOrder(CCWidget widget, String name) {
+	/** 由于libgdx的zindex并不表示渲染层级,所以这里采用这种方式来获取子控件的当前层级 */
+	public static int getZOrder(CCWidget widget, String name) {
 		if (name == null) {
 			return 0;
 		}
@@ -109,7 +110,6 @@ public abstract class BaseWidgetParser {
 				return child.getOptions().getZOrder();
 			}
 		}
-
 		return 0;
 	}
 

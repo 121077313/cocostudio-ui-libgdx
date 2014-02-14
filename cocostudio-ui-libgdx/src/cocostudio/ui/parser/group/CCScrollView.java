@@ -57,15 +57,15 @@ public class CCScrollView extends GroupParser {
 			CCOption option, Group parent, Actor actor) {
 		ScrollPane scrollPane = (ScrollPane) actor;
 		Table table = new Table();
-		for (CCWidget cWidget : widget.getChildren()) {
-			Actor cGroup = editor.parseWidget(table, cWidget);
-			if (cGroup == null) {
+		for (CCWidget childrenWidget : widget.getChildren()) {
+			Actor childrenActor = editor.parseWidget(table, childrenWidget);
+			if (childrenActor == null) {
 				continue;
 			}
 
-			table.setSize(Math.max(table.getWidth(), cGroup.getRight()),
-					Math.max(table.getHeight(), cGroup.getTop()));
-			table.addActor(cGroup);
+			table.setSize(Math.max(table.getWidth(), childrenActor.getRight()),
+					Math.max(table.getHeight(), childrenActor.getTop()));
+			table.addActor(childrenActor);
 		}
 		sort(widget, table);
 		//
