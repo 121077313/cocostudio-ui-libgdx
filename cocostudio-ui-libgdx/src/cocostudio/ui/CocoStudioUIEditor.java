@@ -7,6 +7,14 @@ import java.util.Map;
 import cocostudio.ui.model.CCExport;
 import cocostudio.ui.model.CCOption;
 import cocostudio.ui.model.CCWidget;
+import cocostudio.ui.parser.group.CCButton;
+import cocostudio.ui.parser.group.CCCheckBox;
+import cocostudio.ui.parser.group.CCPanel;
+import cocostudio.ui.parser.group.CCScrollView;
+import cocostudio.ui.parser.widget.CCImageView;
+import cocostudio.ui.parser.widget.CCLabel;
+import cocostudio.ui.parser.widget.CCLabelBMFont;
+import cocostudio.ui.parser.widget.CCTextField;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -18,7 +26,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox.CheckBoxStyle;
@@ -66,6 +73,8 @@ public class CocoStudioUIEditor {
 	/** 导出的json结构 */
 	protected CCExport export;
 
+	protected Map<String, BaseWidgetParser> parsers;
+
 	/**
 	 * 不需要显示文字
 	 * 
@@ -75,6 +84,11 @@ public class CocoStudioUIEditor {
 	 */
 	public CocoStudioUIEditor(FileHandle jsonFile, TextureAtlas textureAtlas) {
 		this(jsonFile, textureAtlas, null, null);
+	}
+
+	/** 添加转换器 */
+	public void addParser(BaseWidgetParser parser) {
+		parsers.put(parser.getClassName(), parser);
 	}
 
 	/**
@@ -94,6 +108,16 @@ public class CocoStudioUIEditor {
 		this.textureAtlas = textureAtlas;
 		this.ttfs = ttfs;
 		this.bitmapFonts = bitmapFonts;
+		parsers = new HashMap<String, BaseWidgetParser>();
+		addParser(new CCButton());
+		addParser(new CCCheckBox());
+		addParser(new CCImageView());
+		addParser(new CCLabel());
+		addParser(new CCLabelBMFont());
+		addParser(new CCPanel());
+		addParser(new CCScrollView());
+		addParser(new CCTextField());
+
 		actors = new HashMap<String, Array<Actor>>();
 		dirName = jsonFile.parent().toString() + "\\";
 
@@ -133,15 +157,11 @@ public class CocoStudioUIEditor {
 	public Group createGroup() {
 		Actor actor = parseWidget(null, export.getWidgetTree());
 
-		if (actor instanceof Group) {
-			return (Group) actor;
-		}
-		Group group = new Group();
-		group.addActor(actor);
-		return group;
+		return (Group) actor;
+
 	}
 
-	protected TextureRegion findTextureRegion(CCOption option, String name) {
+	public TextureRegion findTextureRegion(CCOption option, String name) {
 		if (name == null || name.equals("")) {
 			return null;
 		}
@@ -150,49 +170,51 @@ public class CocoStudioUIEditor {
 
 			tr = new TextureRegion(new Texture(Gdx.files.internal(dirName
 					+ name)));
-			if (option.isFlipX() || option.isFlipY()) {
-				tr.flip(option.isFlipX(), option.isFlipY());
-			}
-			return tr;
-		}
-		// name = name.substring(parentName.length(), name.length() - 4);
-
-		try {
-			String[] arr = name.split("\\/");
-			name = name.substring(arr[0].length() + 1, name.length() - 4);
-		} catch (Exception e) {
-			error(option, "纹理名称不符合约定,无法解析.");
-		}
-
-		// 考虑index下标
-
-		if (name.indexOf("_") == -1) {
-			tr = textureAtlas.findRegion(name);
 		} else {
+
+			// name = name.substring(parentName.length(), name.length() - 4);
+
 			try {
-				int length = name.lastIndexOf("_");
-				Integer index = Integer.parseInt(name.substring(length + 1,
-						name.length()));
-				name = name.substring(0, length);
-				tr = textureAtlas.findRegion(name, index);
+				String[] arr = name.split("\\/");
+				name = name.substring(arr[0].length() + 1, name.length() - 4);
 			} catch (Exception e) {
+				error(option, "纹理名称不符合约定,无法解析.");
+			}
+
+			// 考虑index下标
+
+			if (name.indexOf("_") == -1) {
 				tr = textureAtlas.findRegion(name);
+			} else {
+				try {
+					int length = name.lastIndexOf("_");
+					Integer index = Integer.parseInt(name.substring(length + 1,
+							name.length()));
+					name = name.substring(0, length);
+					tr = textureAtlas.findRegion(name, index);
+				} catch (Exception e) {
+					tr = textureAtlas.findRegion(name);
+				}
 			}
 		}
-
 		if (tr == null) {
 			debug(option, "找不到纹理");
 		}
 
 		if (option.isFlipX() || option.isFlipY()) {
-			tr = new TextureRegion(tr);
-			tr.flip(option.isFlipX(), option.isFlipY());
+
+			if (!option.isUseMergedTexture()) {
+				tr.flip(option.isFlipX(), option.isFlipY());
+			} else {
+				tr = new TextureRegion(tr);
+				tr.flip(option.isFlipX(), option.isFlipY());
+			}
 		}
 
 		return tr;
 	}
 
-	protected Drawable findDrawable(CCOption option, String name) {
+	public Drawable findDrawable(CCOption option, String name) {
 		TextureRegion tr = findTextureRegion(option, name);
 		if (tr == null) {
 			return null;
@@ -200,19 +222,19 @@ public class CocoStudioUIEditor {
 		return new TextureRegionDrawable(tr);
 	}
 
-	protected void debug(String message) {
+	public void debug(String message) {
 		Gdx.app.debug(tag, message);
 	}
 
-	protected void debug(CCOption option, String message) {
+	public void debug(CCOption option, String message) {
 		Gdx.app.debug(tag, "控件: " + option.getName() + " " + message);
 	}
 
-	protected void error(String message) {
+	public void error(String message) {
 		Gdx.app.error(tag, message);
 	}
 
-	protected void error(CCOption option, String message) {
+	public void error(CCOption option, String message) {
 		Gdx.app.error(tag, "控件: " + option.getName() + " " + message);
 	}
 
@@ -222,287 +244,27 @@ public class CocoStudioUIEditor {
 	 * @param node
 	 * @return
 	 */
-	protected Actor parseWidget(Group parent, CCWidget widget) {
+	public Actor parseWidget(Group parent, CCWidget widget) {
 
 		CCOption option = widget.getOptions();
 		String className = option.getClassname();
+		BaseWidgetParser parser = parsers.get(className);
 
-		Actor actor = null;
-		if (className.equals("ImageView")) {
-			TextureRegion tr = findTextureRegion(option, option
-					.getFileNameData().getPath());
-			if (tr == null) {
-				return null;
-			}
-			actor = new Image(tr);
-		} else if (className.equals("Button")) {
-
-			ImageButtonStyle style = new ImageButtonStyle(null, null, null,
-					findDrawable(option, option.getNormalData().getPath()),
-					findDrawable(option, option.getPressedData().getPath()),
-					null);
-			style.imageDisabled = findDrawable(option, option.getDisabledData()
-					.getPath());
-			actor = new ImageButton(style);
-
-			if (option.getText() != null) {
-				Button button = (Button) actor;
-				LabelStyle labelStyle = createLabelStyle(option);
-				if (labelStyle != null) {
-					Label label = new Label(option.getText(), labelStyle);
-					label.setPosition(button.getWidth() / 2,
-							button.getHeight() / 2);
-					button.addActor(label);
-				}
-			}
-		} else if (className.equals("LabelBMFont")) {
-
-			BitmapFont font = getBitmapFont(option);
-			Color textColor = new Color(option.getColorR() / 255,
-					option.getColorG() / 255, option.getColorB() / 255,
-					option.getOpacity() / 255);
-			LabelStyle style = new LabelStyle(font, textColor);
-			actor = new Label(option.getText(), style);
-
-		} else if (className.equals("TextField")) {// TextField
-
-			LabelStyle labelStyle = createLabelStyle(option);
-
-			if (labelStyle == null) {
-				return null;
-			}
-			TextFieldStyle style = new TextFieldStyle(labelStyle.font,
-					labelStyle.fontColor, null, null, null);
-			actor = new TextField(option.getText(), style);
-			TextField textField = (TextField) actor;
-			textField.setMessageText(option.getPlaceHolder());
-			textField.setPasswordMode(option.isPasswordEnable());
-			textField.setPasswordCharacter(option.getPasswordStyleText());
-		} else if (className.equals("Label")) {// Label
-
-			LabelStyle labelStyle = createLabelStyle(option);
-			if (labelStyle == null) {
-				return null;
-			}
-			actor = new Label(option.getText(), labelStyle);
-			Label label = (Label) actor;
-			label.setAlignment(option.getvAlignment(), option.gethAlignment());
-		} else if (className.equals("Panel")) {// Table
-			actor = new Table();
-			Table table = (Table) actor;
-			if (option.getBackGroundImageData() != null) {// Panel的图片并不是拉伸平铺的!!
-				Image bg = new Image(findTextureRegion(option, option
-						.getBackGroundImageData().getPath()));
-				bg.setPosition((option.getWidth() - bg.getWidth()) / 2,
-						(option.getHeight() - bg.getHeight()) / 2);
-				table.addActor(bg);
-			}
-
-			table.setClip(option.isClipAble());
-		} else if (className.equals("ListView")) {//
-			debug(option, "not support Widget:" + className);
-			return null;
-		} else if (className.equals("ScrollView")) {// ScrollPane
-			// 裁剪选项,是否回弹选项 不良好支持
-			ScrollPaneStyle style = new ScrollPaneStyle();
-
-			if (option.getBackGroundImageData() != null) {
-
-				style.background = findDrawable(option, option
-						.getBackGroundImageData().getPath());
-			}
-
-			actor = new ScrollPane(null, style);
-
-			ScrollPane scrollPane = (ScrollPane) actor;
-
-			switch (option.getDirection()) {
-			case 1:
-				scrollPane.setForceScroll(false, true);
-				break;
-			case 2:
-				scrollPane.setScrollingDisabled(false, false);
-				break;
-
-			case 3:
-				scrollPane.setScrollingDisabled(false, false);
-				break;
-			}
-
-			// scrollPane.setFlickScroll(option.isBounceEnable());
-		} else if (className.equals("PageView")) {
-			debug(option, "not support Widget:" + className);
-			return null;
-		} else if (className.equals("LabelAtlas")) {// 数字标签
+		if (parser == null) {
 
 			debug(option, "not support Widget:" + className);
 			return null;
-		} else if (className.equals("CheckBox")) {// CheckBox
-
-			CheckBoxStyle style = new CheckBoxStyle(null, null,
-					new BitmapFont(), Color.BLACK);
-			if (option.getFrontCrossData() != null) {// 选中图片
-				style.checkboxOn = findDrawable(option, option
-						.getFrontCrossData().getPath());
-			}
-
-			if (option.getFrontCrossDisabledData() != null) {// 没选中图片
-
-				style.checkboxOff = findDrawable(option, option
-						.getFrontCrossDisabledData().getPath());
-			}
-
-			actor = new CheckBox("", style);
-			CheckBox checkBox = (CheckBox) actor;
-
-		} else {
-			debug(option, "not support Widget:" + className);
-			return null;
 		}
-		actor.setName(option.getName());
+		Actor actor = parser.parse(this, widget, option);
 
-		if (option.isIgnoreSize()) {// 忽略大小,指的是编辑器无法指定大小(?)
+		actor = parser.commonParse(this, widget, option, parent, actor);
 
-		} else {
-			actor.setSize(option.getWidth(), option.getHeight());
-		}
+		return actor;
 
-		// 设置锚点
-		actor.setOrigin(option.getAnchorPointX() * option.getWidth(),
-				option.getAnchorPointY() * option.getHeight());
-
-		if (parent == null) {
-			actor.setPosition(option.getX() - actor.getOriginX(), option.getY()
-					- actor.getOriginY());
-		} else {
-			// 锚点要算上父控件的锚点,也就是原点
-			actor.setX(parent.getOriginX()
-					+ (option.getX() - actor.getOriginX()));
-
-			actor.setY(parent.getOriginY()
-					+ (option.getY() - actor.getOriginY()));
-		}
-
-		// CocoStudio的编辑器ScaleX,ScaleY 会有负数情况
-		actor.setScale(Math.abs(option.getScaleX()),
-				Math.abs(option.getScaleY()));
-
-		if (option.getRotation() != 0) {// CocoStudio 是顺时针方向旋转,转换下.
-
-			actor.setRotation(360 - option.getRotation() % 360);
-			if (actor instanceof Group) {// 必须设置Transform 为true 子控件才会跟着旋转.
-				Group g = (Group) actor;
-				g.setTransform(true);
-			}
-		}
-
-		// 设置可见
-		actor.setVisible(option.isVisible());
-
-		actor.setColor(option.getColorR(), option.getColorG(),
-				option.getColorB(), option.getOpacity() / 255);
-
-		// 渲染级别
-		// actor.setZIndex(option.getZOrder());
-
-		Array<Actor> arrayActors = actors.get(actor.getName());
-		if (arrayActors == null) {
-			arrayActors = new Array<Actor>();
-		}
-		arrayActors.add(actor);
-		actors.put(actor.getName(), arrayActors);
-
-//		actor.setTouchable(option.isTouchAble() ? Touchable.enabled
-//				: Touchable.disabled);
-
-		if (widget.getChildren().size() == 0) {
-			return actor;
-		}
-
-		if (actor instanceof Group) {
-			// Group 虽然自己不接收事件,但是子控件得接收
-//			actor.setTouchable(option.isTouchAble() ? Touchable.enabled
-//					: Touchable.childrenOnly);
-
-			Group group = (Group) actor;
-
-			if (actor instanceof ScrollPane) {
-				ScrollPane scrollPane = (ScrollPane) actor;
-				Table table = new Table();
-				for (CCWidget cWidget : widget.getChildren()) {
-					Actor cGroup = parseWidget(table, cWidget);
-					if (cGroup == null) {
-						continue;
-					}
-
-					table.setSize(
-							Math.max(table.getWidth(), cGroup.getRight()),
-							Math.max(table.getHeight(), cGroup.getTop()));
-					table.addActor(cGroup);
-				}
-				sort(widget, table);
-				//
-
-				scrollPane.setWidget(table);
-			} else {
-				for (CCWidget cWidget : widget.getChildren()) {
-					Actor cGroup = parseWidget(group, cWidget);
-					if (cGroup == null) {
-						continue;
-					}
-					group.addActor(cGroup);
-				}
-				sort(widget, group);
-			}
-		
-			return actor;
-		}
-
-		Table table = new Table();
-		table.setVisible(option.isVisible());
-		table.setClip(option.isClipAble());
-		table.setSize(actor.getWidth(), actor.getHeight());
-		table.setPosition(actor.getX(), actor.getY());
-		table.addActor(actor);
-		for (CCWidget cWidget : widget.getChildren()) {
-			Actor cGroup = parseWidget(table, cWidget);
-			if (cGroup == null) {
-				continue;
-			}
-			table.addActor(cGroup);
-		}
-		sort(widget, table);
-		return table;
-
-	}
-
-	/** 子控件排序 */
-	void sort(final CCWidget widget, Group group) {
-		group.getChildren().sort(new Comparator<Actor>() {
-			@Override
-			public int compare(Actor arg0, Actor arg1) {
-				return getZOrder(widget, arg0.getName())
-						- getZOrder(widget, arg1.getName());
-			}
-		});
-
-	}
-
-	int getZOrder(CCWidget widget, String name) {
-		if (name == null) {
-			return 0;
-		}
-		for (CCWidget child : widget.getChildren()) {
-			if (name.equals(child.getOptions().getName())) {
-				return child.getOptions().getZOrder();
-			}
-		}
-
-		return 0;
 	}
 
 	/** 获取BitmapFont */
-	private BitmapFont getBitmapFont(CCOption option) {
+	public BitmapFont getBitmapFont(CCOption option) {
 		BitmapFont font = null;
 		if (bitmapFonts != null) {
 			font = bitmapFonts.get(option.getFileNameData().getPath());
@@ -525,7 +287,7 @@ public class CocoStudioUIEditor {
 	 * @param option
 	 * @return
 	 */
-	protected LabelStyle createLabelStyle(CCOption option) {
+	public LabelStyle createLabelStyle(CCOption option) {
 
 		FileHandle fontFile = null;
 		if (ttfs != null) {
@@ -593,6 +355,34 @@ public class CocoStudioUIEditor {
 
 	public Map<String, Array<Actor>> getActors() {
 		return actors;
+	}
+
+	public String getDirName() {
+		return dirName;
+	}
+
+	public void setDirName(String dirName) {
+		this.dirName = dirName;
+	}
+
+	public Map<String, FileHandle> getTtfs() {
+		return ttfs;
+	}
+
+	public void setTtfs(Map<String, FileHandle> ttfs) {
+		this.ttfs = ttfs;
+	}
+
+	public Map<String, BitmapFont> getBitmapFonts() {
+		return bitmapFonts;
+	}
+
+	public void setBitmapFonts(Map<String, BitmapFont> bitmapFonts) {
+		this.bitmapFonts = bitmapFonts;
+	}
+
+	public void setActors(Map<String, Array<Actor>> actors) {
+		this.actors = actors;
 	}
 
 }
