@@ -30,11 +30,11 @@ public abstract class WidgetParser extends BaseWidgetParser {
 
 		table.setScale(option.getScaleX(), option.getScaleY());
 
-		if (option.getScaleX() != 0 || option.getScaleY() != 0) {
-
-			table.setTransform(true);
-
-		}
+//		if (option.getScaleX() != 0 || option.getScaleY() != 0) {
+//
+//			table.setTransform(true);
+//
+//		}
 
 		table.setTransform(true);
 		table.setSize(actor.getWidth(), actor.getHeight());
