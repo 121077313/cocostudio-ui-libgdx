@@ -1,5 +1,6 @@
 package cocostudio.ui;
 
+import java.io.File;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
@@ -71,7 +72,7 @@ public class CocoStudioUIEditor {
 	protected Map<String, BitmapFont> bitmapFonts;
 
 	/** 导出的json结构 */
-	protected CCExport export;
+    protected CCExport export;
 
 	protected Map<String, BaseWidgetParser> parsers;
 
@@ -119,7 +120,7 @@ public class CocoStudioUIEditor {
 		addParser(new CCTextField());
 
 		actors = new HashMap<String, Array<Actor>>();
-		dirName = jsonFile.parent().toString() + "\\";
+		dirName = jsonFile.parent().toString() + File.separator;
 
 		String json = jsonFile.readString("utf-8");
 		Json jj = new Json();
