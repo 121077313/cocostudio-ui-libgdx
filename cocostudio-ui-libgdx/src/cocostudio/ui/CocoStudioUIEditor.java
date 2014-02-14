@@ -1,21 +1,13 @@
 package cocostudio.ui;
 
 import java.io.File;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import cocostudio.ui.model.CCExport;
 import cocostudio.ui.model.CCOption;
 import cocostudio.ui.model.CCWidget;
-import cocostudio.ui.model.animation.CCAction;
-import cocostudio.ui.model.animation.CCActionFrame;
-import cocostudio.ui.model.animation.CCActionNode;
-import cocostudio.ui.model.animation.CCAnimation;
 import cocostudio.ui.parser.group.CCButton;
 import cocostudio.ui.parser.group.CCCheckBox;
 import cocostudio.ui.parser.group.CCPanel;
@@ -23,7 +15,6 @@ import cocostudio.ui.parser.group.CCScrollView;
 import cocostudio.ui.parser.widget.CCImageView;
 import cocostudio.ui.parser.widget.CCLabel;
 import cocostudio.ui.parser.widget.CCLabelBMFont;
-import cocostudio.ui.parser.widget.CCLoadingBar;
 import cocostudio.ui.parser.widget.CCTextField;
 
 import com.badlogic.gdx.Gdx;
@@ -34,13 +25,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox.CheckBoxStyle;
@@ -65,8 +51,6 @@ import com.badlogic.gdx.utils.Json;
  * 
  * @author i see
  * @email 121077313@qq.com
- * @wiki https://github.com/121077313/cocostudio-ui-libgdx/wiki
- * @tip https://github.com/121077313/cocostudio-ui-libgdx/wiki/疑难解答
  */
 public class CocoStudioUIEditor {
 
@@ -75,15 +59,11 @@ public class CocoStudioUIEditor {
 	/** json文件所在目录 */
 	private String dirName;
 
-	/** 所有纹理 */
+	/** 当前画布的所有纹理 */
 	protected TextureAtlas textureAtlas;
 
 	/** 控件集合 */
 	protected Map<String, Array<Actor>> actors;
-
-	protected Map<Integer, Actor> actionActors;
-
-	Map<String, Map<Actor, Action>> animations;
 
 	/** 字体集合 */
 	protected Map<String, FileHandle> ttfs;
@@ -92,7 +72,7 @@ public class CocoStudioUIEditor {
 	protected Map<String, BitmapFont> bitmapFonts;
 
 	/** 导出的json结构 */
-	protected CCExport export;
+    protected CCExport export;
 
 	protected Map<String, BaseWidgetParser> parsers;
 
@@ -117,8 +97,7 @@ public class CocoStudioUIEditor {
 	 * @param jsonFile
 	 *            ui编辑成生成的json文件
 	 * @param textureAtlas
-	 *            资源文件,传入 null表示使用小文件方式加载图片.这里其实可以传入多个纹理.但是不是很好的处理方式,
-	 *            所以打包图片就打包进一张里面去吧
+	 *            资源文件,传入 null表示使用小文件方式加载图片
 	 * 
 	 * @param ttfs
 	 *            字体文件集合
@@ -131,7 +110,6 @@ public class CocoStudioUIEditor {
 		this.ttfs = ttfs;
 		this.bitmapFonts = bitmapFonts;
 		parsers = new HashMap<String, BaseWidgetParser>();
-
 		addParser(new CCButton());
 		addParser(new CCCheckBox());
 		addParser(new CCImageView());
@@ -140,11 +118,8 @@ public class CocoStudioUIEditor {
 		addParser(new CCPanel());
 		addParser(new CCScrollView());
 		addParser(new CCTextField());
-		addParser(new CCLoadingBar());
-		actors = new HashMap<String, Array<Actor>>();
-		actionActors = new HashMap<Integer, Actor>();
 
-		animations = new HashMap<String, Map<Actor, Action>>();
+		actors = new HashMap<String, Array<Actor>>();
 		dirName = jsonFile.parent().toString() + File.separator;
 
 		String json = jsonFile.readString("utf-8");
@@ -183,85 +158,9 @@ public class CocoStudioUIEditor {
 	public Group createGroup() {
 		Actor actor = parseWidget(null, export.getWidgetTree());
 
-		parseAction();
-
 		return (Group) actor;
-	}
-
-	/** 查找动画 */
-	public Map<Actor, Action> getAction(String animationName) {
-
-		return animations.get(animationName);
-	}
-
-	/** 转换动作Action */
-	void parseAction() {
-
-		CCAnimation animation = export.getAnimation();
-		for (CCAction action : animation.getActionlist()) {
-
-			List<CCActionNode> nodes = action.getActionnodelist();
-			Map<Actor, Action> actions = new HashMap<Actor, Action>();
-			for (CCActionNode node : nodes) {
-				Actor actor = actionActors.get(node.getActionTag());
-				List<CCActionFrame> frames = node.getActionframelist();
-				// frameid 排序.
-				SequenceAction sequenceAction = Actions.sequence();
-				for (CCActionFrame frame : frames) {
-					Interpolation interpolation = getInterpolation(frame
-							.getTweenType());
-
-					float duration = 0;
-					// Starttime 会是一个类似
-					// 7.163279E-39的字符没办法直接转换Float,所以这里采用截取字符串的方法
-					int length = frame.getStarttime().indexOf("E");
-					if (length != -1) {
-						duration = Float.parseFloat(frame.getStarttime()
-								.substring(0, length));
-					} else {
-						duration = Float.parseFloat(frame.getStarttime());
-					}
-
-					Action moveTo = Actions.moveTo(frame.getPositionx(),
-							frame.getPositiony(), duration, interpolation);
-
-					Action scaleTo = Actions.scaleTo(frame.getScalex(),
-							frame.getScaley(), duration, interpolation);
-
-					Action color = Actions.color(new Color(
-							frame.getColorr() / 255, frame.getColorg() / 255,
-							frame.getColorb() / 255, frame.getOpacity() / 255),
-							duration, interpolation);
-
-					Action rotateTo = Actions.rotateTo(frame.getRotation(),
-							duration, interpolation);
-
-					sequenceAction.addAction(Actions.parallel(moveTo, scaleTo,
-							color, rotateTo));
-				}
-
-				actions.put(actor, sequenceAction);
-			}
-
-			animations.put(action.getName(), actions);
-		}
 
 	}
-
-	public Interpolation getInterpolation(int tweenType) {
-		return null;
-	}
-
-	// public CCAction getAction(String actionName) {
-	//
-	// CCAnimation animation = export.getAnimation();
-	// for (CCAction action : animation.getActionlist()) {
-	// if (action.getName().equals(actionName)) {
-	// return action;
-	// }
-	// }
-	// return null;
-	// }
 
 	/**
 	 * 获取材质
@@ -286,7 +185,7 @@ public class CocoStudioUIEditor {
 				String[] arr = name.split("\\/");
 				name = name.substring(arr[0].length() + 1, name.length() - 4);
 			} catch (Exception e) {
-				error(option, "名称不符合约定,无法解析.请查看github项目wiki");
+				error(option, "纹理名称不符合约定,无法解析.");
 			}
 
 			// 考虑index下标
@@ -491,14 +390,6 @@ public class CocoStudioUIEditor {
 
 	public void setActors(Map<String, Array<Actor>> actors) {
 		this.actors = actors;
-	}
-
-	public Map<Integer, Actor> getActionActors() {
-		return actionActors;
-	}
-
-	public void setActionActors(Map<Integer, Actor> actionActors) {
-		this.actionActors = actionActors;
 	}
 
 }

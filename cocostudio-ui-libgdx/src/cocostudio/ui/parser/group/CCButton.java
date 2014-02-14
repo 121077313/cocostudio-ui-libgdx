@@ -36,8 +36,7 @@ public class CCButton extends GroupParser {
 			LabelStyle labelStyle = editor.createLabelStyle(option);
 			if (labelStyle != null) {
 				Label label = new Label(option.getText(), labelStyle);
-				label.setPosition((button.getWidth() - label.getWidth()) / 2,
-						(button.getHeight() - label.getHeight()) / 2);
+				label.setPosition(button.getWidth() / 2, button.getHeight() / 2);
 				button.addActor(label);
 			}
 		}

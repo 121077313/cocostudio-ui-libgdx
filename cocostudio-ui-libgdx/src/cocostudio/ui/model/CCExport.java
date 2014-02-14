@@ -2,8 +2,6 @@ package cocostudio.ui.model;
 
 import java.util.List;
 
-import cocostudio.ui.model.animation.CCAnimation;
-
 /**
  * ui json结构
  * 
@@ -15,8 +13,6 @@ public class CCExport {
 	String classname;
 
 	String name;
-
-	CCAnimation animation;
 
 	int dataScale;
 
@@ -92,14 +88,6 @@ public class CCExport {
 
 	public void setDesignWidth(float designWidth) {
 		this.designWidth = designWidth;
-	}
-
-	public CCAnimation getAnimation() {
-		return animation;
-	}
-
-	public void setAnimation(CCAnimation animation) {
-		this.animation = animation;
 	}
 
 }
