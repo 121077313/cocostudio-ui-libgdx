@@ -1,6 +1,5 @@
 package cocostudio.ui.parser.widget;
 
-import cocostudio.ui.BaseWidgetParser;
 import cocostudio.ui.CocoStudioUIEditor;
 import cocostudio.ui.model.CCOption;
 import cocostudio.ui.model.CCWidget;
@@ -38,9 +37,9 @@ public class CCLabelBMFont extends WidgetParser {
 					+ option.getFileNameData().getPath() + " 不存在");
 			font = new BitmapFont();
 		}
-		Color textColor = new Color(option.getColorR() / 255,
-				option.getColorG() / 255, option.getColorB() / 255,
-				option.getOpacity() / 255);
+		Color textColor = new Color(option.getColorR() / 255.0f,
+				option.getColorG() / 255.0f, option.getColorB() / 255.0f,
+				option.getOpacity() / 255.0f);
 		LabelStyle style = new LabelStyle(font, textColor);
 		Label label = new Label(option.getText(), style);
 		return label;

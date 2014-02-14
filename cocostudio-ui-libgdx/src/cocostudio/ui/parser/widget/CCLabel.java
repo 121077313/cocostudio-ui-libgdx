@@ -1,6 +1,5 @@
 package cocostudio.ui.parser.widget;
 
-import cocostudio.ui.BaseWidgetParser;
 import cocostudio.ui.CocoStudioUIEditor;
 import cocostudio.ui.model.CCOption;
 import cocostudio.ui.model.CCWidget;

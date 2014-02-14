@@ -1,14 +1,13 @@
 package cocostudio.ui.parser;
 
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-
 import cocostudio.ui.BaseWidgetParser;
 import cocostudio.ui.CocoStudioUIEditor;
 import cocostudio.ui.model.CCOption;
 import cocostudio.ui.model.CCWidget;
+
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 public abstract class WidgetParser extends BaseWidgetParser {
 

@@ -229,9 +229,11 @@ public class CocoStudioUIEditor {
 							frame.getScaley(), duration, interpolation);
 
 					Action color = Actions.color(new Color(
-							frame.getColorr() / 255, frame.getColorg() / 255,
-							frame.getColorb() / 255, frame.getOpacity() / 255),
-							duration, interpolation);
+							frame.getColorr() / 255.0f,
+							frame.getColorg() / 255.0f,
+							frame.getColorb() / 255.0f,
+							frame.getOpacity() / 255.0f), duration,
+							interpolation);
 
 					Action rotateTo = Actions.rotateTo(frame.getRotation(),
 							duration, interpolation);
@@ -402,9 +404,9 @@ public class CocoStudioUIEditor {
 			fontFile = ttfs.get(option.getFontName());
 		}
 
-		Color textColor = new Color(option.getTextColorR() / 255,
-				option.getTextColorG() / 255, option.getTextColorB() / 255,
-				option.getOpacity() / 255);
+		Color textColor = new Color(option.getTextColorR() / 255.0f,
+				option.getTextColorG() / 255.0f,
+				option.getTextColorB() / 255.0f, option.getOpacity() / 255.0f);
 
 		if (fontFile == null) {
 			debug(option, "ttf字体:" + option.getFontName() + " 不存在");
