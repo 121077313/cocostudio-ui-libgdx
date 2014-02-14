@@ -1,5 +1,6 @@
 package cocostudio.ui;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -144,7 +145,7 @@ public class CocoStudioUIEditor {
 		actionActors = new HashMap<Integer, Actor>();
 
 		animations = new HashMap<String, Map<Actor, Action>>();
-		dirName = jsonFile.parent().toString() + "\\";
+		dirName = jsonFile.parent().toString() + File.separator;
 
 		String json = jsonFile.readString("utf-8");
 		Json jj = new Json();
