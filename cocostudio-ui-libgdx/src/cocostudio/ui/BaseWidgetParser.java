@@ -81,8 +81,6 @@ public abstract class BaseWidgetParser {
 		arrayActors.add(actor);
 		editor.getActors().put(actor.getName(), arrayActors);
 
-		editor.getActionActors().put(option.getActiontag(), actor);
-
 		if (widget.getChildren().size() == 0) {
 			return actor;
 		}

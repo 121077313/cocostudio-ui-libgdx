@@ -124,8 +124,6 @@ public class CCOption {
 
 	CCWidgetData backGroundBoxData;
 
-	CCWidgetData textureData;
-
 	public String get__type() {
 		return __type;
 	}
@@ -855,14 +853,6 @@ public class CCOption {
 
 	public void setBackGroundBoxData(CCWidgetData backGroundBoxData) {
 		this.backGroundBoxData = backGroundBoxData;
-	}
-
-	public CCWidgetData getTextureData() {
-		return textureData;
-	}
-
-	public void setTextureData(CCWidgetData textureData) {
-		this.textureData = textureData;
 	}
 
 }
