@@ -58,7 +58,7 @@ public class CCScrollView extends GroupParser {
 	}
 
 	@Override
-	public Group groupParse(CocoStudioUIEditor editor, CCWidget widget,
+	public Group groupChildrenParse(CocoStudioUIEditor editor, CCWidget widget,
 			CCOption option, Group parent, Actor actor) {
 		ScrollPane scrollPane = (ScrollPane) actor;
 		Table table = new Table();

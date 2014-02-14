@@ -18,11 +18,11 @@ public abstract class WidgetParser extends BaseWidgetParser {
 		if (ac!=null) {
 			return ac;
 		}
-		return widgetParse(editor, widget, option, parent, actor);
+		return widgetChildrenParse(editor, widget, option, parent, actor);
 	}
 
 	/** 解析子控件 */
-	public Group widgetParse(CocoStudioUIEditor editor, CCWidget widget,
+	public Group widgetChildrenParse(CocoStudioUIEditor editor, CCWidget widget,
 			CCOption option, Group parent, Actor actor) {
 		Table table = new Table();
 		table.setVisible(option.isVisible());

@@ -19,11 +19,11 @@ public abstract class GroupParser extends BaseWidgetParser {
 		if (ac != null) {
 			return ac;
 		}
-		return groupParse(editor, widget, option, parent, actor);
+		return groupChildrenParse(editor, widget, option, parent, actor);
 	}
 
 	/** 解析group控件,当前控件类型为Group的时候处理与Widget类型处理不同 */
-	public Group groupParse(CocoStudioUIEditor editor, CCWidget widget,
+	public Group groupChildrenParse(CocoStudioUIEditor editor, CCWidget widget,
 			CCOption option, Group parent, Actor actor) {
 		// Group 虽然自己不接收事件,但是子控件得接收
 		// actor.setTouchable(option.isTouchAble() ? Touchable.enabled
