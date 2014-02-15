@@ -43,13 +43,13 @@ public class CCScrollView extends GroupParser {
 			// scrollPane.setScrollingDisabled(true,true);
 			break;
 		case 2:
-			// scrollPane.setForceScroll(true, false);
-			scrollPane.setScrollingDisabled(false, false);
+			scrollPane.setForceScroll(true, false);
+			// scrollPane.setScrollingDisabled(false, false);
 			break;
 
 		case 3:
-			scrollPane.setScrollingDisabled(false, false);
-			// scrollPane.setForceScroll(true, true);
+			scrollPane.setForceScroll(true, true);
+			// scrollPane.setScrollingDisabled(false, false);
 			break;
 		}
 

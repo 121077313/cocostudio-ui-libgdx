@@ -7,6 +7,7 @@ import cocostudio.ui.model.CCWidget;
 import cocostudio.ui.parser.GroupParser;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
@@ -36,6 +37,8 @@ public class CCPanel extends GroupParser {
 				Image bg = new Image(drawable);
 				bg.setPosition((option.getWidth() - bg.getWidth()) / 2,
 						(option.getHeight() - bg.getHeight()) / 2);
+				bg.setTouchable(option.isTouchAble() ? Touchable.enabled
+						: Touchable.disabled);
 				table.addActor(bg);
 			} else {
 
