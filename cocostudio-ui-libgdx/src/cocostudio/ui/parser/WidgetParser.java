@@ -27,7 +27,7 @@ public abstract class WidgetParser extends BaseWidgetParser {
 		Table table = new Table();
 		table.setVisible(option.isVisible());
 		table.setClip(option.isClipAble());
-
+		table.setName(actor.getName());
 		table.setScale(option.getScaleX(), option.getScaleY());
 
 //		if (option.getScaleX() != 0 || option.getScaleY() != 0) {
