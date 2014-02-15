@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
@@ -30,8 +31,8 @@ public class DemoStage extends CommonStage {
 		init();
 	}
 
-	boolean listener = false;
-	int i = 8;
+	boolean listener = true;
+	int i = 7;
 
 	@Override
 	public void init() {
@@ -130,13 +131,12 @@ public class DemoStage extends CommonStage {
 
 		Actor head = editor.findActor("ImageView");
 
-		
 		Actor panel = editor.findActor("Panel");
-		
-//		head.setVisible(true);
-//		head.setPosition(0, 0);
-//		addActor(head);
-//		System.out.println();
+
+		// head.setVisible(true);
+		// head.setPosition(0, 0);
+		// addActor(head);
+		// System.out.println();
 	}
 
 	/** 商店Demo,使用小图片方式 */
@@ -171,6 +171,30 @@ public class DemoStage extends CommonStage {
 			});
 
 		}
+
+		Actor back_Label = editor.findActor("back_LabelBMFont");
+
+		back_Label.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+
+				System.out.println("点击2");
+				super.clicked(event, x, y);
+			}
+		});
+		Actor back_Button = editor.findActor("back_Button");
+
+		back_Button.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+
+				System.out.println("点击");
+				super.clicked(event, x, y);
+			}
+		});
+		System.out.println(back_Label.getHeight() + "," + back_Label.getX());
+
+		System.out.println(back_Button.getHeight() + "," + back_Button.getX());
 	}
 
 	/** ui例子,使用小图片方式 */
@@ -179,6 +203,7 @@ public class DemoStage extends CommonStage {
 				Gdx.files.internal("ui/ui.json"), null, null, null);
 		Group group = editor.createGroup();
 		addActor(group);
+
 	}
 
 	/** ui例子2,使用TextureAtlas方式 */
@@ -218,6 +243,38 @@ public class DemoStage extends CommonStage {
 		Group group = editor.createGroup();
 		addActor(group);
 
+		Actor dragPanel = editor.findActor("DragPanel");
+
+//		dragPanel.addListener(new ClickListener() {
+//			@Override
+//			public void clicked(InputEvent event, float x, float y) {
+//
+//				System.out.println("click");
+//
+//				super.clicked(event, x, y);
+//			}
+//		});
+
+		final Actor boxPanel = editor.findActor("box_Panel");
+
+//		boxPanel.addListener(new ClickListener() {
+//
+//			@Override
+//			public boolean touchDown(InputEvent event, float x, float y,
+//					int pointer, int button) {
+//
+//				return super.touchDown(event, x, y, pointer, button);
+//			}
+//
+//			@Override
+//			public void clicked(InputEvent event, float x, float y) {
+//
+//				System.out.println("click2");
+//
+//				super.clicked(event, x, y);
+//			}
+//		});
+
 	}
 
 	void initSampleChangeEquip() {
@@ -227,7 +284,7 @@ public class DemoStage extends CommonStage {
 				null, null, null);
 		Group group = editor.createGroup();
 		addActor(group);
-		
+
 		System.out.println();
 
 	}

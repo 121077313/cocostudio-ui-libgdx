@@ -188,9 +188,9 @@
               "capInsetsY": 0,
               "fileName": null,
               "fileNameData": {
-                "path": "D:\\Program Files (x86)\\CocoStudio\\EditorDefaultRes\\GUI/image.png",
+                "path": "GUI/image.png",
                 "plistFile": null,
-                "resourceType": 2
+                "resourceType": 0
               },
               "scale9Enable": false,
               "scale9Height": 80,

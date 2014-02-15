@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <UIProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <filePath>M:\项目\cocostudio-ui\cocostudio-ui-demo\out\DemoShop\DemoShop.xml.ui</filePath>
+  <filePath>C:\Users\Administrator\Documents\GitHub\cocostudio-ui-libgdx\cocostudio-ui-demo\out\DemoShop\DemoShop.xml.ui</filePath>
   <Version>1.2.0.1</Version>
   <Name>DemoShop</Name>
-  <ProjectDir>M:\项目\cocostudio-ui\cocostudio-ui-demo\out\DemoShop</ProjectDir>
+  <ProjectDir>C:\Users\Administrator\Documents\GitHub\cocostudio-ui-libgdx\cocostudio-ui-demo\out\DemoShop</ProjectDir>
   <JsonFileName>DemoShop.json</JsonFileName>
-  <Resources>M:\项目\cocostudio-ui\cocostudio-ui-demo\out\DemoShop\Resources</Resources>
-  <JsonFolder>M:\项目\cocostudio-ui\cocostudio-ui-demo\out\DemoShop\Json</JsonFolder>
+  <Resources>C:\Users\Administrator\Documents\GitHub\cocostudio-ui-libgdx\cocostudio-ui-demo\out\DemoShop\Resources</Resources>
+  <JsonFolder>C:\Users\Administrator\Documents\GitHub\cocostudio-ui-libgdx\cocostudio-ui-demo\out\DemoShop\Json</JsonFolder>
   <JsonList>
     <string>DemoShop.json</string>
   </JsonList>
