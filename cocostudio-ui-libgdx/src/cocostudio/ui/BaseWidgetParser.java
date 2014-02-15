@@ -65,9 +65,8 @@ public abstract class BaseWidgetParser {
 		// 设置可见
 		actor.setVisible(option.isVisible());
 
-		actor.setColor(option.getColorR() / 255.0f,
-				option.getColorG() / 255.0f, option.getColorB() / 255.0f,
-				option.getOpacity() / 255.0f);
+		actor.setColor(option.getColorR() / 255f, option.getColorG() / 255f,
+				option.getColorB() / 255f, option.getOpacity() / 255f);
 		actor.setTouchable(option.isTouchAble() ? Touchable.enabled
 				: Touchable.disabled);
 

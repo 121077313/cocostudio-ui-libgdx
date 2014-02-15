@@ -20,7 +20,7 @@ public class CCOption {
 	int colorR;
 	boolean flipX;
 	boolean flipY;
-	int height;
+	float height;
 	boolean ignoreSize;
 	String layoutParameter;
 	int opacity;
@@ -214,11 +214,12 @@ public class CCOption {
 		this.flipY = flipY;
 	}
 
-	public int getHeight() {
+
+	public float getHeight() {
 		return height;
 	}
 
-	public void setHeight(int height) {
+	public void setHeight(float height) {
 		this.height = height;
 	}
 
