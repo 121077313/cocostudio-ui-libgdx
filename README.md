@@ -4,6 +4,15 @@
 ### WIKI : https://github.com/121077313/cocostudio-ui-libgdx/wiki
 ### 问答 : https://github.com/121077313/cocostudio-ui-libgdx/wiki/疑难解答
 
+
+
+###作者推介的开发方式
+就像demo项目中的out文件夹是外部工程文件.为了方便管理就放在项目目录中.ui编辑器的工程文件也在里面.
+开发的时候建议不使用压缩方式处理资源图片.因为最终发布前一定会有多次修改,使用打包的方式会让你来回的打包资源并且调试.
+CocoStudioUIEditor 可以很方便的切换使用小图方式还是使用大图方式来处理资源CocoStudioUIEditor的构造函数 TextureAtlas 如果不传入则会以小图方式处理图片资源.
+可以在最终完成再去打包图片,并传入TextureAtlas.然后从assets目录中删除小图即可.
+
+
 目前已知还存在的问题
 * 只支持绝对布局,其他布局也不打算支持.
 * 对ScrollPane的属性不是很了解,所以回弹属性存在问题,如果设置不回弹则无法拖拽.滚动区域的设置也无效
