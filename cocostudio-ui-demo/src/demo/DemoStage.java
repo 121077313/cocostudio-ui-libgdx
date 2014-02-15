@@ -31,7 +31,7 @@ public class DemoStage extends CommonStage {
 		init();
 	}
 
-	boolean listener = true;
+	boolean listener = false;
 	int i = 7;
 
 	@Override
