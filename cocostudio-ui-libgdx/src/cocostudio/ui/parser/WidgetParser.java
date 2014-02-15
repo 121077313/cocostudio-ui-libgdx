@@ -7,8 +7,15 @@ import cocostudio.ui.model.CCWidget;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
+/**
+ * 单控件转换器
+ * 
+ * @author i see
+ * 
+ */
 public abstract class WidgetParser extends BaseWidgetParser {
 
 	@Override
@@ -30,12 +37,14 @@ public abstract class WidgetParser extends BaseWidgetParser {
 		table.setName(actor.getName());
 		table.setScale(option.getScaleX(), option.getScaleY());
 
-//		if (option.getScaleX() != 0 || option.getScaleY() != 0) {
-//
-//			table.setTransform(true);
-//
-//		}
-
+		// if (option.getScaleX() != 0 || option.getScaleY() != 0) {
+		//
+		// table.setTransform(true);
+		//
+		// }
+		
+		actor.setTouchable(option.isTouchAble() ? Touchable.enabled
+				: Touchable.childrenOnly);
 		table.setTransform(true);
 		table.setSize(actor.getWidth(), actor.getHeight());
 		table.setPosition(actor.getX(), actor.getY());

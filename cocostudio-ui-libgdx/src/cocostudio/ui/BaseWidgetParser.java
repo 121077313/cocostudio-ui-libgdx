@@ -7,6 +7,7 @@ import cocostudio.ui.model.CCWidget;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Array;
@@ -19,7 +20,7 @@ import com.badlogic.gdx.utils.Array;
  */
 public abstract class BaseWidgetParser {
 
-	/** 控件类型名称 */
+	/** 获取控件类型名称 */
 	public abstract String getClassName();
 
 	/** 转换控件 */
@@ -45,12 +46,13 @@ public abstract class BaseWidgetParser {
 			actor.setPosition(option.getX() - actor.getOriginX(), option.getY()
 					- actor.getOriginY());
 		} else {
+
 			// 锚点要算上父控件的锚点,也就是原点
 			actor.setX(parent.getOriginX()
-					+ (option.getX() - actor.getOriginX()));
+					- (actor.getOriginX() - option.getX()));
 
 			actor.setY(parent.getOriginY()
-					+ (option.getY() - actor.getOriginY()));
+					- (actor.getOriginY() - option.getY()));
 		}
 
 		// CocoStudio的编辑器ScaleX,ScaleY 会有负数情况
@@ -66,8 +68,8 @@ public abstract class BaseWidgetParser {
 		actor.setColor(option.getColorR() / 255.0f,
 				option.getColorG() / 255.0f, option.getColorB() / 255.0f,
 				option.getOpacity() / 255.0f);
-		// actor.setTouchable(option.isTouchAble() ? Touchable.enabled
-		// : Touchable.disabled);
+		actor.setTouchable(option.isTouchAble() ? Touchable.enabled
+				: Touchable.disabled);
 
 		Array<Actor> arrayActors = editor.getActors().get(actor.getName());
 		if (arrayActors == null) {
