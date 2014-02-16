@@ -402,7 +402,14 @@ public class CocoStudioUIEditor {
 		FileHandle fontFile = null;
 		if (ttfs != null) {
 			fontFile = ttfs.get(option.getFontName());
+		} else {
+			try {
+				fontFile = Gdx.files.internal(dirName + option.getFontName());
+			} catch (Exception e) {
+				// 备用加载方式
+			}
 		}
+
 		Color textColor = null;
 
 		if (option.getTextColorB() == 0 & option.getTextColorG() == 0
