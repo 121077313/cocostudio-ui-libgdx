@@ -7,6 +7,7 @@
 	<classpathentry kind="lib" path="libs/gdx.jar" sourcepath="libs/gdx-sources.jar"/>
 	<classpathentry kind="lib" path="libs/gdx-backend-lwjgl-natives.jar"/>
 	<classpathentry kind="lib" path="libs/gdx-natives.jar"/>
+	<classpathentry kind="lib" path="libs/gdx-freetype-natives.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cocostudio-ui-libgdx"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
