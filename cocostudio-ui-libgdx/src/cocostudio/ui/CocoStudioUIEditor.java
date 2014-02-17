@@ -145,8 +145,12 @@ public class CocoStudioUIEditor {
 		actionActors = new HashMap<Integer, Actor>();
 
 		animations = new HashMap<String, Map<Actor, Action>>();
-		dirName = jsonFile.parent().toString() + File.separator;
 
+		dirName = jsonFile.parent().toString();
+
+		if (!dirName.equals("")) {
+			dirName += File.separator;
+		}
 		String json = jsonFile.readString("utf-8");
 		Json jj = new Json();
 		jj.setIgnoreUnknownFields(true);
@@ -403,11 +407,11 @@ public class CocoStudioUIEditor {
 		if (ttfs != null) {
 			fontFile = ttfs.get(option.getFontName());
 		} else {
-			try {
-				fontFile = Gdx.files.internal(dirName + option.getFontName());
-			} catch (Exception e) {
-				// 备用加载方式
-			}
+			// try {
+			// fontFile = Gdx.files.internal(dirName + option.getFontName());
+			// } catch (Exception e) {
+			// // 备用加载方式
+			// }
 		}
 
 		Color textColor = null;
