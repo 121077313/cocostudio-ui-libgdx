@@ -70,6 +70,18 @@ public abstract class BaseWidgetParser {
 		actor.setTouchable(option.isTouchAble() ? Touchable.enabled
 				: Touchable.disabled);
 
+		addActor(editor, actor, option);
+
+		if (widget.getChildren().size() == 0) {
+			return actor;
+		}
+
+		return null;
+	}
+
+	protected void addActor(CocoStudioUIEditor editor, Actor actor,
+			CCOption option) {
+
 		Array<Actor> arrayActors = editor.getActors().get(actor.getName());
 		if (arrayActors == null) {
 			arrayActors = new Array<Actor>();
@@ -78,12 +90,6 @@ public abstract class BaseWidgetParser {
 		editor.getActors().put(actor.getName(), arrayActors);
 
 		editor.getActionActors().put(option.getActiontag(), actor);
-
-		if (widget.getChildren().size() == 0) {
-			return actor;
-		}
-
-		return null;
 	}
 
 	/** 子控件根据zOrder属性排序 */
