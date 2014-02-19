@@ -34,7 +34,7 @@ public abstract class WidgetParser extends BaseWidgetParser {
 		Table table = new Table();
 		table.setVisible(option.isVisible());
 		table.setClip(option.isClipAble());
-//		table.setName(actor.getName());
+		table.setName(actor.getName());
 		table.setScale(option.getScaleX(), option.getScaleY());
 		table.setRotation(actor.getRotation());
 		table.setVisible(actor.isVisible());
@@ -47,7 +47,7 @@ public abstract class WidgetParser extends BaseWidgetParser {
 //		addActor(editor, table, option);
 
 		actor.setVisible(true);
-//		actor.setTouchable(Touchable.enabled);
+		actor.setTouchable(Touchable.disabled);
 
 		if (option.getScaleX() != 0 || option.getScaleY() != 0
 				|| option.getRotation() != 0) {

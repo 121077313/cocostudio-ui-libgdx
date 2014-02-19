@@ -39,8 +39,15 @@ public abstract class GroupParser extends BaseWidgetParser {
 		actor.setTouchable(option.isTouchAble() ? Touchable.enabled
 				: Touchable.childrenOnly);
 		// 必须设置Transform 为true 子控件才会跟着旋转.
-		group.setTransform(true);
+		
+//		group.setTransform(true);
 
+
+		if (option.getScaleX() != 0 || option.getScaleY() != 0
+				|| option.getRotation() != 0) {
+			group.setTransform(true);
+		}
+		
 		for (CCWidget childrenWidget : widget.getChildren()) {
 			Actor childrenActor = editor.parseWidget(group, childrenWidget);
 			if (childrenActor == null) {
