@@ -32,7 +32,7 @@ public class CCButton extends GroupParser {
 				.getDisabledData().getPath());
 		ImageButton button = new ImageButton(style);
 
-		if (option.getText() != null) {
+		if (option.getText() != null && !option.getText().equals("")) {
 			LabelStyle labelStyle = editor.createLabelStyle(option);
 			if (labelStyle != null) {
 				Label label = new Label(option.getText(), labelStyle);
