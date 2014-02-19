@@ -12,7 +12,7 @@
   </JsonList>
   <imageFileList />
   <JsonSuffix>.json</JsonSuffix>
-  <CurrentUIJson>DemoShop.json</CurrentUIJson>
+  <CurrentUIJson />
   <CanvasSize>
     <Width>480</Width>
     <Height>320</Height>
