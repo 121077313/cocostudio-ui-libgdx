@@ -55,18 +55,19 @@ public class CCPanel extends GroupParser {
 
 		}
 
-		if (option.getBackGroundImageData() != null) {// Panel的图片并不是拉伸平铺的!!
+		if (option.getBackGroundImageData() != null) {// Panel的图片并不是拉伸平铺的!!.但是这里修改为填充
 			TextureRegion tr = editor.findTextureRegion(option, option
 					.getBackGroundImageData().getPath());
 			if (tr != null) {
 				Image bg = new Image(tr);
-				bg.setPosition((option.getWidth() - bg.getWidth()) / 2,
-						(option.getHeight() - bg.getHeight()) / 2);
+//				bg.setPosition((option.getWidth() - bg.getWidth()) / 2,
+//						(option.getHeight() - bg.getHeight()) / 2);
+				bg.setFillParent(true);
 				bg.setTouchable(Touchable.disabled);
+				
 				bg.setColor(option.getColorR() / 255f,
 						option.getColorG() / 255f, option.getColorB() / 255f,
 						option.getOpacity() / 255f);
-				// bg.getColor().a = option.getOpacity() / 255.0f;
 				table.addActor(bg);
 			}
 		}
