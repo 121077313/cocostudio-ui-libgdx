@@ -4,13 +4,42 @@
 ### WIKI : https://github.com/121077313/cocostudio-ui-libgdx/wiki
 ### 问答 : https://github.com/121077313/cocostudio-ui-libgdx/wiki/疑难解答
 
+## 构建
+确保你正确安装了JDK和Gradle
 
+* 克隆源码
 
-###移植案例,更多请看WIKI!
+```shell
+git clone https://github.com/121077313/cocostudio-ui-libgdx.git
+```
+
+* 编译构建
+
+```shell
+./gradlew packageCore
+```
+
+* 运行例子
+
+```shell
+./gradlew run
+```
+
+* Eclipse用户
+```shell
+./gradlew eclipse
+```
+
+* IntelliJ IDEA用户
+```shell
+./gradlew idea
+```
+
+## 移植案例,更多请看WIKI!
 ![](http://dl2.iteye.com/upload/attachment/0093/8165/c3a16900-e85e-3cc4-b57f-690c5cb3ec75.jpg)
 
 
-###目前已知还存在的问题
+## 目前已知还存在的问题
 * 只支持绝对布局,其他布局也不打算支持.
 * 对ScrollPane的属性不是很了解,所以回弹属性存在问题,如果设置不回弹则无法拖拽.滚动区域的设置也无效
 * 部分控件的裁剪属性无效,例如ScrollPane
@@ -24,7 +53,10 @@
 * 动作编辑器编辑出来的效果比编辑器里面看到的效果运行得慢,不清楚是否正常?还没去确定这事.动作编辑器的功能还没去具体测试各项功能.
 
 
-###更新记录
+## 更新记录
+
+2014.3.1
+* 添加gradle配置，清理项目目录
 
 2014.2.12 
 * 更新demo.zip,展示了如何使用CocoStudioUIEditor 创建一个界面,如何获取控件 添加事件.

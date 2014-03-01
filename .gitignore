@@ -1,10 +1,22 @@
+
+# For Idea
 *.iml
 *.ipr
 *.iws
-
+build/
 .idea/
+
+# For Eclipse
 bin/
+tmp/
+.settings/
+.metadata/
+.classpath
+.project
+.settings/
+
+# For *unix
 *~
 
+# For Gradle
 .gradle/
-build/
