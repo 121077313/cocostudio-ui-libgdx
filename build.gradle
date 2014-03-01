@@ -1,0 +1,44 @@
+allprojects {
+    apply plugin: 'idea'
+    apply plugin: 'eclipse'
+    apply plugin: 'java'
+
+    version = "0.0.1-SNAPSHOT"
+    ext.gdxVersion = "0.9.9"
+
+    sourceCompatibility = '1.6'
+    targetCompatibility = '1.6'
+ext.appName = "cocostudio-ui-libgdx"
+    
+sourceSets {
+        main {
+            java {
+             srcDir 'src'
+         }
+       }
+    }
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    }
+}
+
+project(":core") {
+    dependencies {
+        compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+        compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+    }
+}
+
+project(":demo") {
+    apply plugin: 'application'
+
+    dependencies {
+        compile project(":core")
+        compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+        compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+        compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+    }
+}
+

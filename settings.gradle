@@ -1,0 +1,5 @@
+include 'core','demo'
+
+project(":core").projectDir = file("cocostudio-ui-libgdx")
+project(":demo").projectDir = file("cocostudio-ui-demo")
+
