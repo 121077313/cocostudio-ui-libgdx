@@ -96,7 +96,7 @@ public class DemoStage extends CommonStage {
 
 		CocoStudioUIEditor editor = new CocoStudioUIEditor(
 				Gdx.files.internal("SampleUIAnimation/SampleUIAnimation.json"),
-				null, null, null);
+				null, null, null, null);
 		Group group = editor.createGroup();
 		addActor(group);
 		// 查找动画
@@ -124,7 +124,8 @@ public class DemoStage extends CommonStage {
 	private void initHead() {
 
 		CocoStudioUIEditor editor = new CocoStudioUIEditor(
-				Gdx.files.internal("head/DemoHead_UI.json"), null, null, null);
+				Gdx.files.internal("head/DemoHead_UI.json"), null, null, null,
+				null);
 		Group group = editor.createGroup();
 
 		addActor(group);
@@ -200,7 +201,7 @@ public class DemoStage extends CommonStage {
 	/** ui例子,使用小图片方式 */
 	void initUI() {
 		CocoStudioUIEditor editor = new CocoStudioUIEditor(
-				Gdx.files.internal("ui/ui.json"), null, null, null);
+				Gdx.files.internal("ui/ui.json"), null, null, null, null);
 		Group group = editor.createGroup();
 		addActor(group);
 
@@ -211,7 +212,7 @@ public class DemoStage extends CommonStage {
 
 		TextureAtlas gui = new TextureAtlas(Gdx.files.internal("ui/gui.txt"));
 		CocoStudioUIEditor editor = new CocoStudioUIEditor(
-				Gdx.files.internal("ui/ui.ExportJson"), gui, null, null);
+				Gdx.files.internal("ui/ui.ExportJson"), gui, null, null, null);
 		Group group = editor.createGroup();
 		addActor(group);
 	}
@@ -220,7 +221,8 @@ public class DemoStage extends CommonStage {
 
 		TextureAtlas gui = new TextureAtlas(Gdx.files.internal("demo/gui.txt"));
 		CocoStudioUIEditor editor = new CocoStudioUIEditor(
-				Gdx.files.internal("demo/login.ExportJson"), gui, null, null);
+				Gdx.files.internal("demo/login.ExportJson"), gui, null, null,
+				null);
 		Group group = editor.createGroup();
 		addActor(group);
 
@@ -230,7 +232,7 @@ public class DemoStage extends CommonStage {
 
 		CocoStudioUIEditor editor = new CocoStudioUIEditor(
 				Gdx.files.internal("DemoLogin/DemoLogin.json"), null, null,
-				null);
+				null, null);
 		Group group = editor.createGroup();
 		addActor(group);
 
@@ -239,41 +241,42 @@ public class DemoStage extends CommonStage {
 	void initMap() {
 
 		CocoStudioUIEditor editor = new CocoStudioUIEditor(
-				Gdx.files.internal("DemoMap/DemoMap.json"), null, null, null);
+				Gdx.files.internal("DemoMap/DemoMap.json"), null, null, null,
+				null);
 		Group group = editor.createGroup();
 		addActor(group);
 
 		Actor dragPanel = editor.findActor("DragPanel");
 
-//		dragPanel.addListener(new ClickListener() {
-//			@Override
-//			public void clicked(InputEvent event, float x, float y) {
-//
-//				System.out.println("click");
-//
-//				super.clicked(event, x, y);
-//			}
-//		});
+		// dragPanel.addListener(new ClickListener() {
+		// @Override
+		// public void clicked(InputEvent event, float x, float y) {
+		//
+		// System.out.println("click");
+		//
+		// super.clicked(event, x, y);
+		// }
+		// });
 
 		final Actor boxPanel = editor.findActor("box_Panel");
 
-//		boxPanel.addListener(new ClickListener() {
-//
-//			@Override
-//			public boolean touchDown(InputEvent event, float x, float y,
-//					int pointer, int button) {
-//
-//				return super.touchDown(event, x, y, pointer, button);
-//			}
-//
-//			@Override
-//			public void clicked(InputEvent event, float x, float y) {
-//
-//				System.out.println("click2");
-//
-//				super.clicked(event, x, y);
-//			}
-//		});
+		// boxPanel.addListener(new ClickListener() {
+		//
+		// @Override
+		// public boolean touchDown(InputEvent event, float x, float y,
+		// int pointer, int button) {
+		//
+		// return super.touchDown(event, x, y, pointer, button);
+		// }
+		//
+		// @Override
+		// public void clicked(InputEvent event, float x, float y) {
+		//
+		// System.out.println("click2");
+		//
+		// super.clicked(event, x, y);
+		// }
+		// });
 
 	}
 
@@ -281,7 +284,7 @@ public class DemoStage extends CommonStage {
 		CocoStudioUIEditor editor = new CocoStudioUIEditor(
 				Gdx.files
 						.internal("SampleChangeEquip/SampleChangeEquip_1.json"),
-				null, null, null);
+				null, null, null, null);
 		Group group = editor.createGroup();
 		addActor(group);
 
