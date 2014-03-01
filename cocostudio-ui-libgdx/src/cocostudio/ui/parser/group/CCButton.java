@@ -5,6 +5,8 @@ import cocostudio.ui.CocoStudioUIEditor;
 import cocostudio.ui.model.CCOption;
 import cocostudio.ui.model.CCWidget;
 import cocostudio.ui.parser.GroupParser;
+import cocostudio.ui.widget.TTFLabel;
+import cocostudio.ui.widget.TTFLabelStyle;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -33,9 +35,10 @@ public class CCButton extends GroupParser {
 		ImageButton button = new ImageButton(style);
 
 		if (option.getText() != null && !option.getText().equals("")) {
-			LabelStyle labelStyle = editor.createLabelStyle(option);
+
+			TTFLabelStyle labelStyle = editor.createLabelStyle(option);
 			if (labelStyle != null) {
-				Label label = new Label(option.getText(), labelStyle);
+				TTFLabel label = new TTFLabel(option.getText(), labelStyle);
 				label.setPosition((button.getWidth() - label.getWidth()) / 2,
 						(button.getHeight() - label.getHeight()) / 2);
 				button.addActor(label);

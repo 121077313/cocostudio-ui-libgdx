@@ -21,10 +21,10 @@ public class CCImageView extends WidgetParser {
 	public Actor parse(CocoStudioUIEditor editor, CCWidget widget,
 			CCOption option) {
 
-		TextureRegion tr = editor.findTextureRegion(option, option.getFileNameData()
-				.getPath());
+		TextureRegion tr = editor.findTextureRegion(option, option
+				.getFileNameData().getPath());
 		if (tr == null) {
-			return null;
+			return new Image();
 		}
 		Image image = new Image(tr);
 

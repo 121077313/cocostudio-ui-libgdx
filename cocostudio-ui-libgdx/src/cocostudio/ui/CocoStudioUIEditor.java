@@ -25,6 +25,8 @@ import cocostudio.ui.parser.widget.CCLabel;
 import cocostudio.ui.parser.widget.CCLabelBMFont;
 import cocostudio.ui.parser.widget.CCLoadingBar;
 import cocostudio.ui.parser.widget.CCTextField;
+import cocostudio.ui.util.StringUtil;
+import cocostudio.ui.widget.TTFLabelStyle;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -76,7 +78,7 @@ public class CocoStudioUIEditor {
 	private String dirName;
 
 	/** 所有纹理 */
-	protected TextureAtlas textureAtlas;
+	protected TextureAtlas[] textureAtlas;
 
 	/** 控件集合 */
 	protected Map<String, Array<Actor>> actors;
@@ -103,8 +105,8 @@ public class CocoStudioUIEditor {
 	 * @param textureAtlas
 	 *            资源文件,传入 null表示使用小文件方式加载图片
 	 */
-	public CocoStudioUIEditor(FileHandle jsonFile, TextureAtlas textureAtlas) {
-		this(jsonFile, textureAtlas, null, null);
+	public CocoStudioUIEditor(FileHandle jsonFile, TextureAtlas... textureAtlas) {
+		this(jsonFile, null, null, null, textureAtlas);
 	}
 
 	/** 添加转换器 */
@@ -112,24 +114,31 @@ public class CocoStudioUIEditor {
 		parsers.put(parser.getClassName(), parser);
 	}
 
+	/** 默认ttf字体文件 */
+	protected FileHandle defaultFont;
+
 	/**
 	 * 
 	 * @param jsonFile
 	 *            ui编辑成生成的json文件
 	 * @param textureAtlas
-	 *            资源文件,传入 null表示使用小文件方式加载图片.这里其实可以传入多个纹理.但是不是很好的处理方式,
-	 *            所以打包图片就打包进一张里面去吧
+	 *            资源文件,传入 null表示使用小文件方式加载图片.
 	 * 
 	 * @param ttfs
 	 *            字体文件集合
 	 * @param bitmapFonts
 	 *            自定义字体文件集合
+	 * @param defaultFont
+	 *            默认ttf字体文件
 	 */
-	public CocoStudioUIEditor(FileHandle jsonFile, TextureAtlas textureAtlas,
-			Map<String, FileHandle> ttfs, Map<String, BitmapFont> bitmapFonts) {
+	public CocoStudioUIEditor(FileHandle jsonFile,
+			Map<String, FileHandle> ttfs, Map<String, BitmapFont> bitmapFonts,
+			FileHandle defaultFont, TextureAtlas... textureAtlas) {
 		this.textureAtlas = textureAtlas;
 		this.ttfs = ttfs;
 		this.bitmapFonts = bitmapFonts;
+		this.defaultFont = defaultFont;
+
 		parsers = new HashMap<String, BaseWidgetParser>();
 
 		addParser(new CCButton());
@@ -258,17 +267,6 @@ public class CocoStudioUIEditor {
 		return null;
 	}
 
-	// public CCAction getAction(String actionName) {
-	//
-	// CCAnimation animation = export.getAnimation();
-	// for (CCAction action : animation.getActionlist()) {
-	// if (action.getName().equals(actionName)) {
-	// return action;
-	// }
-	// }
-	// return null;
-	// }
-
 	/**
 	 * 获取材质
 	 * 
@@ -281,7 +279,7 @@ public class CocoStudioUIEditor {
 			return null;
 		}
 		TextureRegion tr = null;
-		if (textureAtlas == null) {// 不使用合并纹理
+		if (textureAtlas == null || textureAtlas.length == 0) {// 不使用合并纹理
 			tr = new TextureRegion(new Texture(Gdx.files.internal(dirName
 					+ name)));
 		} else {
@@ -298,16 +296,32 @@ public class CocoStudioUIEditor {
 			// 考虑index下标
 
 			if (name.indexOf("_") == -1) {
-				tr = textureAtlas.findRegion(name);
+
+				for (TextureAtlas ta : textureAtlas) {
+					tr = ta.findRegion(name);
+					if (ta != null) {
+						break;
+					}
+				}
 			} else {
 				try {
 					int length = name.lastIndexOf("_");
 					Integer index = Integer.parseInt(name.substring(length + 1,
 							name.length()));
 					name = name.substring(0, length);
-					tr = textureAtlas.findRegion(name, index);
+					for (TextureAtlas ta : textureAtlas) {
+						tr = ta.findRegion(name, index);
+						if (ta != null) {
+							break;
+						}
+					}
 				} catch (Exception e) {
-					tr = textureAtlas.findRegion(name);
+					for (TextureAtlas ta : textureAtlas) {
+						tr = ta.findRegion(name);
+						if (ta != null) {
+							break;
+						}
+					}
 				}
 			}
 		}
@@ -401,7 +415,7 @@ public class CocoStudioUIEditor {
 	 * @param option
 	 * @return
 	 */
-	public LabelStyle createLabelStyle(CCOption option) {
+	public TTFLabelStyle createLabelStyle(CCOption option) {
 
 		FileHandle fontFile = null;
 		if (ttfs != null) {
@@ -412,6 +426,10 @@ public class CocoStudioUIEditor {
 			// } catch (Exception e) {
 			// // 备用加载方式
 			// }
+		}
+
+		if (fontFile == null) {// 使用默认字体文件
+			fontFile = defaultFont;
 		}
 
 		Color textColor = null;
@@ -435,56 +453,27 @@ public class CocoStudioUIEditor {
 		if (fontFile == null) {
 			debug(option, "ttf字体:" + option.getFontName() + " 不存在");
 
-			return new LabelStyle(new BitmapFont(), textColor);
-		} else {
-			FreeTypeFontGenerator generator = null;
-			BitmapFont font;
-			try {
-				generator = new FreeTypeFontGenerator(fontFile);
-				String text = removeRepeatedChar(option.getText());
-				font = generator
-						.generateFont(option.getFontSize(), text, false);
-				generator.dispose();
-				return new LabelStyle(font, textColor);
-			} catch (Exception e) {
-				error(option, "创建字体错误,fontName:" + option.getFontName()
-						+ ",text:" + option.getText());
-				e.printStackTrace();
-				return null;
-			}
+			return new TTFLabelStyle(
+					new LabelStyle(new BitmapFont(), textColor), fontFile,
+					option.getFontSize());
 		}
 
-	}
-
-	/** 去除重复字符 */
-	public static String removeRepeatedChar(String text) {
-		char[] chars = text.toCharArray();
-		char[] existChar = new char[chars.length];
-		int i = 0;
-		StringBuffer sb = new StringBuffer();
-		for (char ch : chars) {
-			if (isExistsChar(existChar, ch)) {
-				continue;
-			}
-			existChar[i] = ch;
-			sb.append(ch);
-			i++;
+		FreeTypeFontGenerator generator = null;
+		BitmapFont font;
+		try {
+			generator = new FreeTypeFontGenerator(fontFile);
+			String text = StringUtil.removeRepeatedChar(option.getText());
+			font = generator.generateFont(option.getFontSize(), text, false);
+			generator.dispose();
+			return new TTFLabelStyle(new LabelStyle(font, textColor), fontFile,
+					option.getFontSize());
+		} catch (Exception e) {
+			error(option, "创建字体错误,fontName:" + option.getFontName() + ",text:"
+					+ option.getText());
+			e.printStackTrace();
+			return null;
 		}
 
-		if (chars.length == i) {// 没有重复项避免创建String
-			return text;
-		}
-		return sb.toString();
-	}
-
-	/** 检查是否存在字符 */
-	static boolean isExistsChar(char[] chars, char ch) {
-		for (char c : chars) {
-			if (c == ch) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	public Map<String, Array<Actor>> getActors() {

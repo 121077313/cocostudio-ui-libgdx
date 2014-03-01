@@ -30,6 +30,7 @@ public abstract class BaseWidgetParser {
 	/** 公共属性解析器 */
 	public Actor commonParse(CocoStudioUIEditor editor, CCWidget widget,
 			CCOption option, Group parent, Actor actor) {
+
 		actor.setName(option.getName());
 
 		if (option.isIgnoreSize()) {// 忽略大小,指的是编辑器无法指定大小(?)
