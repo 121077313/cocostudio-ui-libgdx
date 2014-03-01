@@ -1,0 +1,11 @@
+run {
+    ignoreExitValue = true
+}
+
+eclipse.project {
+    name = appName+"-demo"
+}
+
+mainClassName = "demo.Main"
+
+sourceSets.main.resources.srcDirs = [file("assets").getAbsolutePath()]

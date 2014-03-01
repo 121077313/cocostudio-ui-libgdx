@@ -1,0 +1,16 @@
+eclipse.project {
+    name = appName
+}
+
+task packageCore(type: Jar, dependsOn: jar){
+        baseName='cocostudio-ui-libgdx'
+        destinationDir=file('../build')
+        from files(project(':core').sourceSets.main.output.classesDir)
+        manifest {
+            attributes 'Implementation-Version': "${version}",
+                    'Built-Date': new Date().getDateTimeString(),
+                    'Built-With': "gradle-${project.getGradle().getGradleVersion()}, groovy-${GroovySystem.getVersion()}",
+                    'Created-By': 'Java ' + System.getProperty('java.version') + ' (' + System.getProperty('java.vendor') + ')'
+        }
+}
+

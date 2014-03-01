@@ -5,3 +5,6 @@
 .idea/
 bin/
 *~
+
+.gradle/
+build/
