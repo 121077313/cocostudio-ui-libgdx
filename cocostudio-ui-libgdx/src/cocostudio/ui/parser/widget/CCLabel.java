@@ -21,9 +21,6 @@ public class CCLabel extends WidgetParser {
 			CCOption option) {
 
 		LabelStyle labelStyle = editor.createLabelStyle(option);
-		if (labelStyle == null) {
-			return null;
-		}
 		Label label = new Label(option.getText(), labelStyle);
 		label.setAlignment(option.getvAlignment(), option.gethAlignment());
 		return label;

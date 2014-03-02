@@ -76,7 +76,7 @@ public class CocoStudioUIEditor {
 	private String dirName;
 
 	/** 所有纹理 */
-	protected TextureAtlas textureAtlas;
+	protected TextureAtlas[] textureAtlas;
 
 	/** 控件集合 */
 	protected Map<String, Array<Actor>> actors;
@@ -96,6 +96,8 @@ public class CocoStudioUIEditor {
 
 	protected Map<String, BaseWidgetParser> parsers;
 
+	FileHandle defaultFont;
+
 	/**
 	 * 不需要显示文字
 	 * 
@@ -103,8 +105,8 @@ public class CocoStudioUIEditor {
 	 * @param textureAtlas
 	 *            资源文件,传入 null表示使用小文件方式加载图片
 	 */
-	public CocoStudioUIEditor(FileHandle jsonFile, TextureAtlas textureAtlas) {
-		this(jsonFile, textureAtlas, null, null);
+	public CocoStudioUIEditor(FileHandle jsonFile, TextureAtlas... textureAtlas) {
+		this(jsonFile, null, null, null, textureAtlas);
 	}
 
 	/** 添加转换器 */
@@ -125,11 +127,13 @@ public class CocoStudioUIEditor {
 	 * @param bitmapFonts
 	 *            自定义字体文件集合
 	 */
-	public CocoStudioUIEditor(FileHandle jsonFile, TextureAtlas textureAtlas,
-			Map<String, FileHandle> ttfs, Map<String, BitmapFont> bitmapFonts) {
+	public CocoStudioUIEditor(FileHandle jsonFile,
+			Map<String, FileHandle> ttfs, Map<String, BitmapFont> bitmapFonts,
+			FileHandle defaultFont, TextureAtlas... textureAtlas) {
 		this.textureAtlas = textureAtlas;
 		this.ttfs = ttfs;
 		this.bitmapFonts = bitmapFonts;
+		this.defaultFont = defaultFont;
 		parsers = new HashMap<String, BaseWidgetParser>();
 
 		addParser(new CCButton());
@@ -281,7 +285,7 @@ public class CocoStudioUIEditor {
 			return null;
 		}
 		TextureRegion tr = null;
-		if (textureAtlas == null) {// 不使用合并纹理
+		if (textureAtlas == null || textureAtlas.length == 0) {// 不使用合并纹理
 			tr = new TextureRegion(new Texture(Gdx.files.internal(dirName
 					+ name)));
 		} else {
@@ -298,16 +302,25 @@ public class CocoStudioUIEditor {
 			// 考虑index下标
 
 			if (name.indexOf("_") == -1) {
-				tr = textureAtlas.findRegion(name);
+
+				for (TextureAtlas ta : textureAtlas) {
+					tr = ta.findRegion(name);
+				}
+
 			} else {
 				try {
 					int length = name.lastIndexOf("_");
 					Integer index = Integer.parseInt(name.substring(length + 1,
 							name.length()));
 					name = name.substring(0, length);
-					tr = textureAtlas.findRegion(name, index);
+
+					for (TextureAtlas ta : textureAtlas) {
+						tr = ta.findRegion(name, index);
+					}
 				} catch (Exception e) {
-					tr = textureAtlas.findRegion(name);
+					for (TextureAtlas ta : textureAtlas) {
+						tr = ta.findRegion(name);
+					}
 				}
 			}
 		}
@@ -433,10 +446,10 @@ public class CocoStudioUIEditor {
 		}
 
 		if (fontFile == null) {
-			debug(option, "ttf字体:" + option.getFontName() + " 不存在");
+			fontFile = defaultFont;
+		}
 
-			return new LabelStyle(new BitmapFont(), textColor);
-		} else {
+		if (fontFile != null) {
 			FreeTypeFontGenerator generator = null;
 			BitmapFont font;
 			try {
@@ -450,10 +463,12 @@ public class CocoStudioUIEditor {
 				error(option, "创建字体错误,fontName:" + option.getFontName()
 						+ ",text:" + option.getText());
 				e.printStackTrace();
-				return null;
 			}
 		}
 
+		debug(option, "ttf字体:" + option.getFontName() + " 不存在");
+
+		return new LabelStyle(new BitmapFont(), textColor);
 	}
 
 	/** 去除重复字符 */

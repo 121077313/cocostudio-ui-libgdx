@@ -39,8 +39,8 @@ public abstract class BaseWidgetParser {
 		}
 
 		// 设置锚点
-		actor.setOrigin(option.getAnchorPointX() * option.getWidth(),
-				option.getAnchorPointY() * option.getHeight());
+		actor.setOrigin(option.getAnchorPointX() * actor.getWidth(),
+				option.getAnchorPointY() * actor.getHeight());
 
 		if (parent == null) {
 			actor.setPosition(option.getX() - actor.getOriginX(), option.getY()

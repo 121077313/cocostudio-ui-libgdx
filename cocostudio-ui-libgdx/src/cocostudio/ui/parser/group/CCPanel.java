@@ -35,6 +35,9 @@ public class CCPanel extends GroupParser {
 			CCOption option) {
 		Table table = new Table();
 
+		// cocos2d默认锚点为中心点
+		option.setAnchorPointX(0.5f);
+		option.setAnchorPointY(0.5f);
 		if (option.getColorType() == 0) {// 无颜色
 
 		} else if (option.getColorType() == 1) {// 单色
@@ -42,8 +45,7 @@ public class CCPanel extends GroupParser {
 			Pixmap pixmap = new Pixmap((int) option.getWidth(),
 					(int) option.getHeight(), Format.RGBA8888);
 			pixmap.setColor(option.getBgColorR() / 255f,
-					option.getBgColorG() / 255f,
-					option.getBgColorB() / 255f,
+					option.getBgColorG() / 255f, option.getBgColorB() / 255f,
 					option.getBgColorOpacity() / 255f);
 
 			pixmap.fill();
@@ -60,11 +62,11 @@ public class CCPanel extends GroupParser {
 					.getBackGroundImageData().getPath());
 			if (tr != null) {
 				Image bg = new Image(tr);
-//				bg.setPosition((option.getWidth() - bg.getWidth()) / 2,
-//						(option.getHeight() - bg.getHeight()) / 2);
+				// bg.setPosition((option.getWidth() - bg.getWidth()) / 2,
+				// (option.getHeight() - bg.getHeight()) / 2);
 				bg.setFillParent(true);
 				bg.setTouchable(Touchable.disabled);
-				
+
 				bg.setColor(option.getColorR() / 255f,
 						option.getColorG() / 255f, option.getColorB() / 255f,
 						option.getOpacity() / 255f);
