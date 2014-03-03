@@ -1,12 +1,7 @@
 package cocostudio.ui.widget;
 
-import cocostudio.ui.CocoStudioUIEditor;
 import cocostudio.ui.util.FontUtil;
-import cocostudio.ui.util.StringUtil;
 
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 /**
