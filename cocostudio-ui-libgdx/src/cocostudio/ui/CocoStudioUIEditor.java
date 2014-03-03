@@ -138,7 +138,6 @@ public class CocoStudioUIEditor {
 		this.ttfs = ttfs;
 		this.bitmapFonts = bitmapFonts;
 		this.defaultFont = defaultFont;
-
 		parsers = new HashMap<String, BaseWidgetParser>();
 
 		addParser(new CCButton());
@@ -303,6 +302,7 @@ public class CocoStudioUIEditor {
 						break;
 					}
 				}
+
 			} else {
 				try {
 					int length = name.lastIndexOf("_");
@@ -315,6 +315,7 @@ public class CocoStudioUIEditor {
 							break;
 						}
 					}
+
 				} catch (Exception e) {
 					for (TextureAtlas ta : textureAtlas) {
 						tr = ta.findRegion(name);
@@ -451,29 +452,31 @@ public class CocoStudioUIEditor {
 		}
 
 		if (fontFile == null) {
-			debug(option, "ttf字体:" + option.getFontName() + " 不存在");
-
-			return new TTFLabelStyle(
-					new LabelStyle(new BitmapFont(), textColor), fontFile,
-					option.getFontSize());
+			fontFile = defaultFont;
 		}
 
-		FreeTypeFontGenerator generator = null;
-		BitmapFont font;
-		try {
-			generator = new FreeTypeFontGenerator(fontFile);
-			String text = StringUtil.removeRepeatedChar(option.getText());
-			font = generator.generateFont(option.getFontSize(), text, false);
-			generator.dispose();
-			return new TTFLabelStyle(new LabelStyle(font, textColor), fontFile,
-					option.getFontSize());
-		} catch (Exception e) {
-			error(option, "创建字体错误,fontName:" + option.getFontName() + ",text:"
-					+ option.getText());
-			e.printStackTrace();
-			return null;
-		}
+		if (fontFile != null) {
 
+			FreeTypeFontGenerator generator = null;
+			BitmapFont font;
+			try {
+				generator = new FreeTypeFontGenerator(fontFile);
+				String text = StringUtil.removeRepeatedChar(option.getText());
+				font = generator
+						.generateFont(option.getFontSize(), text, false);
+				generator.dispose();
+				return new TTFLabelStyle(new LabelStyle(font, textColor),
+						fontFile, option.getFontSize());
+			} catch (Exception e) {
+				error(option, "创建字体错误,fontName:" + option.getFontName()
+						+ ",text:" + option.getText());
+				e.printStackTrace();
+			}
+		}
+		debug(option, "ttf字体:" + option.getFontName() + " 不存在");
+
+		return new TTFLabelStyle(new LabelStyle(new BitmapFont(), textColor),
+				fontFile, option.getFontSize());
 	}
 
 	public Map<String, Array<Actor>> getActors() {

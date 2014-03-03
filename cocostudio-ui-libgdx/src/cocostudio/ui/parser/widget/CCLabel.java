@@ -23,9 +23,6 @@ public class CCLabel extends WidgetParser {
 			CCOption option) {
 
 		TTFLabelStyle labelStyle = editor.createLabelStyle(option);
-		if (labelStyle == null) {
-			return null;
-		}
 		TTFLabel label = new TTFLabel(option.getText(), labelStyle);
 		label.setAlignment(option.getvAlignment(), option.gethAlignment());
 

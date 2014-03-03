@@ -35,6 +35,10 @@ public class CCPanel extends GroupParser {
 			CCOption option) {
 		Table table = new Table();
 //		table.setOrigin(table.getWidth() / 2, table.getHeight() / 2);
+
+		// cocos2d默认锚点为中心点
+		option.setAnchorPointX(0.5f);
+		option.setAnchorPointY(0.5f);
 		if (option.getColorType() == 0) {// 无颜色
 
 		} else if (option.getColorType() == 1) {// 单色
