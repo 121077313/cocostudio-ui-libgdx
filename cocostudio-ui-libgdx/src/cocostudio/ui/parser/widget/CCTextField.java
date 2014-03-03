@@ -25,9 +25,8 @@ public class CCTextField extends WidgetParser {
 
 		TTFLabelStyle labelStyle = editor.createLabelStyle(option);
 
-		TextFieldStyle style = new TextFieldStyle(
-				labelStyle.getLabelStyle().font,
-				labelStyle.getLabelStyle().fontColor, null, null, null);
+		TextFieldStyle style = new TextFieldStyle(labelStyle.font,
+				labelStyle.fontColor, null, null, null);
 		TextField textField = new TextField(option.getText(), style);
 		textField.setMessageText(option.getPlaceHolder());
 		textField.setPasswordMode(option.isPasswordEnable());

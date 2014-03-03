@@ -26,8 +26,8 @@ public class CCLabelBMFont extends WidgetParser {
 		if (editor.getBitmapFonts() != null) {
 			font = editor.getBitmapFonts().get(
 					option.getFileNameData().getPath());
-		} else {
-
+		}
+		if (font == null) {//备用创建字体方式
 			font = new BitmapFont(Gdx.files.internal(editor.getDirName()
 					+ option.getFileNameData().getPath()));
 		}

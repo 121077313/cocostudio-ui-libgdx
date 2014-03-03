@@ -3,35 +3,17 @@ package cocostudio.ui.widget;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 
-public class TTFLabelStyle {
+public class TTFLabelStyle extends LabelStyle {
 
-	private LabelStyle labelStyle;
-
-	private FileHandle fileHandle;
+	private FileHandle fontFileHandle;
 
 	private int fontSize;
 
-	public TTFLabelStyle(LabelStyle labelStyle, FileHandle fileHandle,
+	public TTFLabelStyle(LabelStyle labelStyle, FileHandle fontFileHandle,
 			int fontSize) {
-		this.labelStyle = labelStyle;
-		this.fileHandle = fileHandle;
+		super(labelStyle);
+		this.fontFileHandle = fontFileHandle;
 		this.fontSize = fontSize;
-	}
-
-	public LabelStyle getLabelStyle() {
-		return labelStyle;
-	}
-
-	public void setLabelStyle(LabelStyle labelStyle) {
-		this.labelStyle = labelStyle;
-	}
-
-	public FileHandle getFileHandle() {
-		return fileHandle;
-	}
-
-	public void setFileHandle(FileHandle fileHandle) {
-		this.fileHandle = fileHandle;
 	}
 
 	public int getFontSize() {
@@ -40,6 +22,14 @@ public class TTFLabelStyle {
 
 	public void setFontSize(int fontSize) {
 		this.fontSize = fontSize;
+	}
+
+	public FileHandle getFontFileHandle() {
+		return fontFileHandle;
+	}
+
+	public void setFontFileHandle(FileHandle fontFileHandle) {
+		this.fontFileHandle = fontFileHandle;
 	}
 
 }

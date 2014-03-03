@@ -17,18 +17,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
  */
 public class TTFLabel extends Label {
 
-	TTFLabelStyle ttfLabelStyle;
-
 	public TTFLabel(CharSequence text, TTFLabelStyle ttfLabelStyle) {
-		super(text, ttfLabelStyle.getLabelStyle());
-		this.ttfLabelStyle = ttfLabelStyle;
+		super(text, ttfLabelStyle);
 	}
 
 	@Override
 	public void setText(CharSequence newText) {
-		LabelStyle style = getStyle();
-		style.font = FontUtil.createFont(ttfLabelStyle.getFileHandle(), ""
-				+ newText, ttfLabelStyle.getFontSize());
+
+		TTFLabelStyle style = (TTFLabelStyle) getStyle();
+		style.font = FontUtil.createFont(style.getFontFileHandle(), ""
+				+ newText, style.getFontSize());
 		setStyle(style);
 
 		super.setText(newText);
