@@ -36,7 +36,6 @@ public class CCScrollView extends GroupParser {
 		}
 
 		ScrollPane scrollPane = new ScrollPane(null, style);
-
 		switch (option.getDirection()) {
 		case 1:
 			scrollPane.setForceScroll(false, true);
