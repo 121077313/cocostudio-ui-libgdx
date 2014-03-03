@@ -25,9 +25,6 @@ public class CCTextField extends WidgetParser {
 
 		TTFLabelStyle labelStyle = editor.createLabelStyle(option);
 
-		if (labelStyle == null) {
-			return null;
-		}
 		TextFieldStyle style = new TextFieldStyle(
 				labelStyle.getLabelStyle().font,
 				labelStyle.getLabelStyle().fontColor, null, null, null);
@@ -35,9 +32,7 @@ public class CCTextField extends WidgetParser {
 		textField.setMessageText(option.getPlaceHolder());
 		textField.setPasswordMode(option.isPasswordEnable());
 		textField.setPasswordCharacter(option.getPasswordStyleText());
-		
-		
-		
+
 		return textField;
 	}
 

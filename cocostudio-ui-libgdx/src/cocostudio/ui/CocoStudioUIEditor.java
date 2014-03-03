@@ -25,6 +25,7 @@ import cocostudio.ui.parser.widget.CCLabel;
 import cocostudio.ui.parser.widget.CCLabelBMFont;
 import cocostudio.ui.parser.widget.CCLoadingBar;
 import cocostudio.ui.parser.widget.CCTextField;
+import cocostudio.ui.util.FontUtil;
 import cocostudio.ui.util.StringUtil;
 import cocostudio.ui.widget.TTFLabelStyle;
 
@@ -421,12 +422,6 @@ public class CocoStudioUIEditor {
 		FileHandle fontFile = null;
 		if (ttfs != null) {
 			fontFile = ttfs.get(option.getFontName());
-		} else {
-			// try {
-			// fontFile = Gdx.files.internal(dirName + option.getFontName());
-			// } catch (Exception e) {
-			// // 备用加载方式
-			// }
 		}
 
 		if (fontFile == null) {// 使用默认字体文件
@@ -452,31 +447,14 @@ public class CocoStudioUIEditor {
 		}
 
 		if (fontFile == null) {
-			fontFile = defaultFont;
+			debug(option, "ttf字体:" + option.getFontName() + " 不存在,使用默认字体");
 		}
 
-		if (fontFile != null) {
+		BitmapFont font = FontUtil.createFont(fontFile, option.getText(),
+				option.getFontSize());
 
-			FreeTypeFontGenerator generator = null;
-			BitmapFont font;
-			try {
-				generator = new FreeTypeFontGenerator(fontFile);
-				String text = StringUtil.removeRepeatedChar(option.getText());
-				font = generator
-						.generateFont(option.getFontSize(), text, false);
-				generator.dispose();
-				return new TTFLabelStyle(new LabelStyle(font, textColor),
-						fontFile, option.getFontSize());
-			} catch (Exception e) {
-				error(option, "创建字体错误,fontName:" + option.getFontName()
-						+ ",text:" + option.getText());
-				e.printStackTrace();
-			}
-		}
-		debug(option, "ttf字体:" + option.getFontName() + " 不存在");
-
-		return new TTFLabelStyle(new LabelStyle(new BitmapFont(), textColor),
-				fontFile, option.getFontSize());
+		return new TTFLabelStyle(new LabelStyle(font, textColor), fontFile,
+				option.getFontSize());
 	}
 
 	public Map<String, Array<Actor>> getActors() {

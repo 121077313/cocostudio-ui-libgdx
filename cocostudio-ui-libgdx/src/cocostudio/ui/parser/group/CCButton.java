@@ -35,14 +35,11 @@ public class CCButton extends GroupParser {
 		ImageButton button = new ImageButton(style);
 
 		if (option.getText() != null && !option.getText().equals("")) {
-
 			TTFLabelStyle labelStyle = editor.createLabelStyle(option);
-			if (labelStyle != null) {
-				TTFLabel label = new TTFLabel(option.getText(), labelStyle);
-				label.setPosition((button.getWidth() - label.getWidth()) / 2,
-						(button.getHeight() - label.getHeight()) / 2);
-				button.addActor(label);
-			}
+			TTFLabel label = new TTFLabel(option.getText(), labelStyle);
+			label.setPosition((button.getWidth() - label.getWidth()) / 2,
+					(button.getHeight() - label.getHeight()) / 2);
+			button.addActor(label);
 		}
 		return button;
 	}

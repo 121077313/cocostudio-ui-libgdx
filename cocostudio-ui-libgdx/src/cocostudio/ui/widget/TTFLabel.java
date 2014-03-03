@@ -1,6 +1,7 @@
 package cocostudio.ui.widget;
 
 import cocostudio.ui.CocoStudioUIEditor;
+import cocostudio.ui.util.FontUtil;
 import cocostudio.ui.util.StringUtil;
 
 import com.badlogic.gdx.files.FileHandle;
@@ -25,19 +26,10 @@ public class TTFLabel extends Label {
 
 	@Override
 	public void setText(CharSequence newText) {
-
-		try {
-			LabelStyle style = getStyle();
-			FreeTypeFontGenerator generator = new FreeTypeFontGenerator(
-					ttfLabelStyle.getFileHandle());
-			String text = StringUtil.removeRepeatedChar("" + newText);
-			style.font = generator.generateFont(ttfLabelStyle.getFontSize(),
-					text, false);
-			generator.dispose();
-			setStyle(style);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		LabelStyle style = getStyle();
+		style.font = FontUtil.createFont(ttfLabelStyle.getFileHandle(), ""
+				+ newText, ttfLabelStyle.getFontSize());
+		setStyle(style);
 
 		super.setText(newText);
 	}
