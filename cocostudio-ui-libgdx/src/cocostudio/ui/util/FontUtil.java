@@ -19,7 +19,6 @@ public class FontUtil {
 			generator = new FreeTypeFontGenerator(fontHandle);
 			String newText = StringUtil.removeRepeatedChar(text);
 			font = generator.generateFont(fontSize, newText, false);
-			generator.dispose();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
