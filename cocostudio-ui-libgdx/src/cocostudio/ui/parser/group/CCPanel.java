@@ -55,7 +55,7 @@ public class CCPanel extends GroupParser {
 		}
 
 		if (option.getBackGroundImageData() != null) {// Panel的图片并不是拉伸平铺的!!.但是这里修改为填充
-			TextureRegion tr = editor.findTextureRegion(option, option
+			Drawable tr = editor.findDrawable(option, option
 					.getBackGroundImageData().getPath());
 			if (tr != null) {
 				Image bg = new Image(tr);

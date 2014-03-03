@@ -34,6 +34,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -58,6 +59,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
@@ -267,6 +269,26 @@ public class CocoStudioUIEditor {
 		return null;
 	}
 
+	TextureRegion findRegion(String name) {
+		for (TextureAtlas ta : textureAtlas) {
+			TextureRegion tr = ta.findRegion(name);
+			if (tr != null) {
+				return tr;
+			}
+		}
+		return null;
+	}
+
+	TextureRegion findRegion(String name, int index) {
+		for (TextureAtlas ta : textureAtlas) {
+			TextureRegion tr = ta.findRegion(name, index);
+			if (tr != null) {
+				return tr;
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * 获取材质
 	 * 
@@ -284,8 +306,6 @@ public class CocoStudioUIEditor {
 					+ name)));
 		} else {
 
-			// name = name.substring(parentName.length(), name.length() - 4);
-
 			try {
 				String[] arr = name.split("\\/");
 				name = name.substring(arr[0].length() + 1, name.length() - 4);
@@ -296,34 +316,21 @@ public class CocoStudioUIEditor {
 			// 考虑index下标
 
 			if (name.indexOf("_") == -1) {
-
-				for (TextureAtlas ta : textureAtlas) {
-					tr = ta.findRegion(name);
-					if (ta != null) {
-						break;
-					}
-				}
-
+				tr = findRegion(name);
 			} else {
 				try {
 					int length = name.lastIndexOf("_");
+
 					Integer index = Integer.parseInt(name.substring(length + 1,
 							name.length()));
+					// 这里可能报错,属于正常,因为会出现 xx_xx名字的资源而不是xx_2这种
+
 					name = name.substring(0, length);
-					for (TextureAtlas ta : textureAtlas) {
-						tr = ta.findRegion(name, index);
-						if (ta != null) {
-							break;
-						}
-					}
+
+					tr = findRegion(name, index);
 
 				} catch (Exception e) {
-					for (TextureAtlas ta : textureAtlas) {
-						tr = ta.findRegion(name);
-						if (ta != null) {
-							break;
-						}
-					}
+					tr = findRegion(name);
 				}
 			}
 		}
@@ -344,11 +351,82 @@ public class CocoStudioUIEditor {
 		return tr;
 	}
 
+	/**
+	 * .9文件生成
+	 * 
+	 * @param option
+	 * @param name
+	 * @author wujj
+	 * @return
+	 */
+	public NinePatch findNinePatch(CCOption option, String name) {
+		if (name == null || name.equals("")) {
+			return null;
+		}
+
+		NinePatch tr = null;
+		if (textureAtlas == null || textureAtlas.length == 0) {// 不使用合并纹理
+			tr = new NinePatch(new Texture(Gdx.files.internal(dirName + name)),
+					option.getCapInsetsX(), option.getCapInsetsX()
+							+ option.getCapInsetsWidth(),
+					option.getCapInsetsY(), option.getCapInsetsY()
+							+ option.getCapInsetsHeight());
+		} else {
+			name = name.substring(0, name.indexOf("."));
+			// 考虑index下标
+
+			if (name.indexOf("_") == -1) {
+				for (TextureAtlas atlas : textureAtlas) {
+					tr = atlas.createPatch(name);
+					if (tr != null) {
+						break;
+					}
+				}
+			} else {
+				try {
+					// 不支持同名索引查找
+					int length = name.lastIndexOf("_");
+					Integer index = Integer.parseInt(name.substring(length + 1,
+							name.length()));
+					name = name.substring(0, length);
+					for (TextureAtlas atlas : textureAtlas) {
+						tr = atlas.createPatch(name);
+						if (tr != null) {
+							break;
+						}
+					}
+				} catch (Exception e) {
+					for (TextureAtlas atlas : textureAtlas) {
+						tr = atlas.createPatch(name);
+						if (tr != null) {
+							break;
+						}
+					}
+				}
+			}
+		}
+		if (tr == null) {
+			debug(option, "找不到纹理");
+		}
+		// 不支持翻转和镜像
+		return tr;
+	}
+
 	public Drawable findDrawable(CCOption option, String name) {
+
+		if (option.isScale9Enable()) {// 九宫格支持
+			NinePatch np = findNinePatch(option, name);
+			if (np == null) {
+				return null;
+			}
+			return new NinePatchDrawable(np);
+		}
+
 		TextureRegion tr = findTextureRegion(option, name);
 		if (tr == null) {
 			return null;
 		}
+
 		return new TextureRegionDrawable(tr);
 	}
 
