@@ -29,18 +29,18 @@ public class CCCheckBox extends GroupParser {
 			CCOption option) {
 		CheckBoxStyle style = new CheckBoxStyle(null, null, new BitmapFont(),
 				Color.BLACK);
-		if (option.getFrontCrossData() != null) {// 选中图片
+
+		if (option.getBackGroundBoxData() != null) {// 选中图片
+
+			style.checkboxOff = editor.findDrawable(option, option
+					.getBackGroundBoxData().getPath());
+		}
+		if (option.getFrontCrossData() != null) {// 没选中图片
 			style.checkboxOn = editor.findDrawable(option, option
 					.getFrontCrossData().getPath());
 		}
-
-		if (option.getFrontCrossDisabledData() != null) {// 没选中图片
-
-			style.checkboxOff = editor.findDrawable(option, option
-					.getFrontCrossDisabledData().getPath());
-		}
-
 		CheckBox checkBox = new CheckBox("", style);
+		checkBox.setChecked(option.isSelectedState());
 		return checkBox;
 	}
 }
