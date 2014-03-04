@@ -23,7 +23,6 @@ public class CCTextField extends WidgetParser {
 			CCOption option) {
 
 		final TTFLabelStyle labelStyle = editor.createLabelStyle(option);
-
 		TextFieldStyle style = new TextFieldStyle(labelStyle.font,
 				labelStyle.fontColor, null, null, null);
 		TextField textField = new TextField(option.getText(), style) {
