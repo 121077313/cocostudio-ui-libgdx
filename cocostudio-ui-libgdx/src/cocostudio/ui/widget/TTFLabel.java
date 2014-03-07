@@ -2,6 +2,7 @@ package cocostudio.ui.widget;
 
 import cocostudio.ui.util.FontUtil;
 
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 /**
@@ -18,13 +19,22 @@ public class TTFLabel extends Label {
 
 	@Override
 	public void setText(CharSequence newText) {
+		LabelStyle style = getStyle();
+		style.font = createFont((TTFLabelStyle) style, "" + newText);
 
-		TTFLabelStyle style = (TTFLabelStyle) getStyle();
-		style.font = FontUtil.createFont(style.getFontFileHandle(), ""
-				+ newText, style.getFontSize());
-		setStyle(style);
-
+		super.setStyle(style);
 		super.setText(newText);
 	}
 
+	@Override
+	public void setStyle(LabelStyle style) {
+		style.font = createFont((TTFLabelStyle) style, "" + getText());
+
+		super.setStyle(style);
+	}
+
+	BitmapFont createFont(TTFLabelStyle ttfStyle, String text) {
+		return FontUtil.createFont(ttfStyle.getFontFileHandle(), text,
+				ttfStyle.getFontSize());
+	}
 }
