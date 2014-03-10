@@ -126,12 +126,30 @@ public class CCOption {
 
 	CCWidgetData textureData;
 
+	CCWidgetData charMapFileData;
+
+	int itemWidth;
+
+	int itemHeight;
+
+	String stringValue;
+
+	String startCharMap;
+
 	public String get__type() {
 		return __type;
 	}
 
 	public void set__type(String __type) {
 		this.__type = __type;
+	}
+
+	public CCWidgetData getCharMapFileData() {
+		return charMapFileData;
+	}
+
+	public void setCharMapFileData(CCWidgetData charMapFileData) {
+		this.charMapFileData = charMapFileData;
 	}
 
 	public String getClassname() {
@@ -148,6 +166,22 @@ public class CCOption {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public int getItemWidth() {
+		return itemWidth;
+	}
+
+	public void setItemWidth(int itemWidth) {
+		this.itemWidth = itemWidth;
+	}
+
+	public int getItemHeight() {
+		return itemHeight;
+	}
+
+	public void setItemHeight(int itemHeight) {
+		this.itemHeight = itemHeight;
 	}
 
 	public int getZOrder() {
@@ -214,7 +248,6 @@ public class CCOption {
 		this.flipY = flipY;
 	}
 
-
 	public float getHeight() {
 		return height;
 	}
@@ -261,6 +294,22 @@ public class CCOption {
 
 	public void setPositionPercentY(float positionPercentY) {
 		this.positionPercentY = positionPercentY;
+	}
+
+	public String getStringValue() {
+		return stringValue;
+	}
+
+	public void setStringValue(String stringValue) {
+		this.stringValue = stringValue;
+	}
+
+	public String getStartCharMap() {
+		return startCharMap;
+	}
+
+	public void setStartCharMap(String startCharMap) {
+		this.startCharMap = startCharMap;
 	}
 
 	public int getPositionType() {

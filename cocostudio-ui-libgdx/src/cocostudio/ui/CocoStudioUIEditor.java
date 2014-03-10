@@ -18,6 +18,7 @@ import cocostudio.ui.model.animation.CCActionNode;
 import cocostudio.ui.model.animation.CCAnimation;
 import cocostudio.ui.parser.group.CCButton;
 import cocostudio.ui.parser.group.CCCheckBox;
+import cocostudio.ui.parser.group.CCLabelAtlas;
 import cocostudio.ui.parser.group.CCPanel;
 import cocostudio.ui.parser.group.CCScrollView;
 import cocostudio.ui.parser.widget.CCImageView;
@@ -152,6 +153,8 @@ public class CocoStudioUIEditor {
 		addParser(new CCScrollView());
 		addParser(new CCTextField());
 		addParser(new CCLoadingBar());
+		
+		addParser(new CCLabelAtlas());
 		actors = new HashMap<String, Array<Actor>>();
 		actionActors = new HashMap<Integer, Actor>();
 
