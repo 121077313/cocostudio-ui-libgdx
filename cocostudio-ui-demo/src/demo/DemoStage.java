@@ -2,9 +2,8 @@ package demo;
 
 import java.util.Map;
 
+import org.freyja.libgdx.cocostudio.ui.CocoStudioUIEditor;
 import org.lwjgl.input.Keyboard;
-
-import cocostudio.ui.CocoStudioUIEditor;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
