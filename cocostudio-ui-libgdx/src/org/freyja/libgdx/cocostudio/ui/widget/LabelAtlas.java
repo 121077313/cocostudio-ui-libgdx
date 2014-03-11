@@ -69,9 +69,12 @@ public class LabelAtlas extends Table {
 		for (char c : arr) {
 			int index = index(c, chars);
 			Image img = null;
+			TextureRegion tr = null;
+			if (index != -1) {
+				tr = trs[index];
+			}
 
-			TextureRegion tr = trs[index];
-			if (index == -1 || tr == null) {
+			if (tr == null) {
 				img = new Image();
 				img.setSize(tileWidth, tileHeight);// 没有的字符显示空格
 			} else {
