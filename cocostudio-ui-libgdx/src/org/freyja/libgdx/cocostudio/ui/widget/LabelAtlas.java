@@ -12,12 +12,25 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
  * 
  */
 public class LabelAtlas extends Table {
-	final char[] chars = "0123456789".toCharArray();
+	char[] chars;
 
 	TextureRegion[] trs;
 	int tileWidth;
 	int tileHeight;
 
+	/**
+	 * 
+	 * @param tr
+	 *            数字材质
+	 * @param tileWidth
+	 *            数字宽度
+	 * @param tileHeight
+	 *            数字高度
+	 * @param startCharMap
+	 *            起始字符,例如:0123456789*+-x * 这里必须填写数字的全部字符,并且顺序一致.否则会显示错乱
+	 * @param stringValue
+	 *            显示内容,例如:89/50
+	 */
 	public LabelAtlas(TextureRegion tr, int tileWidth, int tileHeight,
 			String startCharMap, String stringValue) {
 		this.tileWidth = tileWidth;
@@ -25,9 +38,11 @@ public class LabelAtlas extends Table {
 		TextureRegion[][] arr = tr.split(tileWidth, tileHeight);
 		trs = arr[0];
 
-		if (stringValue != null) {
-			setText(stringValue);
+		if (startCharMap == null) {
+			startCharMap = "0";// 默认值
 		}
+		this.chars = startCharMap.toCharArray();
+		setText(stringValue);
 	}
 
 	public LabelAtlas(TextureRegion tr, int tileWidth, int tileHeight,
@@ -37,14 +52,31 @@ public class LabelAtlas extends Table {
 
 	String text;
 
+	/**
+	 * 设置显示文本
+	 * 
+	 * @param text
+	 *            例如:895+
+	 */
 	public void setText(String text) {
 		this.text = text;
 		clearChildren();
 
+		if (text == null) {
+			return;
+		}
 		char[] arr = text.toCharArray();
 		for (char c : arr) {
 			int index = index(c, chars);
-			Image img = new Image(trs[index]);
+			Image img = null;
+
+			TextureRegion tr = trs[index];
+			if (index == -1 || tr == null) {
+				img = new Image();
+				img.setSize(tileWidth, tileHeight);// 没有的字符显示空格
+			} else {
+				img = new Image(tr);
+			}
 			add(img);
 		}
 
