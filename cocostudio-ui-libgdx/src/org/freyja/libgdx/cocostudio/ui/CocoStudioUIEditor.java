@@ -4,6 +4,7 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -82,7 +83,7 @@ public class CocoStudioUIEditor {
 	private String dirName;
 
 	/** 所有纹理 */
-	protected TextureAtlas[] textureAtlas;
+	protected Collection<TextureAtlas> textureAtlas;
 
 	/** 控件集合 */
 	protected Map<String, Array<Actor>> actors;
@@ -102,17 +103,6 @@ public class CocoStudioUIEditor {
 
 	protected Map<String, BaseWidgetParser> parsers;
 
-	/**
-	 * 不需要显示文字
-	 * 
-	 * @param jsonFile
-	 * @param textureAtlas
-	 *            资源文件,传入 null表示使用小文件方式加载图片
-	 */
-	public CocoStudioUIEditor(FileHandle jsonFile, TextureAtlas... textureAtlas) {
-		this(jsonFile, null, null, null, textureAtlas);
-	}
-
 	/** 添加转换器 */
 	public void addParser(BaseWidgetParser parser) {
 		parsers.put(parser.getClassName(), parser);
@@ -120,6 +110,18 @@ public class CocoStudioUIEditor {
 
 	/** 默认ttf字体文件 */
 	protected FileHandle defaultFont;
+
+	/**
+	 * 不需要显示文字
+	 * 
+	 * @param jsonFile
+	 * @param textureAtlas
+	 *            资源文件,传入 null表示使用小文件方式加载图片
+	 */
+	public CocoStudioUIEditor(FileHandle jsonFile,
+			Collection<TextureAtlas> textureAtlas) {
+		this(jsonFile, null, null, null, textureAtlas);
+	}
 
 	/**
 	 * 
@@ -137,7 +139,7 @@ public class CocoStudioUIEditor {
 	 */
 	public CocoStudioUIEditor(FileHandle jsonFile,
 			Map<String, FileHandle> ttfs, Map<String, BitmapFont> bitmapFonts,
-			FileHandle defaultFont, TextureAtlas... textureAtlas) {
+			FileHandle defaultFont, Collection<TextureAtlas> textureAtlas) {
 		this.textureAtlas = textureAtlas;
 		this.ttfs = ttfs;
 		this.bitmapFonts = bitmapFonts;
@@ -153,7 +155,7 @@ public class CocoStudioUIEditor {
 		addParser(new CCScrollView());
 		addParser(new CCTextField());
 		addParser(new CCLoadingBar());
-		
+
 		addParser(new CCLabelAtlas());
 		actors = new HashMap<String, Array<Actor>>();
 		actionActors = new HashMap<Integer, Actor>();
@@ -304,7 +306,7 @@ public class CocoStudioUIEditor {
 			return null;
 		}
 		TextureRegion tr = null;
-		if (textureAtlas == null || textureAtlas.length == 0) {// 不使用合并纹理
+		if (textureAtlas == null || textureAtlas.size() == 0) {// 不使用合并纹理
 			tr = new TextureRegion(new Texture(Gdx.files.internal(dirName
 					+ name)));
 		} else {
@@ -368,7 +370,7 @@ public class CocoStudioUIEditor {
 		}
 
 		NinePatch tr = null;
-		if (textureAtlas == null || textureAtlas.length == 0) {// 不使用合并纹理
+		if (textureAtlas == null || textureAtlas.size() == 0) {// 不使用合并纹理
 			tr = new NinePatch(new Texture(Gdx.files.internal(dirName + name)),
 					option.getCapInsetsX(), option.getCapInsetsX()
 							+ option.getCapInsetsWidth(),

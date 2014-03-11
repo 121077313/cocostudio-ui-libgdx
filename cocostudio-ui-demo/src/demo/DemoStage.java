@@ -1,5 +1,7 @@
 package demo;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.freyja.libgdx.cocostudio.ui.CocoStudioUIEditor;
@@ -142,6 +144,7 @@ public class DemoStage extends CommonStage {
 	/** 商店Demo,使用小图片方式 */
 	private void initShop() {
 
+		Array<TextureAtlas> list = null;
 		CocoStudioUIEditor editor = new CocoStudioUIEditor(
 				Gdx.files.internal("shop/DemoShop.json"), null);
 		Group group = editor.createGroup();
@@ -210,8 +213,12 @@ public class DemoStage extends CommonStage {
 	void initUI2() {
 
 		TextureAtlas gui = new TextureAtlas(Gdx.files.internal("ui/gui.txt"));
+
+		List<TextureAtlas> list = new ArrayList<TextureAtlas>();
+		list.add(gui);
+
 		CocoStudioUIEditor editor = new CocoStudioUIEditor(
-				Gdx.files.internal("ui/ui.ExportJson"), gui, null, null, null);
+				Gdx.files.internal("ui/ui.ExportJson"), list);
 		Group group = editor.createGroup();
 		addActor(group);
 	}
@@ -219,9 +226,10 @@ public class DemoStage extends CommonStage {
 	void initDemo() {
 
 		TextureAtlas gui = new TextureAtlas(Gdx.files.internal("demo/gui.txt"));
+		List<TextureAtlas> list = new ArrayList<TextureAtlas>();
+		list.add(gui);
 		CocoStudioUIEditor editor = new CocoStudioUIEditor(
-				Gdx.files.internal("demo/login.ExportJson"), gui, null, null,
-				null);
+				Gdx.files.internal("demo/login.ExportJson"), list);
 		Group group = editor.createGroup();
 		addActor(group);
 
