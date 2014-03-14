@@ -27,18 +27,34 @@ public class CCLabel extends WidgetParser {
 
 		TTFLabel label = new TTFLabel(option.getText(), labelStyle);
 		// label.setAlignment(option.getvAlignment(), option.gethAlignment());
-
+		
+		// 水平
+		int h = 0;
 		switch (option.gethAlignment()) {
 		case 0:
-			label.setAlignment(Align.left);
+			h = Align.left;
 			break;
 		case 1:
-			label.setAlignment(Align.center);
+			h = Align.center;
 			break;
 		default:
-			label.setAlignment(Align.right);
+			h = Align.right;
 			break;
 		}
+		// 垂直
+		int v = 0;
+		switch (option.getvAlignment()) {
+		case 0:
+			v = Align.top;
+			break;
+		case 1:
+			v = Align.center;
+			break;
+		default:
+			v = Align.bottom;
+			break;
+		}
+		label.setAlignment(h, v);
 
 		return label;
 	}
