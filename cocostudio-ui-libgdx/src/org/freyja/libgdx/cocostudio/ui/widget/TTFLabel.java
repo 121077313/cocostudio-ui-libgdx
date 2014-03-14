@@ -26,6 +26,17 @@ public class TTFLabel extends Label {
 		super.setText(newText);
 	}
 
+	public int labelAlign;
+
+	public int lineAlign;
+
+	@Override
+	public void setAlignment(int labelAlign, int lineAlign) {
+		this.labelAlign = labelAlign;
+		this.lineAlign = lineAlign;
+		super.setAlignment(labelAlign, lineAlign);
+	}
+
 	@Override
 	public void setStyle(LabelStyle style) {
 		style.font = createFont((TTFLabelStyle) style, "" + getText());

@@ -26,8 +26,7 @@ public class CCLabel extends WidgetParser {
 		final TTFLabelStyle labelStyle = editor.createLabelStyle(option);
 
 		TTFLabel label = new TTFLabel(option.getText(), labelStyle);
-		// label.setAlignment(option.getvAlignment(), option.gethAlignment());
-		
+
 		// 水平
 		int h = 0;
 		switch (option.gethAlignment()) {
@@ -41,6 +40,7 @@ public class CCLabel extends WidgetParser {
 			h = Align.right;
 			break;
 		}
+
 		// 垂直
 		int v = 0;
 		switch (option.getvAlignment()) {
