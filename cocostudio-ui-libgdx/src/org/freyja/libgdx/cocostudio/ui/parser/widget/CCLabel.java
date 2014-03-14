@@ -10,6 +10,7 @@ import org.freyja.libgdx.cocostudio.ui.widget.TTFLabelStyle;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 
 public class CCLabel extends WidgetParser {
 
@@ -25,7 +26,19 @@ public class CCLabel extends WidgetParser {
 		final TTFLabelStyle labelStyle = editor.createLabelStyle(option);
 
 		TTFLabel label = new TTFLabel(option.getText(), labelStyle);
-		label.setAlignment(option.getvAlignment(), option.gethAlignment());
+		// label.setAlignment(option.getvAlignment(), option.gethAlignment());
+
+		switch (option.gethAlignment()) {
+		case 0:
+			label.setAlignment(Align.left);
+			break;
+		case 1:
+			label.setAlignment(Align.center);
+			break;
+		default:
+			label.setAlignment(Align.right);
+			break;
+		}
 
 		return label;
 	}

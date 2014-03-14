@@ -1,9 +1,9 @@
 # 让CocoStudio变成libgdx的UI编辑器
 
+##交流Q群:341972448
 
 ### WIKI : https://github.com/121077313/cocostudio-ui-libgdx/wiki
 ### 问答 : https://github.com/121077313/cocostudio-ui-libgdx/wiki/疑难解答
-
 
 
 ###移植案例,更多请看WIKI!
@@ -70,3 +70,6 @@
 * wiki添加重写/添加控件实现的方法
 * 添加数字标签控件的实现,目前只支持0-9的数字,首字符设置也无效.
 * 包重命名
+
+2014.3.14
+* 修正Label标签文本对齐错误
