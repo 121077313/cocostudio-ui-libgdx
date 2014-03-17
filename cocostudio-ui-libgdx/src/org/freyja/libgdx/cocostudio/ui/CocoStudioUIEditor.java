@@ -26,6 +26,7 @@ import org.freyja.libgdx.cocostudio.ui.parser.widget.CCImageView;
 import org.freyja.libgdx.cocostudio.ui.parser.widget.CCLabel;
 import org.freyja.libgdx.cocostudio.ui.parser.widget.CCLabelBMFont;
 import org.freyja.libgdx.cocostudio.ui.parser.widget.CCLoadingBar;
+import org.freyja.libgdx.cocostudio.ui.parser.widget.CCSlider;
 import org.freyja.libgdx.cocostudio.ui.parser.widget.CCTextField;
 import org.freyja.libgdx.cocostudio.ui.util.FontUtil;
 import org.freyja.libgdx.cocostudio.ui.util.StringUtil;
@@ -157,6 +158,7 @@ public class CocoStudioUIEditor {
 		addParser(new CCLoadingBar());
 
 		addParser(new CCLabelAtlas());
+		addParser(new CCSlider());
 		actors = new HashMap<String, Array<Actor>>();
 		actionActors = new HashMap<Integer, Actor>();
 
