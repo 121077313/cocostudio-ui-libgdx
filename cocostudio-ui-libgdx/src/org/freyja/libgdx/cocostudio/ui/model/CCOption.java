@@ -136,6 +136,36 @@ public class CCOption {
 
 	String startCharMap;
 
+	CCWidgetData ballNormalData;
+
+	CCWidgetData barFileNameData;
+
+	float percent;
+	
+	public float getPercent() {
+		return percent;
+	}
+
+	public void setPercent(float percent) {
+		this.percent = percent;
+	}
+
+	public CCWidgetData getBallNormalData() {
+		return ballNormalData;
+	}
+
+	public void setBallNormalData(CCWidgetData ballNormalData) {
+		this.ballNormalData = ballNormalData;
+	}
+
+	public CCWidgetData getBarFileNameData() {
+		return barFileNameData;
+	}
+
+	public void setBarFileNameData(CCWidgetData barFileNameData) {
+		this.barFileNameData = barFileNameData;
+	}
+
 	public String get__type() {
 		return __type;
 	}
