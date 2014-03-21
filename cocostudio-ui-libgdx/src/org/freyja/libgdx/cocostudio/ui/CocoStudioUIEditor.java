@@ -81,7 +81,7 @@ public class CocoStudioUIEditor {
 	final String tag = CocoStudioUIEditor.class.getName();
 
 	/** json文件所在目录 */
-	private String dirName;
+	protected String dirName;
 
 	/** 所有纹理 */
 	protected Collection<TextureAtlas> textureAtlas;
@@ -276,7 +276,7 @@ public class CocoStudioUIEditor {
 		return null;
 	}
 
-	TextureRegion findRegion(String name) {
+	protected TextureRegion findRegion(String name) {
 		for (TextureAtlas ta : textureAtlas) {
 			TextureRegion tr = ta.findRegion(name);
 			if (tr != null) {
@@ -286,7 +286,7 @@ public class CocoStudioUIEditor {
 		return null;
 	}
 
-	TextureRegion findRegion(String name, int index) {
+	protected TextureRegion findRegion(String name, int index) {
 		for (TextureAtlas ta : textureAtlas) {
 			TextureRegion tr = ta.findRegion(name, index);
 			if (tr != null) {
