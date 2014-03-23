@@ -37,7 +37,15 @@ public class CCSlider extends GroupParser {
 		SliderStyle style = new SliderStyle(editor.findDrawable(option, option
 				.getBarFileNameData().getPath()), editor.findDrawable(option,
 				option.getBallNormalData().getPath()));
-		Slider slider = new Slider(0, 100f, option.getPercent(), true, style);
+		// 这里滑动条只支持1以上?
+
+		float percent = option.getPercent();
+
+		if (percent <= 0) {// 进度不能小于等于0
+			percent = 0.1f;
+		}
+
+		Slider slider = new Slider(0.1f, 100f, percent, false, style);
 
 		return slider;
 	}
