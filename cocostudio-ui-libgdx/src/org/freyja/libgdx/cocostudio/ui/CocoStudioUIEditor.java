@@ -296,6 +296,11 @@ public class CocoStudioUIEditor {
 		return null;
 	}
 
+	public static void main(String[] args) {
+		String[] arr = "".split("\\/");
+		System.out.println(arr.length);
+	}
+
 	/**
 	 * 获取材质
 	 * 
@@ -313,11 +318,29 @@ public class CocoStudioUIEditor {
 					+ name)));
 		} else {
 
+			// try {
+			// String[] arr = name.split("\\/");
+			//
+			// name = name.substring(arr[0].length() + 1,
+			// name.length() - 4);
+			// } catch (Exception e) {
+			// error(option, "名称不符合约定,无法解析.请查看github项目wiki");
+			// }
+			//
+
 			try {
 				String[] arr = name.split("\\/");
-				name = name.substring(arr[0].length() + 1, name.length() - 4);
+				if (arr.length == 1) {
+					// support same folder with json file
+					// add by @xiaozc
+					
+					name = name.substring(0, name.length() - 4);
+				} else {
+					name = name.substring(arr[0].length() + 1,
+							name.length() - 4);
+				}
 			} catch (Exception e) {
-				error(option, "名称不符合约定,无法解析.请查看github项目wiki");
+				error(option, "资源名称不符合约定,无法解析.请查看github项目wiki第十条");
 			}
 
 			// 考虑index下标

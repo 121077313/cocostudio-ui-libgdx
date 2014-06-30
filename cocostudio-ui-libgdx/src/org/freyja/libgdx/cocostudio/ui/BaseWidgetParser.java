@@ -20,26 +20,38 @@ import com.badlogic.gdx.utils.Array;
  */
 public abstract class BaseWidgetParser {
 
-	/** 获取控件类型名称 */
+	/** get widget type name */
 	public abstract String getClassName();
 
-	/** 转换控件 */
+	/** convert cocostudio widget to libgdx actor */
 	public abstract Actor parse(CocoStudioUIEditor editor, CCWidget widget,
 			CCOption option);
 
-	/** 公共属性解析器 */
+	/**
+	 * common attribute parser<br>
+	 * 
+	 * according cocstudio ui setting properties of the configuration file
+	 * 
+	 * 
+	 * @param editor
+	 * @param widget
+	 * @param option
+	 * @param parent
+	 * @param actor
+	 * @return
+	 */
 	public Actor commonParse(CocoStudioUIEditor editor, CCWidget widget,
 			CCOption option, Group parent, Actor actor) {
 
 		actor.setName(option.getName());
 
-		if (option.isIgnoreSize()) {// 忽略大小,指的是编辑器无法指定大小(?)
+		if (option.isIgnoreSize()) {// ignore size option
 
 		} else {
 			actor.setSize(option.getWidth(), option.getHeight());
 		}
 
-		// 设置锚点
+		// set origin
 		actor.setOrigin(option.getAnchorPointX() * actor.getWidth(),
 				option.getAnchorPointY() * actor.getHeight());
 
@@ -48,7 +60,7 @@ public abstract class BaseWidgetParser {
 					- actor.getOriginY());
 		} else {
 
-			// 锚点要算上父控件的锚点,也就是原点
+			//      锚点要算上父控件的锚点,也就是原点
 			actor.setX(parent.getOriginX()
 					- (actor.getOriginX() - option.getX()));
 
