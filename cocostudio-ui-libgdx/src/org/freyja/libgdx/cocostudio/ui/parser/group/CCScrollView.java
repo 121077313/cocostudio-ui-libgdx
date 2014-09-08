@@ -51,7 +51,7 @@ public class CCScrollView extends GroupParser {
 			// scrollPane.setScrollingDisabled(false, false);
 			break;
 		}
-		scrollPane.setClamp(false);
+//		scrollPane.setClamp(false);
 		scrollPane.setFlickScroll(option.isBounceEnable());
 		return scrollPane;
 	}
