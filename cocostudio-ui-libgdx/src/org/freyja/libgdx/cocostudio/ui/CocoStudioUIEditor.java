@@ -278,6 +278,9 @@ public class CocoStudioUIEditor {
 
 	protected TextureRegion findRegion(String name) {
 		for (TextureAtlas ta : textureAtlas) {
+			if (ta == null) {
+				continue;
+			}
 			TextureRegion tr = ta.findRegion(name);
 			if (tr != null) {
 				return tr;
@@ -288,6 +291,9 @@ public class CocoStudioUIEditor {
 
 	protected TextureRegion findRegion(String name, int index) {
 		for (TextureAtlas ta : textureAtlas) {
+			if (ta == null) {
+				continue;
+			}
 			TextureRegion tr = ta.findRegion(name, index);
 			if (tr != null) {
 				return tr;
@@ -333,7 +339,7 @@ public class CocoStudioUIEditor {
 				if (arr.length == 1) {
 					// support same folder with json file
 					// add by @xiaozc
-					
+
 					name = name.substring(0, name.length() - 4);
 				} else {
 					name = name.substring(arr[0].length() + 1,
