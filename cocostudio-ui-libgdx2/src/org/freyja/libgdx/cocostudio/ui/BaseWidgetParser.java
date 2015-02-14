@@ -53,18 +53,25 @@ public abstract class BaseWidgetParser {
 		actor.setOrigin(widget.getAnchorPoint().getScaleX() * actor.getWidth(),
 				widget.getAnchorPoint().getScaleY() * actor.getHeight());
 
-		if (parent == null) {
-			actor.setPosition(widget.getPosition().getX() - actor.getOriginX(),
-					widget.getPosition().getY() - actor.getOriginY());
-		} else {
-
-			// 锚点要算上父控件的锚点,也就是原点
-			actor.setX(parent.getOriginX()
-					- (actor.getOriginX() - widget.getPosition().getX()));
-
-			actor.setY(parent.getOriginY()
-					- (actor.getOriginY() - widget.getPosition().getY()));
-		}
+		//cocos anchor bug
+		
+//		if (parent == null) {
+//			actor.setPosition(widget.getPosition().getX() - actor.getOriginX(),
+//					widget.getPosition().getY() - actor.getOriginY());
+//		} else {
+//
+//			// 锚点要算上父控件的锚点,也就是原点
+//			actor.setX(parent.getOriginX()
+//					- (actor.getOriginX() - widget.getPosition().getX()));
+//
+//			actor.setY(parent.getOriginY()
+//					- (actor.getOriginY() - widget.getPosition().getY()));
+//		}
+		
+		actor.setPosition(widget.getPosition().getX() - actor.getOriginX(),
+				widget.getPosition().getY() - actor.getOriginY());
+		
+		
 
 		// CocoStudio的编辑器ScaleX,ScaleY 会有负数情况
 		actor.setScale(widget.getScale().getScaleX(), widget.getScale()
