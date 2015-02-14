@@ -76,3 +76,33 @@
 
 2014.6.27
 * @xiaozc 提供读取资源文件兼容方式.
+
+
+2015.2.14
+* 上传cocostudio-ui-libgdx2 项目. 这个项目是针对cocostudio v2.1版本的ui解析库. cocostudio-ui-libgdx 项目对应编辑器v1.x 版本.目前最新的为v1.6
+
+为什么会有这个新项目.原因:编辑器1.x不再维护,并且本人在使用v1.6版本的时候遇到了一个莫名其妙又无法解决的bug.并且编辑器v2.1版本支持导出json格式的ui结构.
+
+cocostudio-ui-libgdx2和前一版本使用方法一致,部分细节可能会有不同.
+
+2版本新特性:
+增加了新控件!
+CCLayer = LayerObjectData = Group
+CCNode = SingleNodeObjectData = Group
+CCSpriteView = SpriteObjectData = Image
+
+
+支持回调函数!
+在编辑器的高级属性-回调特性里面
+当设置通过Click方式或者Touch方式回调某个函数的时候. 会在控件加上 监听器 去回调对应方法.
+注意.回调方法必须写着控件所在的 Stage 上,并且方法名称一致并且不带参数(目前为了极致简化不传参)
+
+如果编辑器方法名那里不填,会默认调用控件名称同名的方法!.例如的看下回调实现就应该能理解了. @see BaseWidgetParser.addCallback
+
+
+
+
+
+目前已知的问题:
+1.锚点无效问题,这个似乎是编辑器原因. 因为锚点在编辑器里面表现就是有问题的.
+

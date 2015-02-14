@@ -1,14 +1,17 @@
 package org.freyja.libgdx.cocostudio.ui;
 
+import java.lang.reflect.Method;
 import java.util.Comparator;
 
-import org.freyja.libgdx.cocostudio.ui.model.CColor;
 import org.freyja.libgdx.cocostudio.ui.model.ObjectData;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 
 /**
@@ -25,6 +28,8 @@ public abstract class BaseWidgetParser {
 	/** convert cocostudio widget to libgdx actor */
 	public abstract Actor parse(CocoStudioUIEditor editor, ObjectData widget);
 
+	CocoStudioUIEditor editor;
+
 	/**
 	 * common attribute parser<br>
 	 * 
@@ -40,7 +45,7 @@ public abstract class BaseWidgetParser {
 	 */
 	public Actor commonParse(CocoStudioUIEditor editor, ObjectData widget,
 			Group parent, Actor actor) {
-
+		this.editor = editor;
 		actor.setName(widget.getName());
 		actor.setSize(widget.getSize().getX(), widget.getSize().getY());
 
@@ -79,6 +84,11 @@ public abstract class BaseWidgetParser {
 		actor.setTouchable(widget.isTouchEnable() ? Touchable.enabled
 				: Touchable.disabled);
 
+		// callback
+
+		addCallback(actor, widget);
+		// callback
+
 		addActor(editor, actor, widget);
 
 		if (widget.getChildren() == null || widget.getChildren().size() == 0) {
@@ -86,6 +96,68 @@ public abstract class BaseWidgetParser {
 		}
 
 		return null;
+	}
+
+	public void addCallback(final Actor actor, final ObjectData widget) {
+		if (widget.getCallBackType() == null
+				|| widget.getCallBackType().isEmpty()) {
+			return;
+		}
+		if ("Click".equals(widget.getCallBackType())) {
+			actor.addListener(new ClickListener() {
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					invoke(actor, widget.getCallBackName());
+					super.clicked(event, x, y);
+				}
+			});
+		} else if ("Touch".equals(widget.getCallBackType())) {
+
+			actor.addListener(new ClickListener() {
+				@Override
+				public boolean touchDown(InputEvent event, float x, float y,
+						int pointer, int button) {
+					invoke(actor, widget.getCallBackName());
+					return super.touchDown(event, x, y, pointer, button);
+				}
+			});
+		}
+
+	}
+
+	public void invoke(Actor actor, String methodName) {
+		try {
+			Stage stage = actor.getStage();
+
+			if (stage == null) {
+				return;
+			}
+
+			if (methodName == null || methodName.isEmpty()) {
+				// default callback method
+				methodName = actor.getName();
+			}
+
+			if (methodName == null || methodName.isEmpty()) {
+				editor.error("CallBackName isEmpty");
+				return;
+			}
+
+			Class clazz = stage.getClass();
+
+			Method method = clazz.getMethod(methodName);
+
+			if (method == null) {
+				editor.error("CallBack Method is null,className:"
+						+ clazz.getName());
+				return;
+			}
+			method.invoke(stage);
+		} catch (Exception e) {
+			e.printStackTrace();
+			editor.error(e.getMessage());
+		}
+
 	}
 
 	protected void addActor(CocoStudioUIEditor editor, Actor actor,

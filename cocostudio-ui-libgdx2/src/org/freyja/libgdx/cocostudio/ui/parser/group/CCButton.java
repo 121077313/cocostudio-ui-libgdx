@@ -74,39 +74,5 @@ public class CCButton extends GroupParser {
 		return button;
 	}
 
-	public void invoke(Actor actor, String methodName) {
-		try {
-			Stage stage = actor.getStage();
-
-			if (stage == null) {
-				return;
-			}
-
-			if (methodName == null || methodName.isEmpty()) {
-				// default callback method
-				methodName = actor.getName();
-			}
-
-			if (methodName == null || methodName.isEmpty()) {
-				editor.error("CallBackName isEmpty");
-				return;
-			}
-
-			Class clazz = stage.getClass();
-
-			Method method = clazz.getMethod(methodName);
-
-			if (method == null) {
-				editor.error("CallBack Method is null,className:"
-						+ clazz.getName());
-				return;
-			}
-			method.invoke(stage);
-		} catch (Exception e) {
-			e.printStackTrace();
-			editor.error(e.getMessage());
-		}
-
-	}
 
 }
