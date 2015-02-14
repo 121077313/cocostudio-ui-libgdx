@@ -29,12 +29,12 @@ public class CCCheckBox extends GroupParser {
 
 		if (widget.getNodeNormalFileData() != null) {// 选中图片
 
-			style.checkboxOff = editor.findDrawable(widget, widget
-					.getNodeNormalFileData().getPath());
+			style.checkboxOff = editor.findDrawable(widget,
+					widget.getNodeNormalFileData());
 		}
 		if (widget.getNormalBackFileData() != null) {// 没选中图片
-			style.checkboxOn = editor.findDrawable(widget, widget
-					.getNormalBackFileData().getPath());
+			style.checkboxOn = editor.findDrawable(widget,
+					widget.getNormalBackFileData());
 		}
 		CheckBox checkBox = new CheckBox("", style);
 		checkBox.setChecked(widget.isDisplayState());

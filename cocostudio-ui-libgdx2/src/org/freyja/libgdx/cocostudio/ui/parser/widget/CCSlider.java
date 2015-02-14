@@ -24,17 +24,17 @@ public class CCSlider extends GroupParser {
 	@Override
 	public Actor parse(CocoStudioUIEditor editor, ObjectData widget) {
 
-		SliderStyle style = new SliderStyle(editor.findDrawable(widget, widget
-				.getBackGroundData().getPath()), editor.findDrawable(widget,
-				widget.getBallNormalData().getPath()));
+		SliderStyle style = new SliderStyle(editor.findDrawable(widget,
+				widget.getBackGroundData()), editor.findDrawable(widget,
+				widget.getBallNormalData()));
 
 		if (widget.getProgressBarData() != null) {
-			style.knobBefore = editor.findDrawable(widget, widget
-					.getProgressBarData().getPath());
+			style.knobBefore = editor.findDrawable(widget,
+					widget.getProgressBarData());
 		}
 		if (widget.getBallDisabledData() != null) {
-			style.disabledKnob = editor.findDrawable(widget, widget
-					.getBallDisabledData().getPath());
+			style.disabledKnob = editor.findDrawable(widget,
+					widget.getBallDisabledData());
 		}
 		// 这里滑动条只支持1以上?
 

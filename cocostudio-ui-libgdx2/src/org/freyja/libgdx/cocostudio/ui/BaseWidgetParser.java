@@ -1,5 +1,6 @@
 package org.freyja.libgdx.cocostudio.ui;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Comparator;
 
@@ -53,25 +54,23 @@ public abstract class BaseWidgetParser {
 		actor.setOrigin(widget.getAnchorPoint().getScaleX() * actor.getWidth(),
 				widget.getAnchorPoint().getScaleY() * actor.getHeight());
 
-		//cocos anchor bug
-		
-//		if (parent == null) {
-//			actor.setPosition(widget.getPosition().getX() - actor.getOriginX(),
-//					widget.getPosition().getY() - actor.getOriginY());
-//		} else {
-//
-//			// 锚点要算上父控件的锚点,也就是原点
-//			actor.setX(parent.getOriginX()
-//					- (actor.getOriginX() - widget.getPosition().getX()));
-//
-//			actor.setY(parent.getOriginY()
-//					- (actor.getOriginY() - widget.getPosition().getY()));
-//		}
-		
+		// cocos anchor bug
+
+		// if (parent == null) {
+		// actor.setPosition(widget.getPosition().getX() - actor.getOriginX(),
+		// widget.getPosition().getY() - actor.getOriginY());
+		// } else {
+		//
+		// // 锚点要算上父控件的锚点,也就是原点
+		// actor.setX(parent.getOriginX()
+		// - (actor.getOriginX() - widget.getPosition().getX()));
+		//
+		// actor.setY(parent.getOriginY()
+		// - (actor.getOriginY() - widget.getPosition().getY()));
+		// }
+
 		actor.setPosition(widget.getPosition().getX() - actor.getOriginX(),
 				widget.getPosition().getY() - actor.getOriginY());
-		
-		
 
 		// CocoStudio的编辑器ScaleX,ScaleY 会有负数情况
 		actor.setScale(widget.getScale().getScaleX(), widget.getScale()
@@ -133,36 +132,38 @@ public abstract class BaseWidgetParser {
 	}
 
 	public void invoke(Actor actor, String methodName) {
+		Stage stage = actor.getStage();
+		if (stage == null) {
+			return;
+		}
+
+		if (methodName == null || methodName.isEmpty()) {
+			// default callback method
+			methodName = actor.getName();
+		}
+
+		if (methodName == null || methodName.isEmpty()) {
+			editor.error("CallBackName isEmpty");
+			return;
+		}
+
+		Class clazz = stage.getClass();
+
+		Method method = null;
 		try {
-			Stage stage = actor.getStage();
+			method = clazz.getMethod(methodName);
+		} catch (Exception e) {
+			editor.debug(clazz.getName() + "没有这个回调方法:" + methodName);
+		}
 
-			if (stage == null) {
-				return;
-			}
-
-			if (methodName == null || methodName.isEmpty()) {
-				// default callback method
-				methodName = actor.getName();
-			}
-
-			if (methodName == null || methodName.isEmpty()) {
-				editor.error("CallBackName isEmpty");
-				return;
-			}
-
-			Class clazz = stage.getClass();
-
-			Method method = clazz.getMethod(methodName);
-
-			if (method == null) {
-				editor.error("CallBack Method is null,className:"
-						+ clazz.getName());
-				return;
-			}
+		if (method == null) {
+			return;
+		}
+		try {
 			method.invoke(stage);
 		} catch (Exception e) {
 			e.printStackTrace();
-			editor.error(e.getMessage());
+			editor.error(clazz.getName() + "回调出错:" + methodName);
 		}
 
 	}

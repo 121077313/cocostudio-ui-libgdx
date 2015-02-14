@@ -58,8 +58,7 @@ public class CCPanel extends GroupParser {
 		}
 
 		if (widget.getFileData() != null) {// Panel的图片并不是拉伸平铺的!!.但是这里修改为填充
-			Drawable tr = editor.findDrawable(widget, widget.getFileData()
-					.getPath());
+			Drawable tr = editor.findDrawable(widget, widget.getFileData());
 			if (tr != null) {
 				Image bg = new Image(tr);
 				bg.setPosition((size.getX() - bg.getWidth()) / 2,

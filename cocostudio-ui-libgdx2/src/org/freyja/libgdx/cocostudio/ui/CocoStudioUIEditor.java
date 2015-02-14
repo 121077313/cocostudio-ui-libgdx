@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.freyja.libgdx.cocostudio.ui.model.CCExport;
 import org.freyja.libgdx.cocostudio.ui.model.CColor;
+import org.freyja.libgdx.cocostudio.ui.model.FileData;
 import org.freyja.libgdx.cocostudio.ui.model.ObjectData;
 import org.freyja.libgdx.cocostudio.ui.parser.group.CCButton;
 import org.freyja.libgdx.cocostudio.ui.parser.group.CCCheckBox;
@@ -424,6 +425,15 @@ public class CocoStudioUIEditor {
 	// // 不支持翻转和镜像
 	// return tr;
 	// }
+
+	public Drawable findDrawable(ObjectData option, FileData fileData) {
+
+		if (fileData == null || "Default".equals(fileData.getType())) {// 默认值不显示
+			return null;
+		}
+
+		return findDrawable(option, fileData.getPath());
+	}
 
 	public Drawable findDrawable(ObjectData option, String name) {
 
