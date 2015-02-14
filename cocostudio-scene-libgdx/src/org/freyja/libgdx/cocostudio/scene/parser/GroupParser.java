@@ -30,24 +30,23 @@ public abstract class GroupParser extends BaseWidgetParser {
 	}
 
 	/** 解析group控件,当前控件类型为Group的时候处理与Widget类型处理不同 */
-	public Group groupChildrenParse(CocoStudioSceneEditor editor, CCGameObject widget,
-			CCComponent option, Group parent, Actor actor) {
+	public Group groupChildrenParse(CocoStudioSceneEditor editor,
+			CCGameObject widget, CCComponent option, Group parent, Actor actor) {
 
 		Group group = (Group) actor;
 
 		// Group 虽然自己不接收事件,但是子控件得接收
-//		actor.setTouchable(option.isTouchAble() ? Touchable.enabled
-//				: Touchable.childrenOnly);
+		// actor.setTouchable(option.isTouchAble() ? Touchable.enabled
+		// : Touchable.childrenOnly);
 		// 必须设置Transform 为true 子控件才会跟着旋转.
-		
-//		group.setTransform(true);
 
+		// group.setTransform(true);
 
-		if (widget.getScalex() != 0 || widget.getScaley() != 0
+		if (widget.getScalex() != 1 || widget.getScaley() != 1
 				|| widget.getRotation() != 0) {
 			group.setTransform(true);
 		}
-		
+
 		for (CCGameObject childrenWidget : widget.getGameobjects()) {
 			Actor childrenActor = editor.parseWidget(group, childrenWidget);
 			if (childrenActor == null) {

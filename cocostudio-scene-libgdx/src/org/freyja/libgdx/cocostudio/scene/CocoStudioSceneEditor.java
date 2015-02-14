@@ -224,19 +224,14 @@ public class CocoStudioSceneEditor {
 		}
 		TextureRegion tr = null;
 		if (textureAtlas == null || textureAtlas.size() == 0) {// 不使用合并纹理
-			tr = new TextureRegion(new Texture(Gdx.files.internal(dirName
-					+ name)));
-		} else {
+			try {
+				tr = new TextureRegion(new Texture(Gdx.files.internal(dirName
+						+ name)));
+			} catch (Exception e) {
 
-			// try {
-			// String[] arr = name.split("\\/");
-			//
-			// name = name.substring(arr[0].length() + 1,
-			// name.length() - 4);
-			// } catch (Exception e) {
-			// error(option, "名称不符合约定,无法解析.请查看github项目wiki");
-			// }
-			//
+
+			}
+		} else {
 
 			try {
 				String[] arr = name.split("\\/");
@@ -394,6 +389,31 @@ public class CocoStudioSceneEditor {
 	 */
 	public Actor parseWidget(Group parent, CCGameObject widget) {
 
+		if (widget.getGameobjects().size() == 0) {
+			CCComponent option = null;
+			if (widget.getComponents().size() > 0) {
+				option = widget.getComponents().get(0);
+			}
+
+			if (option == null) {
+				return null;
+			}
+
+			String className = option.getClassname();
+			BaseWidgetParser parser = parsers.get(className);
+
+			if (parser == null) {
+
+				debug(option, "not support Widget:" + className);
+				return null;
+			}
+			Actor actor = parser.parse(this, widget, option);
+
+			actor = parser.commonParse(this, widget, option, parent, actor);
+
+			return actor;
+		}
+
 		for (CCGameObject gameObject : widget.getGameobjects()) {
 
 			CCComponent option = null;
@@ -411,7 +431,7 @@ public class CocoStudioSceneEditor {
 			if (parser == null) {
 
 				// debug(gameObject, "not support Widget:" + className);
-				return null;
+				continue;
 			}
 
 			Actor actor = parser.parse(this, widget, option);

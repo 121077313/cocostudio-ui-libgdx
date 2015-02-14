@@ -38,22 +38,24 @@ public abstract class WidgetParser extends BaseWidgetParser {
 		table.setRotation(actor.getRotation());
 		table.setVisible(actor.isVisible());
 
-
-
 		actor.setVisible(true);
 		actor.setTouchable(Touchable.disabled);
 
-		if (widget.getScalex() != 0 || widget.getScaley() != 0
+		if (widget.getScalex() != 1 || widget.getScaley() != 1
 				|| widget.getRotation() != 0) {
 			table.setTransform(true);
 		}
 
 		table.setSize(actor.getWidth(), actor.getHeight());
+
+		if (parent.getWidth() == 0 && parent.getHeight() == 0) {
+			parent.setSize(table.getWidth(), table.getHeight());
+		}
+
 		table.setPosition(actor.getX(), actor.getY());
 
 		// 锚点就是子控件的锚点
-		table.setOrigin(0.5f * table.getWidth(),
-				0.5f * table.getHeight());
+		table.setOrigin(0.5f * table.getWidth(), 0.5f * table.getHeight());
 
 		for (CCGameObject childrenWidget : widget.getGameobjects()) {
 			Actor childrenActor = editor.parseWidget(table, childrenWidget);
