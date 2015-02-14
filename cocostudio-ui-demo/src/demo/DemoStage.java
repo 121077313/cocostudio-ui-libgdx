@@ -106,7 +106,10 @@ public class DemoStage extends CommonStage {
 		final Actor actor = editor.findActor("ImageView");
 		// 查找动作
 		final Action action = actions.get(actor);
+		final float x = actor.getX();
+		final float y = actor.getY();
 
+		final Action action2=	Actions.repeat(10, action);
 		Actor textButton = editor.findActor("TextButton");
 
 		textButton.addListener(new ClickListener() {
@@ -114,7 +117,7 @@ public class DemoStage extends CommonStage {
 			public void clicked(InputEvent event, float x, float y) {
 
 				// 点击的时候把动作添加到演员上去,然后play!!!
-				actor.addAction(action);
+				actor.addAction(action2);
 
 				super.clicked(event, x, y);
 			}
