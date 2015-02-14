@@ -21,8 +21,7 @@ public class CCLoadingBar extends WidgetParser {
 		if (widget.getImageFileData() == null) {
 			return new Image();
 		}
-		Drawable tr = editor.findDrawable(widget, widget.getImageFileData()
-				.getPath());
+		Drawable tr = editor.findDrawable(widget, widget.getImageFileData());
 		if (tr == null) {
 			return new Image();
 		}

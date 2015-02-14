@@ -18,8 +18,7 @@ public class CCImageView extends WidgetParser {
 	@Override
 	public Actor parse(CocoStudioUIEditor editor, ObjectData widget) {
 
-		Drawable tr = editor.findDrawable(widget, widget.getFileData()
-				.getPath());
+		Drawable tr = editor.findDrawable(widget, widget.getFileData());
 		if (tr == null) {
 			return new Image();
 		}

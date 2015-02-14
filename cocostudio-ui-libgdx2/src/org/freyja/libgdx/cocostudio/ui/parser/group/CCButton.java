@@ -29,12 +29,11 @@ public class CCButton extends GroupParser {
 	public Actor parse(CocoStudioUIEditor editor, final ObjectData widget) {
 		this.editor = editor;
 		ImageButtonStyle style = new ImageButtonStyle(null, null, null,
-				editor.findDrawable(widget, widget.getNormalFileData()
-						.getPath()), editor.findDrawable(widget, widget
-						.getPressedFileData().getPath()), null);
+				editor.findDrawable(widget, widget.getNormalFileData()),
+				editor.findDrawable(widget, widget.getPressedFileData()), null);
 
-		style.imageDisabled = editor.findDrawable(widget, widget
-				.getDisabledFileData().getPath());
+		style.imageDisabled = editor.findDrawable(widget,
+				widget.getDisabledFileData());
 
 		final ImageButton button = new ImageButton(style);
 
@@ -73,6 +72,5 @@ public class CCButton extends GroupParser {
 
 		return button;
 	}
-
 
 }
