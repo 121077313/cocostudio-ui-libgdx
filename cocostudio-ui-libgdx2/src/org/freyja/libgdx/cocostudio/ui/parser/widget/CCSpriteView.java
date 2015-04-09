@@ -5,6 +5,8 @@ import org.freyja.libgdx.cocostudio.ui.model.ObjectData;
 import org.freyja.libgdx.cocostudio.ui.parser.WidgetParser;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 
@@ -27,4 +29,13 @@ public class CCSpriteView extends WidgetParser {
 		return image;
 	}
 
+	@Override
+	public Group widgetChildrenParse(CocoStudioUIEditor editor,
+			ObjectData widget, Group parent, Actor actor) {
+		Group group = super.widgetChildrenParse(editor, widget, parent, actor);
+
+		group.setTouchable(Touchable.enabled);
+
+		return group;
+	}
 }

@@ -6,6 +6,7 @@ import java.util.Map;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 
 public class FontUtil {
 
@@ -38,7 +39,14 @@ public class FontUtil {
 			}
 
 			String newText = StringUtil.removeRepeatedChar(text);
-			font = generator.generateFont(fontSize, newText, false);
+			
+			FreeTypeFontParameter parameter=new FreeTypeFontParameter();
+			
+			parameter.size=fontSize;
+			parameter.characters=newText;
+			font = 	generator.generateFont(parameter);
+			
+//			font = generator.generateFont(fontSize, newText, false);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
