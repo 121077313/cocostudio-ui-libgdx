@@ -18,7 +18,7 @@ public class CCSlider extends GroupParser {
 
 	@Override
 	public String getClassName() {
-		return "SliderObjectData";
+		return "SliderObjectData2";
 	}
 
 	@Override
@@ -28,6 +28,12 @@ public class CCSlider extends GroupParser {
 				widget.getBackGroundData()), editor.findDrawable(widget,
 				widget.getBallNormalData()));
 
+		
+		
+		style.knob= editor.findDrawable(widget,
+				widget.getProgressBarData());
+		style.disabledBackground= editor.findDrawable(widget,
+				widget.getBallDisabledData());
 		if (widget.getProgressBarData() != null) {
 			style.knobBefore = editor.findDrawable(widget,
 					widget.getProgressBarData());

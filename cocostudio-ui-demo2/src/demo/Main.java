@@ -7,7 +7,7 @@ public class Main {
 	public static void main(String[] args) {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		cfg.title = "UI编辑器DEMO2";
-		cfg.useGL20 = true;
+//		cfg.useGL20 = true;
 //		cfg.width = 480;
 //		cfg.height = 320;
 		
