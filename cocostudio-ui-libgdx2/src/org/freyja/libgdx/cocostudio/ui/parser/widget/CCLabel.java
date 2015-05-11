@@ -31,9 +31,11 @@ public class CCLabel extends WidgetParser {
 			h = Align.left;
 		} else if ("HT_Right".equals(widget.getHorizontalAlignmentType())) {
 			h = Align.right;
+		}else {//默认左对齐
+			h = Align.left;
 		}
 
-		// 水平
+		// 垂直
 		int v = 0;
 		if ("HT_Center".equals(widget.getHorizontalAlignmentType())) {
 			v = Align.center;
@@ -41,6 +43,8 @@ public class CCLabel extends WidgetParser {
 			v = Align.top;
 		} else if ("HT_Bottom".equals(widget.getHorizontalAlignmentType())) {
 			v = Align.bottom;
+		}else {//默认居上
+			v = Align.top;
 		}
 
 		label.setAlignment(h, v);

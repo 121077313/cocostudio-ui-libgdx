@@ -1,6 +1,7 @@
 package org.freyja.libgdx.cocostudio.ui.widget;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -77,7 +78,7 @@ public class ProgressBar extends Table{
 	}
 
 	@Override
-	public void draw (SpriteBatch batch, float parentAlpha) {
+	public void draw (Batch batch, float parentAlpha) {
 		ProgressBarStyle style = this.style;
 		final Drawable bg = style.background;
 		final Drawable knobBefore = style.progress;

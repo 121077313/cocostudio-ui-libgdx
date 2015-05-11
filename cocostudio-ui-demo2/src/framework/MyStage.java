@@ -7,6 +7,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 public class MyStage extends Stage {
 
@@ -17,13 +18,13 @@ public class MyStage extends Stage {
 	}
 
 	public MyStage(float width, float height, boolean keepAspectRatio) {
-		super(width, height, keepAspectRatio);
+		super(new StretchViewport(width, height));
 		this.game = (Game) Gdx.app.getApplicationListener();
 	}
 
 	public MyStage(float width, float height, boolean keepAspectRatio,
 			SpriteBatch batch) {
-		super(width, height, keepAspectRatio, batch);
+		super(new StretchViewport(width, height));
 		this.game = (Game) Gdx.app.getApplicationListener();
 	}
 

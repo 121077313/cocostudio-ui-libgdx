@@ -2,15 +2,16 @@ package org.freyja.libgdx.cocostudio.ui.parser.group;
 
 import org.freyja.libgdx.cocostudio.ui.CocoStudioUIEditor;
 import org.freyja.libgdx.cocostudio.ui.model.ObjectData;
-import org.freyja.libgdx.cocostudio.ui.model.Size;
 import org.freyja.libgdx.cocostudio.ui.parser.GroupParser;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane.ScrollPaneStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -48,34 +49,37 @@ public class CCScrollView extends GroupParser {
 		} else if ("Vertical".equals(widget.getScrollDirectionType())) {
 			scrollPane.setForceScroll(false, true);
 		}
-		// Size size = widget.getSize();
-		// if (widget.getComboBoxIndex() == 0) {// 无颜色
-		//
-		// } else if (widget.getComboBoxIndex() == 1) {// 单色
-		//
-		// Pixmap pixmap = new Pixmap((int) size.getX(), (int) size.getY(),
-		// Format.RGBA8888);
-		//
-		// pixmap.setColor(editor.getColor(widget.getSingleColor(), widget));
-		//
-		// pixmap.fill();
-		//
-		// Drawable d = new TextureRegionDrawable(new TextureRegion(
-		// new Texture(pixmap)));
-		//
-		//
-		// pixmap.dispose();
-		//
-		//
-		//
-		// // table.addActor(new Image(d));
-		//
-		// } else {// 渐变色
-		//
-		// }
 
 		scrollPane.setClamp(widget.isClipAble());
 		scrollPane.setFlickScroll(widget.isIsBounceEnabled());
+
+		Table table = new Table();
+		table.setSize(widget.getInnerNodeSize().getWidth(), widget
+				.getInnerNodeSize().getHeight());
+
+		if (widget.getComboBoxIndex() == 0) {// 无颜色
+
+		} else if (widget.getComboBoxIndex() == 1) {// 单色
+
+			Pixmap pixmap = new Pixmap((int) table.getWidth(),
+					(int) table.getHeight(), Format.RGBA8888);
+			Color color = editor.getColor(widget.getSingleColor(),
+					widget.getBackColorAlpha());
+
+			pixmap.setColor(color);
+
+			pixmap.fill();
+
+			Drawable drawable = new TextureRegionDrawable(new TextureRegion(
+					new Texture(pixmap)));
+
+			table.setBackground(drawable);
+			pixmap.dispose();
+
+		} else {// 渐变色
+
+		}
+		scrollPane.setWidget(table);
 		return scrollPane;
 	}
 

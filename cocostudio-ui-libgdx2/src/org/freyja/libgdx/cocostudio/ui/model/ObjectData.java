@@ -96,7 +96,11 @@ public class ObjectData {
 
 	boolean ClipAble;
 
+	InnerNodeSize InnerNodeSize;
+
 	int BackColorAlpha;
+
+	CColor FirstColor;
 
 	String LabelText;
 	FileData LabelBMFontFile_CNB;
@@ -121,8 +125,6 @@ public class ObjectData {
 
 	boolean IsBounceEnabled;
 
-	Size InnerNodeSize;
-
 	String ScrollDirectionType;
 
 	//
@@ -137,11 +139,9 @@ public class ObjectData {
 	FileData BallDisabledData;
 
 	String CallBackType;
-	
+
 	String CallBackName;
 
-	
-	
 	public String getCallBackType() {
 		return CallBackType;
 	}
@@ -164,6 +164,14 @@ public class ObjectData {
 
 	public void setPercentInfo(int percentInfo) {
 		PercentInfo = percentInfo;
+	}
+
+	public CColor getFirstColor() {
+		return FirstColor;
+	}
+
+	public void setFirstColor(CColor firstColor) {
+		FirstColor = firstColor;
 	}
 
 	public FileData getBackGroundData() {
@@ -214,11 +222,11 @@ public class ObjectData {
 		IsBounceEnabled = isBounceEnabled;
 	}
 
-	public Size getInnerNodeSize() {
+	public InnerNodeSize getInnerNodeSize() {
 		return InnerNodeSize;
 	}
 
-	public void setInnerNodeSize(Size innerNodeSize) {
+	public void setInnerNodeSize(InnerNodeSize innerNodeSize) {
 		InnerNodeSize = innerNodeSize;
 	}
 

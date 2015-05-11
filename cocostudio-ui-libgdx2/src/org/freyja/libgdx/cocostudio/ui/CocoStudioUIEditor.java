@@ -164,12 +164,12 @@ public class CocoStudioUIEditor {
 	 *            控件名字
 	 * @return
 	 */
-	public Actor findActor(String name) {
+	public <T extends Actor> T findActor (String name) {
 		Array<Actor> array = actors.get(name);
 		if (array == null || array.size == 0) {
 			return null;
 		}
-		return array.get(0);
+		return (T) array.get(0);
 	}
 
 	/** 查找所有同名的控件 */
@@ -189,6 +189,8 @@ public class CocoStudioUIEditor {
 
 		// parseAction();
 
+		
+		
 		return (Group) actor;
 	}
 
@@ -490,7 +492,6 @@ public class CocoStudioUIEditor {
 		actor = parser.commonParse(this, widget, parent, actor);
 
 		return actor;
-
 	}
 
 	/** 获取BitmapFont */
