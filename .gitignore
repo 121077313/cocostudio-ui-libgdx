@@ -1,7 +1,9 @@
-*.iml
-*.ipr
-*.iws
-
-.idea/
-bin/
-*~
+*/bin
+*/gen
+*/obj
+*/.classpath
+*/.project
+*/.metadata
+*/project.properties
+*/.setting
+*/.git
