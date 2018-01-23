@@ -17,6 +17,9 @@ public class AANode extends BaseNode {
 
 	Vec2 _anchorPoint;
 
+	Vec2 _position;
+	
+	
 	Size _contentSize;
 
 	int _rotationX;
@@ -70,6 +73,14 @@ public class AANode extends BaseNode {
 
 	public void set_anchorPoint(Vec2 _anchorPoint) {
 		this._anchorPoint = _anchorPoint;
+	}
+
+	public Vec2 get_position() {
+		return _position;
+	}
+
+	public void set_position(Vec2 _position) {
+		this._position = _position;
 	}
 
 	public Size get_contentSize() {
