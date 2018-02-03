@@ -15,6 +15,8 @@ public class AANode extends BaseNode {
 
 	AANode _parent;
 
+	boolean _active;
+	
 	Vec2 _anchorPoint;
 
 	Vec2 _position;
@@ -121,6 +123,14 @@ public class AANode extends BaseNode {
 
 	public void set_scaleY(float _scaleY) {
 		this._scaleY = _scaleY;
+	}
+
+	public boolean is_active() {
+		return _active;
+	}
+
+	public void set_active(boolean _active) {
+		this._active = _active;
 	}
 
 	public AANode getNode() {
